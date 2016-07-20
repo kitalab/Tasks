@@ -1,0 +1,43 @@
+{
+    "name": "netcommons/tasks",
+    "description": "Tasks for NetCommons Plugin",
+    "homepage": "http://www.netcommons.org/",
+    "extra": {
+        "installer-paths": {
+            "app/Plugin/{$name}": ["type:cakephp-plugin"]
+        }
+    },
+    "require": {
+        "cakedc/migrations":            "~2.2",
+        "netcommons/blocks":            "dev-master",
+        "netcommons/categories":        "dev-master",
+        "netcommons/content-comments":  "dev-master",
+        "netcommons/groups":            "dev-master",
+        "netcommons/mails":             "dev-master",
+        "netcommons/net-commons":       "dev-master",
+        "netcommons/plugin-manager":    "dev-master",
+        "netcommons/topics":            "dev-master",
+        "netcommons/users":             "dev-master",
+        "netcommons/workflow":          "dev-master",
+        "netcommons/wysiwyg":           "dev-master"
+    },
+    "license": "NetCommons License",
+    "authors": [
+        {
+          "name": "Yuto Kitatsuji(WithOne)",
+          "email": "nc@withone.co.jp",
+          "homepage": "http://www.withone.co.jp",
+          "role": "Developer"
+        },
+        {
+            "name": "NetCommons Community",
+            "homepage": "https://github.com/NetCommons3/Tasks/graphs/contributors"
+        }
+    ],
+    "type":        "cakephp-plugin",
+    "keywords":    ["cakephp", "tasks"],
+    "config": {
+        "vendor-dir": "vendors"
+    }
+}
+
