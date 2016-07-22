@@ -67,8 +67,8 @@ class TaskContentsController extends TasksAppController {
 		'Workflow.Workflow',
 		'ContentComments.ContentComment' => array(
 			'viewVarsKey' => array(
-				'contentKey' => 'taskDetail.TaskContent.key',
-				'contentTitleForMail' => 'taskDetail.TaskContent.title',
+				'contentKey' => 'taskContent.TaskContent.key',
+				'contentTitleForMail' => 'taskContent.TaskContent.title',
 				'useComment' => 'taskSetting.use_comment',
 				'useCommentApproval' => 'taskSetting.use_comment_approval'
 			)
@@ -80,11 +80,30 @@ class TaskContentsController extends TasksAppController {
 	);
 
 /**
+ * @var array 絞り込みフィルタ保持値
+ */
+	protected $_filter = array(
+		'categoryId' => 0,
+		'userId' => 0,
+		'status' => 0,
+		'sort' => 0,
+	);
+
+/**
  * index action
  *
  * @return void
  */
 	public function index() {
+		if (!Current::read('Block.id')) {
+			$this->autoRender = false;
+			return;
+		}
+
+		$this->_prepare();
+		$this->set('listTitle', $this->_taskTitle);
+
+		$this->_list();
 	}
 
 /**
@@ -93,13 +112,13 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function add() {
+		$this->view = 'edit';
 	}
 
 /**
  * index edit
  *
  * @return void
- * @throws BadRequestException
  */
 	public function edit() {
 	}
@@ -110,5 +129,21 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function view() {
+	}
+
+/**
+ * 一覧
+ *
+ * @return void
+ */
+	protected function _list() {
+		$this->TaskContent->recursive = 0;
+		$this->TaskContent->Behaviors->load('ContentComments.ContentComment');
+
+		$conditions = array();
+		$taskContents = $this->TaskContent->getList($conditions);
+		$this->set('taskContents', $taskContents);
+
+		$this->TaskContent->Behaviors->unload('ContentComments.ContentComment');
 	}
 }

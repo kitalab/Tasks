@@ -1,6 +1,6 @@
 <?php
 /**
- * Blocks edit template
+ * TaskBlocks edit form template
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>

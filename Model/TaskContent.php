@@ -39,7 +39,6 @@ class TaskContent extends TasksAppModel {
 				'path' => '/:plugin_key/task_contents/view/:block_id/:content_key',
 			),
 		),
-		// 自動でメールキューの登録, 削除。ワークフロー利用時はWorkflow.Workflowより下に記述する
 		'Mails.MailQueue' => array(
 			'embedTags' => array(
 				'X-SUBJECT' => 'TaskContent.title',
@@ -122,5 +121,97 @@ class TaskContent extends TasksAppModel {
 			),
 		);
 		return $validate;
+	}
+
+/**
+ * ToDoの一覧データを返す
+ *
+ * @param array $conditions ソート絞り込み条件
+ * @return array
+ */
+	public function getList($conditions = array()) {
+		$conditions = $this->getConditions(
+			Current::read('Block.id'),
+			$conditions
+		);
+
+		$lists = $this->find('all', array(
+			'recursive' => 1,
+			'conditions' => $conditions
+		));
+
+		if (!$lists) {
+			return array();
+		}
+
+		// 取得したデータに存在するカテゴリ配列を取得
+		$categoryArr = Hash::combine($lists, '{n}.Category.id', '{n}.Category');
+
+		$taskContentList = array();
+		foreach ($categoryArr as $category) {
+			$results = array();
+			// カテゴリが未指定のときのカテゴリ情報を作成
+			if (empty($category['id'])) {
+				$category['id'] = 0;
+				$category['name'] = __d('tasks', 'No category');
+			}
+
+			$contents = Hash::extract(
+				$lists, '{n}.TaskContent[category_id=' . $category['id'] . ']', '{n}'
+			);
+
+			// ToDoとToDo担当者を一つの配列にまとめる
+			foreach ($contents as $content) {
+				$taskCharge = Hash::extract(
+					$lists, '{n}.TaskCharge.{n}[task_id=' . $content['id'] . ']'
+				);
+				$results['TaskContents'][] = array('TaskContent' => $content, 'TaskCharge' => $taskCharge);
+			}
+
+			$categoryPriority = $this->getCategoryPriority($contents);
+
+			$results['Category'] = $category;
+			$results['Category']['category_priority'] = $categoryPriority;
+			$taskContentList[] = $results;
+		}
+
+		return $taskContentList;
+	}
+
+/**
+ * UserIdから参照可能なToDoを取得するCondition配列を返す
+ *
+ * @param int $blockId ブロックId
+ * @param array $conditions ソート絞り込み条件
+ * @return array condition
+ */
+	public function getConditions($blockId, $conditions = array()) {
+		// デフォルト絞り込み条件にソート絞り込み条件をマージする
+		$conditions = array_merge($conditions, array('TaskContent.block_id' => $blockId));
+
+		$conditions = $this->getWorkflowConditions($conditions);
+
+		return $conditions;
+	}
+
+/**
+ * カテゴリごとのToDoの進捗率の平均値を取得
+ *
+ * @param array $contents ToDoデータ
+ * @return int
+ */
+	public function getCategoryPriority($contents) {
+		$taskPriority = array();
+		foreach ($contents as $content) {
+			$taskPriority[] = $content['progress_rate'];
+		}
+
+		// ToDoの進捗率の合計を求める
+		$total = array_sum($taskPriority);
+
+		// 実際の値より大きくならないよう小数点以下切り捨て
+		$categoryPriority = floor($total / count($taskPriority));
+
+		return $categoryPriority;
 	}
 }

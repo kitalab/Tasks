@@ -1,6 +1,6 @@
 <?php
 /**
- * task view template
+ * TaskContent view template
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>

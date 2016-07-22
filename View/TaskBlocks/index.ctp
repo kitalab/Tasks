@@ -1,6 +1,6 @@
 <?php
 /**
- * Block index template
+ * TaskBlock index template
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>
@@ -83,7 +83,3 @@
 	</div>
 
 </article>
-
-
-
-
