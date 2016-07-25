@@ -46,6 +46,9 @@ class TaskContent extends TasksAppModel {
 			),
 		),
 		'Tasks.TaskCharge',
+		'Wysiwyg.Wysiwyg' => array(
+				'fields' => array('content'),
+		),
 	);
 
 /**
