@@ -2,11 +2,9 @@
 /**
  * TaskCharge Model
  *
- * @author Noriko Arai <arai@nii.ac.jp>
- * @author Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>
- * @link http://www.netcommons.org NetCommons Project
- * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2014, NetCommons Project
+ * @author   Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
  */
 
 App::uses('TasksAppModel', 'Tasks.Model');
@@ -44,6 +42,29 @@ class TaskCharge extends TasksAppModel {
  * @throws InternalErrorException
  */
 	public function setCharges($data) {
+		$taskId = $data['TaskContent']['id'];
+
+		// すべてDelete
+		if (!$this->deleteAll(array(
+			'TaskCharge.task_id' => $taskId), false)
+		) {
+			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+		}
+
+		// 1件ずつ保存
+		if (isset($data['TaskCharges']) && count($data['TaskCharges']) > 0) {
+			foreach ($data['TaskCharges'] as $charge) {
+				$charge['TaskCharge']['task_id'] = $taskId;
+				if (!$this->validateTaskCharge($charge)) {
+					return false;
+				}
+				$this->create($charge);
+				if (!$this->save(null, false)) {
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				}
+			}
+		}
+
 		return true;
 	}
 }

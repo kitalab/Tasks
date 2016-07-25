@@ -1,0 +1,22 @@
+.table-cell-1 {
+    width: 135px;
+    display: table-cell;
+    padding-bottom: 5px;
+}
+
+.table-cell-2 {
+    width: 50px;
+    display: table-cell;
+    padding-bottom: 5px;
+}
+
+@media (max-width: 767px) {
+    .progress-min-scale-xs {
+        transform: scale(1, 0.5);
+    !important;
+    }
+
+    .progress-min-width-xs {
+        width: 100px !important;
+    }
+}

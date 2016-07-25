@@ -124,6 +124,35 @@ class TaskContent extends TasksAppModel {
 	}
 
 /**
+ * プラリマリキーを除いた新規レコード配列を返す
+ * ex) array('ModelName' => array('filedName' => default, ...));
+ *
+ * @return array
+ */
+	protected function _getNew() {
+		if (is_null($this->_newRecord)) {
+			$newRecord = array();
+			foreach ($this->_schema as $fieldName => $fieldDetail) {
+				if ($fieldName != $this->primaryKey) {
+					$newRecord[$this->name][$fieldName] = $fieldDetail['default'];
+				}
+			}
+			$this->_newRecord = $newRecord;
+		}
+		return $this->_newRecord;
+	}
+
+/**
+ * 空の新規データを返す
+ *
+ * @return array
+ */
+	public function getNew() {
+		$new = $this->_getNew();
+		return $new;
+	}
+
+/**
  * ToDoの一覧データを返す
  *
  * @param array $conditions ソート絞り込み条件
@@ -179,6 +208,32 @@ class TaskContent extends TasksAppModel {
 	}
 
 /**
+ * ToDoのデータを一件返す
+ *
+ * @param void $key key
+ *
+ * @return array
+ */
+	public function getTask($key) {
+		$conditions = $this->getConditions(
+			Current::read('Block.id')
+		);
+
+		$conditions = array_merge($conditions, array('TaskContent.key' => $key));
+
+		$lists = $this->find('all', array(
+			'recursive' => 1,
+			'conditions' => $conditions
+		));
+
+		if (!$lists) {
+			return array();
+		}
+
+		return $lists[0];
+	}
+
+/**
  * UserIdから参照可能なToDoを取得するCondition配列を返す
  *
  * @param int $blockId ブロックId
@@ -213,5 +268,53 @@ class TaskContent extends TasksAppModel {
 		$categoryPriority = floor($total / count($taskPriority));
 
 		return $categoryPriority;
+	}
+
+/**
+ * ToDoの保存。
+ *
+ * @param array $data 登録データ
+ * @return bool
+ * @throws InternalErrorException
+ */
+	public function saveContent($data) {
+		// 必要なモデル読み込み
+		$this->loadModels([
+			'TaskCharge' => 'Tasks.TaskCharge',
+		]);
+		$data['TaskCharges'] = Hash::map($data, 'TaskCharge.{n}.user_id', function ($value) {
+			return array(
+				'TaskCharge' => array(
+					'id' => null,
+					'user_id' => $value,
+				));
+		});
+
+		$this->begin();
+		try {
+			$this->create(); // 常に新規登録
+			// 先にvalidate 失敗したらfalse返す
+			$this->set($data);
+			if (!$this->validates($data)) {
+				$this->rollback();
+				return false;
+			}
+
+			if (($savedData = $this->save($data, false)) === false) {
+				//このsaveで失敗するならvalidate以外なので例外なげる
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+			$data['TaskContent'] = $savedData['TaskContent'];
+			// 担当者を登録
+			if (!$this->TaskCharge->setCharges($data)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+
+			$this->commit();
+
+		} catch (Exception $e) {
+			$this->rollback($e);
+		}
+		return $savedData;
 	}
 }

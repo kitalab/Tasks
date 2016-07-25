@@ -25,19 +25,19 @@ $options = array();
 
 $options = array(
 	'TaskContents.sort_' . 1 => array(
-		'label' => __d('tasks', '期限の近い順'),
+		'label' => __d('tasks', 'Close of the deadline order'),
 		'sort' => 1,
 	),
 	'TaskContents.sort_' . 2 => array(
-		'label' => __d('tasks', '重要度の高い順'),
+		'label' => __d('tasks', 'Priority order'),
 		'sort' => 2,
 	),
 	'TaskContents.sort_' . 3 => array(
-		'label' => __d('tasks', '進捗率の高い順'),
+		'label' => __d('tasks', 'High progress rate order'),
 		'sort' => 3,
 	),
 	'TaskContents.sort_' . 4 => array(
-		'label' => __d('tasks', '進捗率の低い順'),
+		'label' => __d('tasks', 'Low progress rate order'),
 		'sort' => 4,
 	),
 );
