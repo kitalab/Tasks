@@ -51,6 +51,94 @@ msgstr "カテゴリなし"
 msgid "Not task"
 msgstr "ToDoがありません。"
 
+# 一覧画面で使用
+msgid "Close of the deadline order"
+msgstr "期限の近い順"
+
+# 一覧画面で使用
+msgid "Priority order"
+msgstr "期限の近い順"
+
+# 一覧画面で使用
+msgid "High progress rate order"
+msgstr "進捗率の高い順"
+
+# 一覧画面で使用
+msgid "Low progress rate order"
+msgstr "進捗率の低い順"
+
+# 登録（編集）画面で使用
+msgid "Task"
+msgstr "ToDo"
+
+# 登録（編集）画面で使用
+msgid "Title"
+msgstr "ToDo名"
+
+# 登録（編集）画面で使用
+msgid "Person in charge of user selection"
+msgstr "担当者"
+
+# 登録（編集）画面で使用
+msgid "Low"
+msgstr "低"
+
+# 登録（編集）画面で使用
+msgid "Medium"
+msgstr "中"
+
+# 登録（編集）画面で使用
+msgid "High"
+msgstr "高"
+
+# 登録（編集）画面で使用
+msgid "Content"
+msgstr "内容"
+
+# 登録（編集）画面で使用
+msgid "Inform in advance by mail"
+msgstr "実施期間終了日前にメール通知する"
+
+# 登録（編集）画面で使用
+msgid "Two days previously"
+msgstr "実施期間終了日の2日前"
+
+# 登録（編集）画面で使用
+msgid "Use calendar"
+msgstr "カレンダーに登録する"
+
+# 登録（編集）画面で使用
+msgid "Charge of person in task"
+msgstr "ToDo担当者"
+
+# 詳細画面で使用
+msgid "Implementation period"
+msgstr "実施期間 ："
+
+# 詳細画面で使用
+msgid "Colon"
+msgstr "："
+
+# 詳細画面で使用
+msgid "Till"
+msgstr "～"
+
+# 詳細画面で使用
+msgid "Progress rate"
+msgstr "進捗率："
+
+# 詳細画面で使用
+msgid "Created_user"
+msgstr "作成者："
+
+# 詳細画面で使用
+msgid "Modified user"
+msgstr "更新者："
+
+# 詳細画面で使用
+msgid "Person in charge"
+msgstr "担当者："
+
 # ブロック設定画面で使用
 msgid "Task list"
 msgstr "ToDoリスト名"
@@ -62,3 +150,23 @@ msgstr "コメントを付けられる"
 # 権限設定画面で使用
 msgid "Task creatable roles"
 msgstr "ToDoを作成編集できる権限"
+
+# 共通で使用
+msgid "Undefined"
+msgstr "未設定"
+
+# 共通で使用
+msgid "Not selected"
+msgstr "未選択"
+
+# 共通で使用
+msgid "Priority"
+msgstr "重要度"
+
+# 共通で使用
+msgid "Implementation period"
+msgstr "実施期間"
+
+# 共通で使用
+msgid "Category"
+msgstr "カテゴリ"
