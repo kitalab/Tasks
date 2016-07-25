@@ -1,7 +1,7 @@
 <?php
 /**
- * BlockRolePermissions edit template
- * 
+ * TaskBlockRolePermissions edit template
+ *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>
  * @link http://www.netcommons.org NetCommons Project
@@ -23,4 +23,3 @@
 		)); ?>
 	</div>
 </div>
-

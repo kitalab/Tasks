@@ -1,6 +1,6 @@
 <?php
 /**
- * BlockRolePermissions edit template
+ * TaskBlockRolePermissions edit form template
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>

@@ -1,6 +1,6 @@
 <?php
 /**
- * メール設定 template
+ * TaskMailSettings edit template
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuto Kitatsuji <kitatsuji.yuto@wihtone.co.jp>

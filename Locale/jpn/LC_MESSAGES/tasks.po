@@ -23,6 +23,34 @@ msgstr "新しいToDoリスト %s"
 msgid "Task name"
 msgstr "ToDoリスト名"
 
+# 一覧画面で使用
+msgid "Incomplete task"
+msgstr "未完了のToDo"
+
+# 一覧画面で使用
+msgid "Completed task"
+msgstr "完了したToDo"
+
+# 一覧画面で使用
+msgid "All task"
+msgstr "全てのToDo"
+
+# 一覧画面で使用
+msgid "No category assignment"
+msgstr "カテゴリ指定なし"
+
+# 一覧画面で使用
+msgid "No person in charge"
+msgstr "担当者指定なし"
+
+# 一覧画面で使用
+msgid "No category"
+msgstr "カテゴリなし"
+
+# 一覧画面で使用
+msgid "Not task"
+msgstr "ToDoがありません。"
+
 # ブロック設定画面で使用
 msgid "Task list"
 msgstr "ToDoリスト名"
