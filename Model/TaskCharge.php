@@ -45,7 +45,7 @@ class TaskCharge extends TasksAppModel {
 		$taskId = $data['TaskContent']['id'];
 
 		// すべてDelete
-		if (!$this->deleteAll(array(
+		if (! $this->deleteAll(array(
 			'TaskCharge.task_id' => $taskId), false)
 		) {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
@@ -66,5 +66,28 @@ class TaskCharge extends TasksAppModel {
 		}
 
 		return true;
+	}
+
+/**
+ * 選択済みユーザを設定
+ *
+ * @param array $taskContent ToDoデータ
+ * @return {void}
+ */
+	public function setSelectUsers($taskContent) {
+		$this->loadModels([
+			'User' => 'Users.User',
+		]);
+
+		$selectUsers['selectUsers'] = array();
+		if (isset($taskContent['TaskCharge'])) {
+			$selectUsers =
+				Hash::extract($taskContent['TaskCharge'], '{n}.user_id');
+			foreach ($selectUsers as $userId) {
+				$user = $this->User->getUser($userId);
+				$taskContent['selectUsers'][] = $user;
+			}
+		}
+		return $taskContent;
 	}
 }
