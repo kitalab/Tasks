@@ -17,6 +17,7 @@ App::uses('TasksAppController', 'Tasks.Controller');
  * @author Yuto Kitatsuji <kitatsuji.yuto@wihtone.co.jp>
  * @package NetCommons\Tasks\Controller
  * @property TaskContent $TaskContent
+ * @property TaskCharge $TaskCharge
  */
 class TaskContentsController extends TasksAppController {
 
@@ -27,6 +28,7 @@ class TaskContentsController extends TasksAppController {
  */
 	public $uses = array(
 		'Tasks.TaskContent',
+		'Tasks.TaskCharge',
 		'Workflow.WorkflowComment',
 		'Categories.Category',
 		'Groups.GroupUserList',
@@ -46,7 +48,7 @@ class TaskContentsController extends TasksAppController {
 				'useComment' => 'taskSetting.use_comment'
 			),
 			'allow' => array('view')
-		)
+		),
 	);
 
 /**
@@ -95,7 +97,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function index() {
-		if (!Current::read('Block.id')) {
+		if (! Current::read('Block.id')) {
 			$this->autoRender = false;
 			return;
 		}
@@ -141,6 +143,9 @@ class TaskContentsController extends TasksAppController {
 						'key' => $result['TaskContent']['key'])
 				);
 				return $this->redirect($url);
+			} else {
+				// ToDo担当者ユーザー保持
+				$this->request->data = $this->TaskCharge->setSelectUsers($this->request->data);
 			}
 
 			$this->NetCommons->handleValidationError($this->TaskContent->validationErrors);
@@ -162,12 +167,8 @@ class TaskContentsController extends TasksAppController {
 		$key = $this->params['key'];
 		$taskContent = $this->TaskContent->getTask($key);
 
-		$selectUsers = Hash::extract($taskContent['TaskCharge'], '{n}.user_id');
-
-		$this->request->data['selectUsers'] = array();
-		foreach ($selectUsers as $userId) {
-			$this->request->data['selectUsers'][] = $this->User->getUser($userId);
-		}
+		// ToDo担当者ユーザー保持
+		$taskContent = $this->TaskCharge->setSelectUsers($taskContent);
 
 		if (empty($taskContent)) {
 			return $this->throwBadRequest();
@@ -212,12 +213,14 @@ class TaskContentsController extends TasksAppController {
 				return $this->redirect($url);
 			}
 
+			// ToDo担当者ユーザー保持
+			$this->request->data = $this->TaskCharge->setSelectUsers($this->request->data);
+			// 入力値を保持する
+			$taskContent = $this->request->data;
+
 			$this->NetCommons->handleValidationError($this->TaskContent->validationErrors);
-
 		} else {
-
 			$this->request->data = $taskContent;
-
 		}
 
 		$this->set('taskContent', $taskContent);
@@ -233,7 +236,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function view() {
-		if (!Current::read('Block.id')) {
+		if (! Current::read('Block.id')) {
 			$this->autoRender = false;
 			return;
 		}

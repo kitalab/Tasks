@@ -25,7 +25,7 @@ echo $this->Html->script(
 
 <div class="taskContents form"
 	 ng-controller="TaskContent"
-	 ng-init="initialize(<?php echo h(json_encode($this->viewVars['taskContent'])); ?>)">
+	 ng-init="initialize(<?php echo h(json_encode($this->request->data)); ?>)">
 	<article>
 
 		<h1><?php echo h(__d('tasks', 'Task')); ?></h1>
@@ -67,7 +67,7 @@ echo $this->Html->script(
 					<?php echo $this->Category->select('TaskContent.category_id', array('empty' => true)); ?>
 
 					<?php echo $this->element('TaskContents/select_priority'); ?>
-					
+
 					<?php echo $this->element('TaskContents/task_period_edit_form'); ?>
 
 					<?php echo $this->element('TaskContents/charge_edit_form'); ?>
@@ -75,11 +75,7 @@ echo $this->Html->script(
 					<?php echo $this->element('TaskContents/content_edit_form'); ?>
 
 					<?php
-					echo $this->NetCommonsForm->input('TaskContent.is_enable_mail', array(
-						'type' => 'checkbox',
-						'checked' => false,
-						'label' => false,
-						'div' => false,
+					echo $this->NetCommonsForm->checkbox('TaskContent.is_enable_mail', array(
 						'class' => 'text-left',
 						'style' => 'float: left',
 					));
@@ -88,29 +84,10 @@ echo $this->Html->script(
 						<?php echo __d('tasks', 'Inform in advance by mail'); ?>
 					</label>
 
-					<?php
-					$options = array(
-						'0' => __d('tasks', 'Two days previously'),
-					);
-					?>
+					<?php echo $this->element('TaskContents/select_email_send_timing'); ?>
 
 					<?php
-					echo $this->NetCommonsForm->select('TaskContent.email_send_timing', $options, array(
-						'value' => __d('tasks', 'Two days previously'),
-						'class' => 'form-control',
-						'empty' => false,
-						'required' => true,
-						'div' => false,
-						'style' => 'float: left',
-					));
-					?>
-
-					<?php
-					echo $this->NetCommonsForm->input('TaskContent.use_calendar', array(
-						'type' => 'checkbox',
-						'checked' => false,
-						'label' => false,
-						'div' => false,
+					echo $this->NetCommonsForm->checkbox('TaskContent.use_calendar', array(
 						'class' => 'text-left',
 						'style' => 'float: left; margin-top: 13px',
 					));

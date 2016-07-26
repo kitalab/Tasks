@@ -109,7 +109,7 @@ class PluginRecords extends NetCommonsMigration {
 		}
 
 		foreach ($this->records as $model => $records) {
-			if (!$this->updateRecords($model, $records)) {
+			if (! $this->updateRecords($model, $records)) {
 				return false;
 			}
 		}

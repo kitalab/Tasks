@@ -1,6 +1,6 @@
 <?php
 /**
- * TaskContentstask content select status for view element
+ * TaskContentstask task content for view element
  *
  * @author Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>
  * @link http://www.netcommons.org NetCommons Project
@@ -12,10 +12,11 @@
 <table class="table table-hover">
 	<tbody>
 	<?php foreach ($taskContents as $content): ?>
-		<tr >
+		<tr>
 			<td class="btn-group col-xs-1 col-ms-1 col-md-1 col-lg-1" style="vertical-align: middle;">
-				<div data-toggle="buttons" >
-					<label class="btn btn-default form-group" ng-controller="SampleCtrl" ng-click="methodA('<?php echo $content['TaskContent']['id'] ?>')">
+				<div data-toggle="buttons">
+					<label class="btn btn-default form-group" ng-controller="SampleCtrl"
+						   ng-click="methodA('<?php echo $content['TaskContent']['id'] ?>')">
 						<input type="checkbox" autocomplete="off" checked="" ng-model="taskContents.isCompletion">
 								<span class="glyphicon glyphicon-ok" style="color: #BBBBBB">
 								</span>
@@ -42,14 +43,14 @@
 			<td class="col-xs-5 col-ms-5 col-md-6 col-lg-6" style="vertical-align: middle;">
 				<?php echo $this->Workflow->label($content['TaskContent']['status']); ?>
 				<?php echo $this->Html->link(
-						$content['TaskContent']['title'],
-						$this->NetCommonsHtml->url(
-								array(
-										'controller' => 'task_contents',
-										'action' => 'view',
-										'key' => $content['TaskContent']['key']
-								)
+					$content['TaskContent']['title'],
+					$this->NetCommonsHtml->url(
+						array(
+							'controller' => 'task_contents',
+							'action' => 'view',
+							'key' => $content['TaskContent']['key']
 						)
+					)
 				); ?>
 			</td>
 
