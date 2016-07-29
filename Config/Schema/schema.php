@@ -75,7 +75,7 @@ class TasksSchema extends CakeSchema {
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary', 'comment' => 'ID |  |  | '),
 		'task_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
-		'category_id' => array('type' => 'integer', 'null' => false, 'default' => '0', 'unsigned' => false, 'comment' => 'category id | カテゴリーID | blog_categories.id | '),
+		'category_id' => array('type' => 'integer', 'null' => false, 'default' => '0', 'unsigned' => false, 'comment' => 'category id | カテゴリーID | Task_categories.id | '),
 		'status' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 4, 'unsigned' => false, 'comment' => 'public status, 1: public, 2: public pending, 3: draft during 4: remand | 公開状況  1:公開中、2:公開申請中、3:下書き中、4:差し戻し |  | '),
 		'is_active' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'is_latest' => array('type' => 'boolean', 'null' => true, 'default' => null),

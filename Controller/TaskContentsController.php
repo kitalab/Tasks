@@ -87,7 +87,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function index() {
-		if (!Current::read('Block.id')) {
+		if (! Current::read('Block.id')) {
 			$this->autoRender = false;
 			return;
 		}
@@ -134,7 +134,6 @@ class TaskContentsController extends TasksAppController {
 		$this->set('taskContent', $taskContent);
 
 		if ($this->request->is('post')) {
-
 			$this->TaskContent->create();
 			$this->request->data['TaskContent']['task_key'] =
 				$this->_taskSetting['TaskSetting']['task_key'];
@@ -166,7 +165,6 @@ class TaskContentsController extends TasksAppController {
 
 		} else {
 			$this->request->data = $taskContent;
-
 		}
 
 		$this->render('edit');
@@ -251,7 +249,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function view() {
-		if (!Current::read('Block.id')) {
+		if (! Current::read('Block.id')) {
 			$this->autoRender = false;
 			return;
 		}
@@ -281,7 +279,7 @@ class TaskContentsController extends TasksAppController {
 
 					$taskContentKey = $taskContent['TaskContent']['key'];
 					$useCommentApproval = $this->_taskSetting['TaskSetting']['use_comment_approval'];
-					if (!$this->ContentComments->comment('tasks', $taskContentKey,
+					if (! $this->ContentComments->comment('tasks', $taskContentKey,
 						$useCommentApproval)
 					) {
 						return $this->throwBadRequest();
