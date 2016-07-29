@@ -16,6 +16,7 @@ App::uses('AppController', 'Controller');
  *
  * @author Yuto Kitatsuji <kitatsuji.yuto@wihtone.co.jp>
  * @package NetCommons\Tasks\Controller
+ * @property TaskSetting $TaskSetting
  */
 class TasksAppController extends AppController {
 
@@ -48,15 +49,6 @@ class TasksAppController extends AppController {
 	);
 
 /**
- * beforeFilter
- * 
- * @return void
- */
-	public function beforeFilter() {
-		parent::beforeFilter();
-	}
-
-/**
  * ブロック名をToDoタイトルとしてセットする
  *
  * @return void
@@ -87,14 +79,16 @@ class TasksAppController extends AppController {
 		if (! $task = $this->Task->getTask(Current::read('Block.id'), Current::read('Room.id'))) {
 			return $this->throwBadRequest();
 		}
-		$this->_blogTitle = $task['Task']['name'];
+		$this->_TaskTitle = $task['Task']['name'];
 		$this->set('task', $task);
 
-		if (! $taskSetting = $this->TaskSetting->getTaskSetting($task['Task']['key'])) {
-			$taskSetting = $this->TaskSetting->create(
-				array('id' => null)
-			);
+		if (! $taskSetting = $this->TaskSetting->getTaskSetting()) {
+			$taskSetting = $this->TaskSetting->createBlockSetting();
+			$taskSetting['TaskSetting']['task_key'] = null;
+		} else {
+			$taskSetting['TaskSetting']['task_key'] = $task['Task']['key'];
 		}
+
 		$this->_taskSetting = $taskSetting;
 		$this->set('taskSetting', $taskSetting['TaskSetting']);
 

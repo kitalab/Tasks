@@ -16,6 +16,7 @@ App::uses('TasksAppController', 'Tasks.Controller');
  *
  * @author Yuto Kitatsuji <kitatsuji.yuto@wihtone.co.jp>
  * @package NetCommons\Tasks\Controller
+ * @property Task $Task
  */
 class TaskBlocksController extends TasksAppController {
 
@@ -60,14 +61,8 @@ class TaskBlocksController extends TasksAppController {
 	public $helpers = array(
 		'Blocks.BlockForm',
 		'Blocks.BlockTabs' => array(
-			'mainTabs' => array(
-				'block_index' => array('url' => array('controller' => 'task_blocks')),
-			),
-			'blockTabs' => array(
-				'block_settings' => array('url' => array('controller' => 'task_blocks')),
-				'mail_settings',
-				'role_permissions' => array('url' => array('controller' => 'task_block_role_permissions')),
-			),
+			'mainTabs' => array('block_index'),
+			'blockTabs' => array('block_settings', 'mail_settings', 'role_permissions'),
 		),
 		'Blocks.BlockIndex',
 		'Likes.Like',

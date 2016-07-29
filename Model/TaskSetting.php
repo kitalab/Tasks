@@ -11,7 +11,8 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('TasksAppModel', 'Tasks.Model');
+App::uses('BlockBaseModel', 'Blocks.Model');
+App::uses('BlockSettingBehavior', 'Blocks.Model/Behavior');
 
 /**
  * TaskSetting Model
@@ -19,7 +20,14 @@ App::uses('TasksAppModel', 'Tasks.Model');
  * @author Yuto Kitatsuji <kitasuji.yuto@withone.co.jp>
  * @package NetCommons\Tasks\Model
  */
-class TaskSetting extends TasksAppModel {
+class TaskSetting extends BlockBaseModel {
+
+/**
+ * Custom database table name
+ *
+ * @var string
+ */
+	public $useTable = false;
 
 /**
  * Validation rules
@@ -35,27 +43,22 @@ class TaskSetting extends TasksAppModel {
  */
 	public $actsAs = array(
 		'Blocks.BlockRolePermission',
+		'Blocks.BlockSetting' => array(
+			BlockSettingBehavior::FIELD_USE_WORKFLOW,
+			BlockSettingBehavior::FIELD_USE_LIKE,
+			BlockSettingBehavior::FIELD_USE_UNLIKE,
+			BlockSettingBehavior::FIELD_USE_COMMENT,
+			BlockSettingBehavior::FIELD_USE_COMMENT_APPROVAL
+		),
 	);
 
 /**
  * Get task setting data
  *
- * @param string $taskKey tasks.key
  * @return array
  */
-	public function getTaskSetting($taskKey) {
-		$conditions = array(
-			'task_key' => $taskKey
-		);
-
-		$taskSetting = $this->find(
-			'first', array(
-				'recursive' => -1,
-				'conditions' => $conditions,
-			)
-		);
-
-		return $taskSetting;
+	public function getTaskSetting() {
+		return $this->getBlockSetting();
 	}
 
 /**
@@ -81,9 +84,8 @@ class TaskSetting extends TasksAppModel {
 		}
 
 		try {
-			if (! $this->save(null, false)) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
+			// useTable = falseでsaveすると必ずfalseになるので、throwしない
+			$this->save(null, false);
 
 			//トランザクションCommit
 			$this->commit();
