@@ -30,7 +30,6 @@
 			</span>
 		</div>
 	</div>
-
 	<div class="clearfix" style="margin-bottom: 20px">
 		<div class="pull-left">
 			<?php echo $this->element('TaskContents/select_is_completion'); ?>
@@ -45,7 +44,7 @@
 					'frame_id' => Current::read('Frame.id')
 				), $this->params['named']))
 			)); ?>
-			<?php echo $this->element('TaskContents/select_user'); ?>
+			<?php echo $this->element('TaskContents/select_user', array('options' => $userOptions)); ?>
 			<?php echo $this->element('TaskContents/select_sort'); ?>
 		</div>
 	</div>
