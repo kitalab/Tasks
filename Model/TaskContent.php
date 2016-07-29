@@ -173,7 +173,7 @@ class TaskContent extends TasksAppModel {
 			'order' => $order
 		));
 
-		if (!$lists) {
+		if (! $lists) {
 			return array();
 		}
 
@@ -230,7 +230,7 @@ class TaskContent extends TasksAppModel {
 			'conditions' => $conditions
 		));
 
-		if (!$lists) {
+		if (! $lists) {
 			return array();
 		}
 
@@ -248,6 +248,7 @@ class TaskContent extends TasksAppModel {
 		// デフォルト絞り込み条件にソート絞り込み条件をマージする
 		$conditions = array_merge($conditions, array('TaskContent.block_id' => $blockId));
 
+		$this->log($conditions);
 		$conditions = $this->getWorkflowConditions($conditions);
 
 		return $conditions;
@@ -299,7 +300,7 @@ class TaskContent extends TasksAppModel {
 			$this->create(); // 常に新規登録
 			// 先にvalidate 失敗したらfalse返す
 			$this->set($data);
-			if (!$this->validates($data)) {
+			if (! $this->validates($data)) {
 				$this->rollback();
 				return false;
 			}
@@ -310,7 +311,7 @@ class TaskContent extends TasksAppModel {
 			}
 			$data['TaskContent'] = $savedData['TaskContent'];
 			// 担当者を登録
-			if (!$this->TaskCharge->setCharges($data)) {
+			if (! $this->TaskCharge->setCharges($data)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 

@@ -55,11 +55,11 @@ class TaskCharge extends TasksAppModel {
 		if (isset($data['TaskCharges']) && count($data['TaskCharges']) > 0) {
 			foreach ($data['TaskCharges'] as $charge) {
 				$charge['TaskCharge']['task_id'] = $taskId;
-				if (!$this->validateTaskCharge($charge)) {
+				if (! $this->validateTaskCharge($charge)) {
 					return false;
 				}
 				$this->create($charge);
-				if (!$this->save(null, false)) {
+				if (! $this->save(null, false)) {
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 				}
 			}
@@ -89,5 +89,40 @@ class TaskCharge extends TasksAppModel {
 			}
 		}
 		return $taskContent;
+	}
+
+/**
+ * 担当者ユーザのハンドル名を絞り込み選択肢として取得
+ *
+ * @param array $taskContents ToDoListデータ
+ * @return array
+ */
+	public function setSelectChargeUsers($taskContents) {
+		$this->loadModels([
+			'User' => 'Users.User',
+		]);
+
+		$selectChargeUsers = array();
+
+		// 一覧に表示可能なToDoで担当者として設定されているユーザidを取得(idをkeyに設定し重複を省く)
+		$chargeUsers = Hash::combine(
+			$taskContents,
+			'{n}.TaskContents.{n}.TaskCharge.{n}.user_id',
+			'{n}.TaskContents.{n}.TaskCharge.{n}.user_id'
+		);
+
+		if ($chargeUsers) {
+			foreach ($chargeUsers as $userId) {
+				$user = $this->User->getUser($userId);
+				if (isset($user['User'])) {
+					$selectChargeUsers['TaskContents.charge_user_id_' . $user['User']['id']] = array(
+						'label' => $user['User']['handlename'],
+						'user_id' => $user['User']['id']
+					);
+				}
+			}
+		}
+
+		return $selectChargeUsers;
 	}
 }

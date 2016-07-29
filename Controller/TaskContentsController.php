@@ -367,8 +367,26 @@ class TaskContentsController extends TasksAppController {
 		}
 
 		$taskContents = $this->TaskContent->getList($params, $order);
-
 		$this->set('taskContents', $taskContents);
+
+		// 自身のユーザーデータを取得
+		$myUser = array(Current::read('User'));
+		// 担当者絞り込みデフォルト値
+		$options = array(
+			'TaskContents.charge_user_id_' . 0 => array(
+				'label' => __d('tasks', 'No person in charge'),
+				'user_id' => 0,
+			),
+			'TaskContents.charge_user_id_' . $myUser[0]['id'] => array(
+				'label' => $myUser[0]['handlename'],
+				'user_id' => $myUser[0]['id'],
+			),
+		);
+		$selectChargeUsers = $this->TaskCharge->setSelectChargeUsers($taskContents);
+
+		// 担当者絞り込み条件をマージする
+		$userOptions = array_merge($options, $selectChargeUsers);
+		$this->set('userOptions', $userOptions);
 
 		$this->TaskContent->Behaviors->unload('ContentComments.ContentComment');
 	}
