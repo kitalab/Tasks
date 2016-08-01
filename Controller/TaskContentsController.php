@@ -44,7 +44,7 @@ class TaskContentsController extends TasksAppController {
 		'Categories.Categories',
 		'ContentComments.ContentComments' => array(
 			'viewVarsKey' => array(
-				'contentKey' => 'taskDetail.TaskContent.key',
+				'contentKey' => 'taskContent.TaskContent.key',
 				'useComment' => 'taskSetting.use_comment'
 			),
 			'allow' => array('view')
@@ -272,6 +272,7 @@ class TaskContentsController extends TasksAppController {
 				$this->request->data['selectUsers'][] = $this->User->getUser($userId);
 			}
 
+					$this->log($this->request->data);
 			// コメントを利用する
 			if ($this->_taskSetting['TaskSetting']['use_comment']) {
 				if ($this->request->is('post')) {
@@ -291,8 +292,6 @@ class TaskContentsController extends TasksAppController {
 			// 表示できないToDoへのアクセスならBadRequest
 			return $this->throwBadRequest();
 		}
-
-		$this->set('taskDetail', $taskContent);
 	}
 
 /**
