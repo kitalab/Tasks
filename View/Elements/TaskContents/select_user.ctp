@@ -15,17 +15,16 @@ $url = Hash::merge(array(
 	$params);
 
 if (! isset($params['user_id'])) :
-	$currentChargeUser = Current::read('User.id');
+	$chargeUser = Current::read('User.id');
 else:
 	$chargeUser = $params['user_id'];
 endif;
-
 ?>
 
 <span class="btn-group">
 	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
 			style="width: auto">
-		<?php echo h($options['TaskContents.charge_user_id_' . $currentChargeUser]['label']); ?>
+		<?php echo h($options['TaskContents.charge_user_id_' . $chargeUser]['label']); ?>
 		<span class="caret"></span>
 	</button>
 	<ul class="dropdown-menu" role="menu">

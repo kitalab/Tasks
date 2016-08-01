@@ -98,17 +98,17 @@ class TaskContentsController extends TasksAppController {
 		$conditions = array();
 		$params = $this->request->params['named'];
 		if (isset($params['category_id'])) {
-			$conditions['params'] = array(
+			$conditions['params'][] = array(
 				'TaskContent.category_id' => $params['category_id']
 			);
 		}
 		if (isset($params['user_id'])) {
-			$conditions['params'] = array(
+			$conditions['params'][] = array(
 				'TaskCharge.user_id' => $params['user_id']
 			);
 		}
 		if (isset($params['is_completion']) && $params['is_completion'] !== 'all') {
-			$conditions['params'] = array(
+			$conditions['params'][] = array(
 				'TaskContent.is_completion' => $params['is_completion']
 			);
 		}
