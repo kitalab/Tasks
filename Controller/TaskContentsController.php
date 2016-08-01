@@ -272,7 +272,6 @@ class TaskContentsController extends TasksAppController {
 				$this->request->data['selectUsers'][] = $this->User->getUser($userId);
 			}
 
-					$this->log($this->request->data);
 			// コメントを利用する
 			if ($this->_taskSetting['TaskSetting']['use_comment']) {
 				if ($this->request->is('post')) {
