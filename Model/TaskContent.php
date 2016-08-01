@@ -16,6 +16,14 @@ App::uses('TasksAppModel', 'Tasks.Model');
  */
 class TaskContent extends TasksAppModel {
 
+
+/**
+ * タスク完了時の進捗率
+ *
+ * @var const
+ */
+	const TASK_COMPLETION_PROGRESS_RATE = 100;
+
 /**
  * @var int recursiveはデフォルトアソシエーションなしに
  */
@@ -321,5 +329,41 @@ class TaskContent extends TasksAppModel {
 			$this->rollback($e);
 		}
 		return $savedData;
+	}
+
+/**
+ * 進捗率を更新
+ *
+ * @param array $key ToDoキー
+ * @param array $progressRate ToDo進捗率
+ * @return bool
+ * @throws InternalErrorException
+ */
+	public function saveProgressRate($key, $progressRate) {
+		$this->begin();
+		try {
+			$isCompletion = false;
+			if ((int)$progressRate === TaskContent::TASK_COMPLETION_PROGRESS_RATE) {
+				$isCompletion = true;
+			}
+
+			$data = array(
+				'TaskContent.progress_rate' => $progressRate,
+				'is_completion' => $isCompletion,
+			);
+			$conditions = array(
+				'TaskContent.key' => $key,
+			);
+			if (! $this->updateAll($data, $conditions)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+
+			$this->commit();
+
+		} catch (Exception $e) {
+			$this->rollback($e);
+		}
+
+		return true;
 	}
 }
