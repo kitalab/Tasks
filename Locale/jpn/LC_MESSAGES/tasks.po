@@ -151,6 +151,10 @@ msgstr "更新者："
 msgid "Person in charge"
 msgstr "担当者："
 
+# 詳細画面で使用
+msgid "Updated progress rate"
+msgstr "進捗率を更新しました。"
+
 # ブロック設定画面で使用
 msgid "Task list"
 msgstr "ToDoリスト名"
