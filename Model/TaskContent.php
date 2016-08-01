@@ -167,6 +167,7 @@ class TaskContent extends TasksAppModel {
 			Current::read('Block.id'),
 			$params
 		);
+
 		$lists = $this->find('threaded', array(
 			'recursive' => 1,
 			'conditions' => $conditions,
@@ -248,7 +249,6 @@ class TaskContent extends TasksAppModel {
 		// デフォルト絞り込み条件にソート絞り込み条件をマージする
 		$conditions = array_merge($conditions, array('TaskContent.block_id' => $blockId));
 
-		$this->log($conditions);
 		$conditions = $this->getWorkflowConditions($conditions);
 
 		return $conditions;

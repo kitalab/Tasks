@@ -44,7 +44,7 @@ class TaskContentsController extends TasksAppController {
 		'Categories.Categories',
 		'ContentComments.ContentComments' => array(
 			'viewVarsKey' => array(
-				'contentKey' => 'taskDetail.TaskContent.key',
+				'contentKey' => 'taskContent.TaskContent.key',
 				'useComment' => 'taskSetting.use_comment'
 			),
 			'allow' => array('view')
@@ -98,17 +98,17 @@ class TaskContentsController extends TasksAppController {
 		$conditions = array();
 		$params = $this->request->params['named'];
 		if (isset($params['category_id'])) {
-			$conditions['params'] = array(
+			$conditions['params'][] = array(
 				'TaskContent.category_id' => $params['category_id']
 			);
 		}
 		if (isset($params['user_id'])) {
-			$conditions['params'] = array(
+			$conditions['params'][] = array(
 				'TaskCharge.user_id' => $params['user_id']
 			);
 		}
 		if (isset($params['is_completion']) && $params['is_completion'] !== 'all') {
-			$conditions['params'] = array(
+			$conditions['params'][] = array(
 				'TaskContent.is_completion' => $params['is_completion']
 			);
 		}
@@ -272,6 +272,7 @@ class TaskContentsController extends TasksAppController {
 				$this->request->data['selectUsers'][] = $this->User->getUser($userId);
 			}
 
+					$this->log($this->request->data);
 			// コメントを利用する
 			if ($this->_taskSetting['TaskSetting']['use_comment']) {
 				if ($this->request->is('post')) {
@@ -291,8 +292,6 @@ class TaskContentsController extends TasksAppController {
 			// 表示できないToDoへのアクセスならBadRequest
 			return $this->throwBadRequest();
 		}
-
-		$this->set('taskDetail', $taskContent);
 	}
 
 /**
