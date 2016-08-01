@@ -49,6 +49,7 @@ class TaskContentsController extends TasksAppController {
 			),
 			'allow' => array('view')
 		),
+		'NetCommons.NetCommonsTime',
 	);
 
 /**
@@ -135,18 +136,30 @@ class TaskContentsController extends TasksAppController {
 
 		if ($this->request->is('post')) {
 			$this->TaskContent->create();
-			$this->request->data['TaskContent']['task_key'] =
-				$this->_taskSetting['TaskSetting']['task_key'];
+			$data = $this->request->data;
+
+			$data['TaskContent']['task_key'] = $this->_taskSetting['TaskSetting']['task_key'];
 
 			// set status
 			$status = $this->Workflow->parseStatus();
-			$this->request->data['TaskContent']['status'] = $status;
+			$data['TaskContent']['status'] = $status;
 
 			// set block_id
-			$this->request->data['TaskContent']['block_id'] = Current::read('Block.id');
+			$data['TaskContent']['block_id'] = Current::read('Block.id');
 			// set language_id
-			$this->request->data['TaskContent']['language_id'] = Current::read('Language.id');
-			if (($result = $this->TaskContent->saveContent($this->request->data))) {
+			$data['TaskContent']['language_id'] = Current::read('Language.id');
+
+			// 実施機関のデータを文字列として取得
+			if (! empty($data['TaskContent']['task_start_date'])) {
+				$data['TaskContent']['task_start_date']
+						= date('Ymd', strtotime($data['TaskContent']['task_start_date']));
+			}
+			if (! empty($data['TaskContent']['task_end_date'])) {
+				$data['TaskContent']['task_end_date']
+						= date('Ymd', strtotime($data['TaskContent']['task_end_date']));
+			}
+
+			if (($result = $this->TaskContent->saveContent($data))) {
 				$url = NetCommonsUrl::actionUrl(
 					array(
 						'controller' => 'task_contents',
@@ -183,6 +196,13 @@ class TaskContentsController extends TasksAppController {
 		// ToDo担当者ユーザー保持
 		$taskContent = $this->TaskCharge->setSelectUsers($taskContent);
 
+		$taskContent['TaskContent'] = $this->NetCommonsTime->toUserDatetimeArray(
+			$taskContent['TaskContent'],
+			array(
+				'TaskContent.task_start_date',
+				'TaskContent.task_end_date',
+			));
+
 		if (empty($taskContent)) {
 			return $this->throwBadRequest();
 		}
@@ -210,6 +230,16 @@ class TaskContentsController extends TasksAppController {
 
 			$data = $this->request->data;
 
+			// 実施機関のデータを文字列として取得
+			if (! empty($data['TaskContent']['task_start_date'])) {
+				$data['TaskContent']['task_start_date']
+						= date('Ymd', strtotime($data['TaskContent']['task_start_date']));
+			}
+			if (! empty($data['TaskContent']['task_end_date'])) {
+				$data['TaskContent']['task_end_date']
+						= date('Ymd', strtotime($data['TaskContent']['task_end_date']));
+			}
+
 			unset($data['TaskContent']['id']); // 常に新規保存
 
 			if ($this->TaskContent->saveContent($data)) {
@@ -235,6 +265,13 @@ class TaskContentsController extends TasksAppController {
 		} else {
 			$this->request->data = $taskContent;
 		}
+
+		$taskContent['TaskContent'] = $this->NetCommonsTime->toUserDatetimeArray(
+			$taskContent['TaskContent'],
+			array(
+				'TaskContent.task_start_date',
+				'TaskContent.task_end_date',
+			));
 
 		$this->set('taskContent', $taskContent);
 		$this->set('isDeletable', $this->TaskContent->canDeleteWorkflowContent($taskContent));
