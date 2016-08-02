@@ -14,7 +14,7 @@
 	<div>
 		<?php echo $this->NetCommonsForm->label(
 			'Task.period',
-			'実施期間'
+			__d('tasks', 'Implementation period')
 		); ?>
 	</div>
 	<?php

@@ -195,10 +195,15 @@ class TaskContent extends TasksAppModel {
  *
  * @param array $params 絞り込み条件
  * @param array $order 並べ替え条件
+ * @param array $userParam 担当者絞り込み条件
  * @param void $now 現在日時
  * @return array
  */
-	public function getList($params = array(), $order = array(), $now = '') {
+	public function getList($params = array(), $order = array(), $userParam = array(), $now = '') {
+		if ($userParam) {
+			$params = $this->getUserCondition($params, $userParam);
+		}
+
 		$conditions = $this->getConditions(Current::read('Block.id'), $params);
 
 		$lists = $this->find('threaded',
@@ -208,6 +213,20 @@ class TaskContent extends TasksAppModel {
 			return array();
 		}
 
+		$taskContentList = $this->getTaskContentList($lists, $now);
+
+		return $taskContentList;
+	}
+
+/**
+ * カテゴリデータとToDoデータを整理したLISTを返す
+ *
+ * @param array $lists 担当者絞り込み条件で取得したデータ
+ * @param array $now 現在日時
+ *
+ * @return array
+ */
+	public function getTaskContentList($lists, $now) {
 		$now = date('Ymd', strtotime($now));
 		$deadLine = date("Ymd", strtotime("+2 day"));
 		$deadTasks = array();
@@ -243,15 +262,39 @@ class TaskContent extends TasksAppModel {
 			$contentLists[] = $list;
 		}
 
+		// カテゴリ情報を取得
 		$categoryArr = $this->getCategory($contentLists);
 
+		// ToDo一覧情報を取得
 		$taskContentList = $this->setCategoryContentList($categoryArr, $contentLists);
 
+		// 期限間近のToDoがある場合DeadLineデータとしてToDo一覧情報に追加する
 		if ($deadTasks) {
 			$taskContentList['DeadLine'] = $deadTasks;
 		}
 
 		return $taskContentList;
+	}
+
+/**
+ * 担当者絞り込みを含めた条件を返す
+ *
+ * @param array $params 担当者絞り込み条件
+ * @param array $userParam 絞り込み条件
+ *
+ * @return array
+ */
+	public function getUserCondition($params, $userParam) {
+		// 絞り込み条件に指定した担当者データを全て取得
+		$taskChargeContents = $this->TaskCharge->find('threaded',
+			array('recursive' => 1, 'conditions' => $userParam));
+		// 担当者として設定されているToDoのcontent_idのみ取得
+		$taskContentIds = Hash::extract($taskChargeContents, '{n}.TaskCharge.task_id');
+
+		// 絞り込み条件に加える
+		$params[] = array('TaskContent.id' => $taskContentIds);
+
+		return $params;
 	}
 
 /**
@@ -269,8 +312,8 @@ class TaskContent extends TasksAppModel {
 		$notCategory = array();
 		if (isset($categoryArr[''])) {
 			$notCategory[] = array(
-					'id' => 0,
-					'name' => __d('tasks', 'No category')
+				'id' => 0,
+				'name' => __d('tasks', 'No category')
 			);
 			unset($categoryArr['']);
 		}
@@ -284,7 +327,7 @@ class TaskContent extends TasksAppModel {
 	}
 
 /**
- * カテゴリと担当者データを整理したLISTデータを返す
+ * ToDoと担当者データを紐づけたデータを返す
  *
  * @param array $categoryArr カテゴリデータ
  * @param array $contentLists ToDoリスト
@@ -292,6 +335,7 @@ class TaskContent extends TasksAppModel {
  * @return array
  */
 	public function setCategoryContentList($categoryArr, $contentLists) {
+		$taskContentList = array();
 		foreach ($categoryArr as $category) {
 			$results = array();
 			if (empty($category['id'])) {
@@ -300,7 +344,7 @@ class TaskContent extends TasksAppModel {
 			}
 
 			$contents = Hash::extract(
-					$contentLists, '{n}.TaskContent[category_id=' . $category['id'] . ']', '{n}'
+				$contentLists, '{n}.TaskContent[category_id=' . $category['id'] . ']', '{n}'
 			);
 
 			// ToDoとToDo担当者を一つの配列にまとめる
