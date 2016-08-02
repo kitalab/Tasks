@@ -20,32 +20,44 @@
 	<?php
 	$pickerOpt = str_replace('"', "'", json_encode(array(
 		'format' => 'YYYY-MM-DD',
-	))); ?>
+	)));
+	?>
 	<div>
 		<div class="form-inline">
 			<div class="input-group" style="margin-bottom: 10px">
 				<?php echo $this->NetCommonsForm->input('TaskContent.task_start_date', array(
-					'type' => 'datetime',
+					'datetimepicker' => 'datetimepicker',
 					'datetimepicker-options' => $pickerOpt,
-					'ng-model' => 'taskStartDate',
+					'ng-model' => 'TaskContent.task_start_date',
+					'data-toggle' => 'dropdown',
 					'label' => false,
 					'error' => false,
 					'div' => false,
 					'class' => 'form-control',
 					'placeholder' => 'yyyy-mm-dd',
+					'convert_timezone' => false,
+					'ng-init' => sprintf(
+						"%s = '%s'; ", 'TaskContent.task_start_date',
+						substr($taskContent['TaskContent']['task_start_date'], 0, 10)
+					),
 				)); ?>
 				<span class="input-group-addon">
 					<span class="glyphicon glyphicon-minus"></span>
 				</span>
 				<?php echo $this->NetCommonsForm->input('TaskContent.task_end_date', array(
-					'type' => 'datetime',
+					'datetimepicker' => 'datetimepicker',
 					'datetimepicker-options' => $pickerOpt,
-					'ng-model' => 'taskEndDate',
+					'ng-model' => 'TaskContent.task_end_date',
+					'data-toggle' => 'dropdown',
 					'label' => false,
 					'error' => false,
 					'div' => false,
 					'class' => 'form-control',
 					'placeholder' => 'yyyy-mm-dd',
+					'ng-init' => sprintf(
+						"%s = '%s'; ", 'TaskContent.task_end_date',
+						substr($taskContent['TaskContent']['task_end_date'], 0, 10)
+					),
 				)); ?>
 			</div>
 			<?php echo $this->NetCommonsForm->error('TaskContent.task_start_date'); ?>

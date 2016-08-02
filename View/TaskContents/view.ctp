@@ -21,16 +21,6 @@ echo $this->Html->css(
 	)
 );
 echo $this->Html->script(
-	array(
-		'/tasks/js/tasks.js',
-	),
-	array(
-		'plugin' => false,
-		'once' => true,
-		'inline' => false
-	)
-);
-echo $this->Html->script(
 	'/likes/js/likes.js',
 	array(
 		'plugin' => false,
@@ -72,9 +62,9 @@ echo $this->Html->script(
 		<div class="clearfix" style="margin-bottom: 10px;">
 			<div class="pull-left">
 				<?php echo h(__d('tasks', 'Implementation period') . __d('tasks', 'Colon')); ?>
-				<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_start_date']); ?>
+				<?php echo $this->Date->dateFormat(date("Y-m-d H:i:s", strtotime($taskContent['TaskContent']['task_start_date']))); ?>
 				<?php echo h(__d('tasks', 'Till')); ?>
-				<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_end_date']); ?>
+				<?php echo $this->Date->dateFormat(date("Y-m-d H:i:s", strtotime($taskContent['TaskContent']['task_end_date']))); ?>
 			</div>
 			<div class="pull-left" style="margin-left: 10px">
 				<?php echo h(__d('tasks', 'Priority') . __d('tasks', 'Colon')); ?>

@@ -16,7 +16,7 @@
 			<td class="btn-group col-xs-1 col-ms-1 col-md-1 col-lg-1" style="vertical-align: middle;">
 				<div data-toggle="buttons">
 					<label class="btn btn-default form-group" ng-controller="SampleCtrl"
-						   ng-click="methodA('<?php echo $content['TaskContent']['id'] ?>')">
+						   ng-click="methodA('<?php echo $content["TaskContent"]["id"] ?>')">
 						<input type="checkbox" autocomplete="off" checked="" ng-model="taskContents.isCompletion">
 								<span class="glyphicon glyphicon-ok" style="color: #BBBBBB">
 								</span>
@@ -24,14 +24,20 @@
 				</div>
 			</td>
 
-			<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1" style="vertical-align: middle;">
+			<td class="col-xs-2 col-ms-2 col-md-2 col-lg-2" style="vertical-align: middle;">
 				<?php if (empty($content['TaskContent']['priority'])): ?>
-					<div>
-						<?php echo $this->Date->dateFormat($content['TaskContent']['task_end_date']) ?>
-					</div>
+					<?php echo $this->Date->dateFormat(
+						date("Y-m-d H:i:s", strtotime($content['TaskContent']['task_end_date']))
+					); ?>
 				<?php else: ?>
 					<div style="position: absolute">
-						<?php echo $this->Date->dateFormat($content['TaskContent']['task_end_date']); ?>
+						<?php if (empty($content['TaskContent']['task_end_date'])): ?>
+							<?php echo h('--:--'); ?>
+						<?php else: ?>
+							<?php echo $this->Date->dateFormat(
+								date("Y-m-d H:i:s", strtotime($content['TaskContent']['task_end_date']))
+							); ?>
+						<?php endif; ?>
 					</div>
 					<?php echo $this->element('TaskContents/priority_icon', array(
 						'priority' => $content['TaskContent']['priority'],
@@ -40,7 +46,7 @@
 				<?php endif; ?>
 			</td>
 
-			<td class="col-xs-5 col-ms-5 col-md-6 col-lg-6" style="vertical-align: middle;">
+			<td class="col-xs-4 col-ms-4 col-md-5 col-lg-5" style="vertical-align: middle;">
 				<?php echo $this->Workflow->label($content['TaskContent']['status']); ?>
 				<?php echo $this->Html->link(
 					$content['TaskContent']['title'],
