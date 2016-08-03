@@ -1,6 +1,6 @@
 <?php
 /**
- * BlogFixture
+ * TaskFixture
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
@@ -9,13 +9,13 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('BlogFixture', 'Blogs.Test/Fixture');
+App::uses('TaskFixture', 'Tasks.Test/Fixture');
 
 /**
- * BlogFixture
+ * TaskFixture
  *
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
- * @package NetCommons\Blogs\Test\Fixture
+ * @package NetCommons\Tasks\Test\Fixture
  * @codeCoverageIgnore
  */
 class Task4paginatorFixture extends TaskFixture {
@@ -56,7 +56,7 @@ class Task4paginatorFixture extends TaskFixture {
 			'name' => 'Task name 2',
 			//'language_id' => '2',
 		),
-		//Blog 3
+		//Task 3
 		array(
 			'id' => '4',
 			'block_id' => '6',
@@ -78,8 +78,8 @@ class Task4paginatorFixture extends TaskFixture {
 			$this->records[$i] = array(
 				'id' => $i,
 				'block_id' => $i,
-				'key' => 'Blog_' . $i,
-				'name' => 'Blog_name_' . $i,
+				'key' => 'Task_' . $i,
+				'name' => 'Task_name_' . $i,
 				//'language_id' => '2',
 			);
 		}

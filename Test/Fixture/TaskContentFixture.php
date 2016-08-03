@@ -63,7 +63,7 @@ class TaskContentFixture extends CakeTestFixture {
 			'key' => 'content_key_1',
 			'language_id' => '2',
 			'status' => '1',
-			'is_active' => true, // @see BlogEntryYetPublishTest
+			'is_active' => true, // @see TaskEntryYetPublishTest
 			'is_latest' => false,
 
 			'task_key' => 'Lorem ipsum dolor sit amet',
