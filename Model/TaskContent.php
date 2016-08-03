@@ -395,9 +395,9 @@ class TaskContent extends TasksAppModel {
 	}
 
 /**
- * UserIdから参照可能なToDoを取得するCondition配列を返す
+ * blockIdから参照可能なToDoを取得するCondition配列を返す
  *
- * @param int $blockId ブロックId
+ * @param int $blockId blockId
  * @param array $conditions ソート絞り込み条件
  * @return array condition
  */
