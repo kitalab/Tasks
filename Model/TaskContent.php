@@ -13,6 +13,8 @@ App::uses('TasksAppModel', 'Tasks.Model');
 
 /**
  * Summary for TaskContent Model
+ *
+ * @property TaskCharge $TaskCharge
  */
 class TaskContent extends TasksAppModel {
 
@@ -109,7 +111,7 @@ class TaskContent extends TasksAppModel {
 	public $hasMany = array(
 		'TaskCharge' => array(
 			'className' => 'Tasks.TaskCharge',
-			'foreignKey' => 'task_id',
+			'foreignKey' => 'task_content_id',
 			'dependent' => false,
 			'conditions' => '',
 			'fields' => '',
@@ -236,23 +238,25 @@ class TaskContent extends TasksAppModel {
 			// 現在の日付が開始日より前
 			$list['TaskContent']['date_color'] = TaskContent::TASK_START_DATE_BEFORE;
 			// 終了日が現在の日付から2日後以下でかつ現在の日付以下でないもの
-			if (intval($list['TaskContent']['task_end_date']) <= intval($deadLine)
-				&& intval($list['TaskContent']['task_end_date']) >= intval($now)
-			) {
-				$list['TaskContent']['date_color'] = TaskContent::TASK_END_DATE_TWO_DAY_BEFORE;
-				$contentLists[] = $list;
-				$deadTasks[] = $list;
-				continue;
-			}
-			// 終了日が現在の日付以下のもの
-			if (intval($list['TaskContent']['task_end_date']) < intval($now)) {
-				$list['TaskContent']['date_color'] = TaskContent::TASK_BEYOND_THE_END_DATE;
-				$contentLists[] = $list;
-				$deadTasks[] = $list;
-				continue;
+			if ($list['TaskContent']['task_end_date']) {
+				if (intval($list['TaskContent']['task_end_date']) <= intval($deadLine)
+						&& intval($list['TaskContent']['task_end_date']) >= intval($now)
+				) {
+					$list['TaskContent']['date_color'] = TaskContent::TASK_END_DATE_TWO_DAY_BEFORE;
+					$contentLists[] = $list;
+					$deadTasks[] = $list;
+					continue;
+				}
+				// 終了日が現在の日付以下のもの
+				if (intval($list['TaskContent']['task_end_date']) < intval($now)) {
+					$list['TaskContent']['date_color'] = TaskContent::TASK_BEYOND_THE_END_DATE;
+					$contentLists[] = $list;
+					$deadTasks[] = $list;
+					continue;
+				}
 			}
 			// 開始日が設定されており現在の開始日が現在の日付以下のもの
-			if (isset($list['TaskContent']['task_start_date'])
+			if (!empty($list['TaskContent']['task_start_date'])
 				&& intval($list['TaskContent']['task_start_date']) <= intval($now)
 			) {
 				$list['TaskContent']['date_color'] = TaskContent::TASK_BEING_PERFORMED;
@@ -289,7 +293,7 @@ class TaskContent extends TasksAppModel {
 		$taskChargeContents = $this->TaskCharge->find('threaded',
 			array('recursive' => 1, 'conditions' => $userParam));
 		// 担当者として設定されているToDoのcontent_idのみ取得
-		$taskContentIds = Hash::extract($taskChargeContents, '{n}.TaskCharge.task_id');
+		$taskContentIds = Hash::extract($taskChargeContents, '{n}.TaskCharge.task_content_id');
 
 		// 絞り込み条件に加える
 		$params[] = array('TaskContent.id' => $taskContentIds);
@@ -350,7 +354,7 @@ class TaskContent extends TasksAppModel {
 			// ToDoとToDo担当者を一つの配列にまとめる
 			foreach ($contents as $content) {
 				$taskCharge = Hash::extract(
-					$contentLists, '{n}.TaskCharge.{n}[task_id=' . $content['id'] . ']'
+					$contentLists, '{n}.TaskCharge.{n}[task_content_id=' . $content['id'] . ']'
 				);
 				$results['TaskContents'][] = array('TaskContent' => $content, 'TaskCharge' => $taskCharge);
 			}

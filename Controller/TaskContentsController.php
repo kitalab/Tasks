@@ -128,11 +128,11 @@ class TaskContentsController extends TasksAppController {
 			$data['TaskContent']['language_id'] = Current::read('Language.id');
 
 			// 実施期間のデータを文字列として取得
-			if (! empty($data['TaskContent']['task_start_date'])) {
+			if ($data['TaskContent']['task_start_date']) {
 				$data['TaskContent']['task_start_date']
 					= date('Ymd', strtotime($data['TaskContent']['task_start_date']));
 			}
-			if (! empty($data['TaskContent']['task_end_date'])) {
+			if ($data['TaskContent']['task_end_date']) {
 				$data['TaskContent']['task_end_date']
 					= date('Ymd', strtotime($data['TaskContent']['task_end_date']));
 			}
@@ -146,6 +146,7 @@ class TaskContentsController extends TasksAppController {
 						'block_id' => Current::read('Block.id'),
 						'key' => $result['TaskContent']['key'])
 				);
+
 				return $this->redirect($url);
 			} else {
 				// ToDo担当者ユーザー保持
@@ -209,11 +210,11 @@ class TaskContentsController extends TasksAppController {
 			$data = $this->request->data;
 
 			// 実施期間のデータを文字列として取得
-			if (! empty($data['TaskContent']['task_start_date'])) {
+			if ($data['TaskContent']['task_start_date']) {
 				$data['TaskContent']['task_start_date']
 					= date('Ymd', strtotime($data['TaskContent']['task_start_date']));
 			}
-			if (! empty($data['TaskContent']['task_end_date'])) {
+			if ($data['TaskContent']['task_end_date']) {
 				$data['TaskContent']['task_end_date']
 					= date('Ymd', strtotime($data['TaskContent']['task_end_date']));
 			}

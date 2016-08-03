@@ -46,7 +46,7 @@ class TaskCharge extends TasksAppModel {
 
 		// すべてDelete
 		if (! $this->deleteAll(array(
-			'TaskCharge.task_id' => $taskId), false)
+			'TaskCharge.task_content_id' => $taskId), false)
 		) {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 		}
@@ -54,7 +54,7 @@ class TaskCharge extends TasksAppModel {
 		// 1件ずつ保存
 		if (isset($data['TaskCharges']) && count($data['TaskCharges']) > 0) {
 			foreach ($data['TaskCharges'] as $charge) {
-				$charge['TaskCharge']['task_id'] = $taskId;
+				$charge['TaskCharge']['task_content_id'] = $taskId;
 				if (! $this->validateTaskCharge($charge)) {
 					return false;
 				}

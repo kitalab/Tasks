@@ -62,9 +62,19 @@ echo $this->Html->script(
 		<div class="clearfix" style="margin-bottom: 10px;">
 			<div class="pull-left">
 				<?php echo h(__d('tasks', 'Implementation period') . __d('tasks', 'Colon')); ?>
-				<?php echo $this->Date->dateFormat(date("Y-m-d H:i:s", strtotime($taskContent['TaskContent']['task_start_date']))); ?>
+				<?php if (empty($taskContent['TaskContent']['task_start_date'])): ?>
+					<?php echo h('--:--'); ?>
+				<?php else: ?>
+					<?php echo $this->Date->dateFormat(date("Y-m-d H:i:s", strtotime($taskContent['TaskContent']['task_start_date']))); ?>
+				<?php endif; ?>
+				
 				<?php echo h(__d('tasks', 'Till')); ?>
-				<?php echo $this->Date->dateFormat(date("Y-m-d H:i:s", strtotime($taskContent['TaskContent']['task_end_date']))); ?>
+				
+				<?php if (empty($taskContent['TaskContent']['task_end_date'])): ?>
+					<?php echo h('--:--'); ?>
+				<?php else: ?>
+					<?php echo $this->Date->dateFormat(date("Y-m-d H:i:s", strtotime($taskContent['TaskContent']['task_end_date']))); ?>
+				<?php endif; ?>
 			</div>
 			<div class="pull-left" style="margin-left: 10px">
 				<?php echo h(__d('tasks', 'Priority') . __d('tasks', 'Colon')); ?>
@@ -156,10 +166,6 @@ echo $this->Html->script(
 								echo $this->DisplayUser->handlelink(
 									$selectUsers, array('avatar' => true), array(), 'User'
 								);
-								if ($count >= 5):
-									echo "...";
-									break;
-								endif;
 								?>
 							<?php endforeach; ?>
 						<?php endif; ?>
