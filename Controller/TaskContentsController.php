@@ -274,9 +274,7 @@ class TaskContentsController extends TasksAppController {
 		$this->_prepare();
 		$this->set('listTitle', $this->_taskTitle);
 
-		$this->TaskContent->Behaviors->load('ContentComments.ContentComment');
 		$taskContent = $this->TaskContent->getTask($key);
-		$this->TaskContent->Behaviors->unload('ContentComments.ContentComment');
 
 		if ($taskContent) {
 			$this->set('taskContent', $taskContent);
