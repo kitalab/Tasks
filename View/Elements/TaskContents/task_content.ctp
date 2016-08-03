@@ -121,7 +121,7 @@
 						<?php
 						$count++;
 						echo $this->DisplayUser->avatar($userInCharge, [], 'user_id');
-						if ($count >= 5):
+						if ($count > 5):
 							echo "...";
 							break;
 						endif;

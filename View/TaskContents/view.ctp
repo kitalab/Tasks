@@ -166,10 +166,6 @@ echo $this->Html->script(
 								echo $this->DisplayUser->handlelink(
 									$selectUsers, array('avatar' => true), array(), 'User'
 								);
-								if ($count >= 5):
-									echo "...";
-									break;
-								endif;
 								?>
 							<?php endforeach; ?>
 						<?php endif; ?>
