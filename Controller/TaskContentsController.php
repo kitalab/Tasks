@@ -368,6 +368,7 @@ class TaskContentsController extends TasksAppController {
 		$this->TaskContent->Behaviors->load('ContentComments.ContentComment');
 
 		$params = array();
+		$defaultOrder = array('TaskContent.modified' => 'desc');
 		$userParam = array();
 
 		// カテゴリ絞り込み
@@ -402,19 +403,13 @@ class TaskContentsController extends TasksAppController {
 		}
 		// 並べ替え絞り込み
 		if (isset($conditions['sort']) && $conditions['direction']) {
-			$order = array(
-				'sort' => $conditions['sort'],
-				'direction' => $conditions['direction']
-			);
+			$order = array($conditions['sort'] => $conditions['direction']);
 		} else {
-			$order = array(
-				'sort' => 'TaskContent.task_end_date',
-				'direction' => 'asc'
-			);
+			$order = array('TaskContent.task_end_date' => 'asc');
 		}
 
 		// order情報を整理
-		$order = $order['sort'] . ' ' . $order['direction'];
+		$order = array_merge($order, $defaultOrder);
 
 		$taskContents = $this->TaskContent->getList(
 			$params, $order, $userParam, $this->NetCommonsTime->getNowDatetime());
