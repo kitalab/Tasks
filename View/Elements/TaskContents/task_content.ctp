@@ -72,9 +72,13 @@
 			<td class="col-xs-2 col-ms-2 col-md-2 col-lg-2"
 				style="vertical-align: middle; <?php echo $color[$content['TaskContent']['date_color']]; ?>">
 				<?php if (empty($content['TaskContent']['priority'])): ?>
+					<?php if (empty($content['TaskContent']['task_end_date'])): ?>
+						<?php echo h('--:--'); ?>
+					<?php else: ?>
 					<?php echo $this->Date->dateFormat(
 						date("Y-m-d H:i:s", strtotime($content['TaskContent']['task_end_date']))
 					); ?>
+					<?php endif; ?>
 				<?php else: ?>
 					<div style="position: absolute">
 						<?php if (empty($content['TaskContent']['task_end_date'])): ?>
