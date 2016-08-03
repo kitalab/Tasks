@@ -109,11 +109,7 @@ class TaskContentsController extends TasksAppController {
 	public function add() {
 		$this->_prepare();
 
-		$taskContent = $this->TaskContent->getNew();
-		$this->set('taskContent', $taskContent);
-
 		if ($this->request->is('post')) {
-			$this->TaskContent->create();
 			$data = $this->request->data;
 
 			$data['TaskContent']['task_key'] = $this->_taskSetting['TaskSetting']['task_key'];
@@ -156,7 +152,8 @@ class TaskContentsController extends TasksAppController {
 			$this->NetCommons->handleValidationError($this->TaskContent->validationErrors);
 
 		} else {
-			$this->request->data = $taskContent;
+			$this->request->data = Hash::merge($this->request->data, $this->TaskContent->create());
+			$this->set('taskContent', $this->request->data);
 		}
 
 		$this->render('edit');
