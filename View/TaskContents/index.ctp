@@ -53,13 +53,19 @@
 			<?php echo h(__d('tasks', 'Not task')); ?>
 		</div>
 	<?php else: ?>
-			<?php $params = $this->params['named']; ?>
-		<?php if (isset($deadLineTasks) && !isset($params['category_id'])): ?>
-				<div class="clearfix" style="height: 25px;">
-					<div style="border-bottom-width: 5px;" class="pull-left">
-						期限間近・期限切れ
-					</div>
+		
+		<?php if (isset($params['user_id']) && $params['user_id'] !== Current::read('User.id')): ?>
+			<?php $isNotShow = true; ?>
+		<?php endif; ?>
+		
+		<?php $params = $this->params['named']; ?>
+
+		<?php if (isset($deadLineTasks) && ! isset($params['category_id']) && $isNotShow = false): ?>
+			<div class="clearfix" style="height: 25px;">
+				<div style="border-bottom-width: 5px;" class="pull-left">
+					<?php echo __d('tasks', 'No category'); ?>
 				</div>
+			</div>
 
 			<?php echo $this->element('TaskContents/task_content', array(
 					'taskContents' => $deadLineTasks,

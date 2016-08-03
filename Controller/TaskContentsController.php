@@ -96,38 +96,7 @@ class TaskContentsController extends TasksAppController {
 		$this->_prepare();
 		$this->set('listTitle', $this->_taskTitle);
 
-		$conditions = array();
-		$params = $this->request->params['named'];
-		if (isset($params['category_id'])) {
-			$conditions['params'][] = array(
-				'TaskContent.category_id' => $params['category_id']
-			);
-		}
-		if (isset($params['user_id'])) {
-			$conditions['params'][] = array(
-				'TaskCharge.user_id' => $params['user_id']
-			);
-		}
-		if (isset($params['is_completion']) && $params['is_completion'] !== 'all') {
-			$conditions['params'][] = array(
-				'TaskContent.is_completion' => $params['is_completion']
-			);
-		} else {
-			$conditions['params'][] = array(
-				'TaskContent.is_completion' => 0
-			);
-		}
-		if (isset($params['sort']) && $params['direction']) {
-			$conditions['order'] = array(
-				'sort' => $params['sort'],
-				'direction' => $params['direction']
-			);
-		} else {
-			$conditions['order'] = array(
-				'sort' => 'TaskContent.task_end_date',
-				'direction' => 'asc'
-			);
-		}
+		$conditions = $this->request->params['named'];
 
 		$this->_list($conditions);
 	}
@@ -400,18 +369,56 @@ class TaskContentsController extends TasksAppController {
 		$this->TaskContent->Behaviors->load('ContentComments.ContentComment');
 
 		$params = array();
-		$order = array();
+		$userParam = array();
 
-		if (isset($conditions['params'])) {
-			$params = $conditions['params'];
+		// カテゴリ絞り込み
+		if (isset($conditions['category_id'])) {
+			$params[] = array(
+				'TaskContent.category_id' => $conditions['category_id']
+			);
+		}
+		// 担当者絞り込み
+		if (isset($conditions['user_id'])) {
+			if (! empty($conditions['user_id'])) {
+				$userParam = array(
+					'TaskCharge.user_id' => $conditions['user_id']
+				);
+			}
+		} else {
+			$userParam = array(
+				'TaskCharge.user_id' => Current::read('User.id')
+			);
+		}
+		// 完了未完了絞り込み
+		if (isset($conditions['is_completion'])) {
+			if ($conditions['is_completion'] !== 'all') {
+				$params[] = array(
+					'TaskContent.is_completion' => $conditions['is_completion']
+				);
+			}
+		} else {
+			$params[] = array(
+				'TaskContent.is_completion' => 0
+			);
+		}
+		// 並べ替え絞り込み
+		if (isset($conditions['sort']) && $conditions['direction']) {
+			$order = array(
+				'sort' => $conditions['sort'],
+				'direction' => $conditions['direction']
+			);
+		} else {
+			$order = array(
+				'sort' => 'TaskContent.task_end_date',
+				'direction' => 'asc'
+			);
 		}
 
-		if (isset($conditions['order'])) {
-			$order = $conditions['order']['sort'] . ' ' . $conditions['order']['direction'];
-		}
+		// order情報を整理
+		$order = $order['sort'] . ' ' . $order['direction'];
 
 		$taskContents = $this->TaskContent->getList(
-				$params, $order, $this->NetCommonsTime->getNowDatetime());
+			$params, $order, $userParam, $this->NetCommonsTime->getNowDatetime());
 
 		// 期限間近のToDo一覧を分けて取得
 		if (isset($taskContents['DeadLine'])) {

@@ -89,7 +89,7 @@ class TaskBlockRolePermissionsController extends TasksAppController {
 		$this->set('roles', $permissions['Roles']);
 
 		if ($this->request->is('post')) {
-			if ($this->TaskSetting->saveTAskSetting($this->request->data)) {
+			if ($this->TaskSetting->saveTaskSetting($this->request->data)) {
 				return $this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
 			}
 			$this->NetCommons->handleValidationError($this->TaskSetting->validationErrors);

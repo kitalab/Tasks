@@ -52,6 +52,10 @@ msgid "Not task"
 msgstr "ToDoがありません。"
 
 # 一覧画面で使用
+msgid "Deadline close Expiration"
+msgstr "期限間近・期限切れ"
+
+# 一覧画面で使用
 msgid "Close of the deadline order"
 msgstr "期限の近い順"
 
@@ -122,10 +126,6 @@ msgstr "カレンダーに登録する"
 # 登録（編集）画面で使用
 msgid "Charge of person in task"
 msgstr "ToDo担当者"
-
-# 詳細画面で使用
-msgid "Implementation period"
-msgstr "実施期間 ："
 
 # 詳細画面で使用
 msgid "Colon"
