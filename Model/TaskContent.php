@@ -382,7 +382,7 @@ class TaskContent extends TasksAppModel {
 
 		$conditions = array_merge($conditions, array('TaskContent.key' => $key));
 
-		$lists = $this->find('all', array(
+		$lists = $this->find('first', array(
 			'recursive' => 1,
 			'conditions' => $conditions
 		));
@@ -391,7 +391,7 @@ class TaskContent extends TasksAppModel {
 			return array();
 		}
 
-		return $lists[0];
+		return $lists;
 	}
 
 /**

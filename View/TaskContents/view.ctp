@@ -159,10 +159,8 @@ echo $this->Html->script(
 						<?php if (! $this->request->data['selectUsers']) : ?>
 							<?php echo h(__d('tasks', 'Not selected')); ?>
 						<?php else : ?>
-							<?php $count = 0; ?>
 							<?php foreach ($this->request->data['selectUsers'] as $selectUsers): ?>
 								<?php
-								$count++;
 								echo $this->DisplayUser->handlelink(
 									$selectUsers, array('avatar' => true), array(), 'User'
 								);
