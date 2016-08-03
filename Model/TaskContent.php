@@ -30,7 +30,7 @@ class TaskContent extends TasksAppModel {
  *
  * @var const
  */
-	const TASK_END_DATE_TWO_DAY_BEFORE = 2;
+	const TASK_DEADLINE_CLOSE = 2;
 
 /**
  * 実施終了日を過ぎたタスク
@@ -242,7 +242,7 @@ class TaskContent extends TasksAppModel {
 				if (intval($list['TaskContent']['task_end_date']) <= intval($deadLine)
 						&& intval($list['TaskContent']['task_end_date']) >= intval($now)
 				) {
-					$list['TaskContent']['date_color'] = TaskContent::TASK_END_DATE_TWO_DAY_BEFORE;
+					$list['TaskContent']['date_color'] = TaskContent::TASK_DEADLINE_CLOSE;
 					$contentLists[] = $list;
 					$deadTasks[] = $list;
 					continue;
