@@ -408,8 +408,7 @@ class TaskContentsController extends TasksAppController {
 		// order情報を整理
 		$order = array_merge($order, $defaultOrder);
 
-		$taskContents = $this->TaskContent->getList(
-			$params, $order, $userParam, $this->NetCommonsTime->getNowDatetime());
+		$taskContents = $this->TaskContent->getList($params, $order, $userParam);
 
 		// 期限間近のToDo一覧を分けて取得
 		if (isset($taskContents['DeadLine'])) {
