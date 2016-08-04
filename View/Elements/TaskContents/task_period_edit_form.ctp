@@ -26,7 +26,7 @@
 		<div class="form-inline">
 			<div class="input-group" style="margin-bottom: 10px">
 				<?php echo $this->NetCommonsForm->input('TaskContent.task_start_date', array(
-					'datetimepicker' => 'datetimepicker',
+					'type' => 'datetime',
 					'datetimepicker-options' => $pickerOpt,
 					'ng-model' => 'TaskContent.task_start_date',
 					'data-toggle' => 'dropdown',
@@ -45,7 +45,7 @@
 					<span class="glyphicon glyphicon-minus"></span>
 				</span>
 				<?php echo $this->NetCommonsForm->input('TaskContent.task_end_date', array(
-					'datetimepicker' => 'datetimepicker',
+					'type' => 'datetime',
 					'datetimepicker-options' => $pickerOpt,
 					'ng-model' => 'TaskContent.task_end_date',
 					'data-toggle' => 'dropdown',
