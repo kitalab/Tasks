@@ -46,7 +46,6 @@ class Task extends TasksAppModel {
 		'Blocks.Block' => array(
 			'name' => 'Task.name',
 			'loadModels' => array(
-				'Like' => 'Likes.Like',
 				'BlockSetting' => 'Blocks.BlockSetting',
 				'Category' => 'Categories.Category',
 				'CategoryOrder' => 'Categories.CategoryOrder',

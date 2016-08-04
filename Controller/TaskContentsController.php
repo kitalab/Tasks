@@ -109,11 +109,7 @@ class TaskContentsController extends TasksAppController {
 	public function add() {
 		$this->_prepare();
 
-		$taskContent = $this->TaskContent->getNew();
-		$this->set('taskContent', $taskContent);
-
 		if ($this->request->is('post')) {
-			$this->TaskContent->create();
 			$data = $this->request->data;
 
 			$data['TaskContent']['task_key'] = $this->_taskSetting['TaskSetting']['task_key'];
@@ -156,7 +152,8 @@ class TaskContentsController extends TasksAppController {
 			$this->NetCommons->handleValidationError($this->TaskContent->validationErrors);
 
 		} else {
-			$this->request->data = $taskContent;
+			$this->request->data = Hash::merge($this->request->data, $this->TaskContent->create());
+			$this->set('taskContent', $this->request->data);
 		}
 
 		$this->render('edit');
@@ -274,9 +271,7 @@ class TaskContentsController extends TasksAppController {
 		$this->_prepare();
 		$this->set('listTitle', $this->_taskTitle);
 
-		$this->TaskContent->Behaviors->load('ContentComments.ContentComment');
 		$taskContent = $this->TaskContent->getTask($key);
-		$this->TaskContent->Behaviors->unload('ContentComments.ContentComment');
 
 		if ($taskContent) {
 			$this->set('taskContent', $taskContent);
@@ -370,6 +365,7 @@ class TaskContentsController extends TasksAppController {
 		$this->TaskContent->Behaviors->load('ContentComments.ContentComment');
 
 		$params = array();
+		$defaultOrder = array('TaskContent.modified' => 'desc');
 		$userParam = array();
 
 		// カテゴリ絞り込み
@@ -404,19 +400,13 @@ class TaskContentsController extends TasksAppController {
 		}
 		// 並べ替え絞り込み
 		if (isset($conditions['sort']) && $conditions['direction']) {
-			$order = array(
-				'sort' => $conditions['sort'],
-				'direction' => $conditions['direction']
-			);
+			$order = array($conditions['sort'] => $conditions['direction']);
 		} else {
-			$order = array(
-				'sort' => 'TaskContent.task_end_date',
-				'direction' => 'asc'
-			);
+			$order = array('TaskContent.task_end_date' => 'asc');
 		}
 
 		// order情報を整理
-		$order = $order['sort'] . ' ' . $order['direction'];
+		$order = array_merge($order, $defaultOrder);
 
 		$taskContents = $this->TaskContent->getList(
 			$params, $order, $userParam, $this->NetCommonsTime->getNowDatetime());

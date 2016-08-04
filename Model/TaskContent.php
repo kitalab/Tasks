@@ -30,7 +30,7 @@ class TaskContent extends TasksAppModel {
  *
  * @var const
  */
-	const TASK_END_DATE_TWO_DAY_BEFORE = 2;
+	const TASK_DEADLINE_CLOSE = 2;
 
 /**
  * 実施終了日を過ぎたタスク
@@ -164,35 +164,6 @@ class TaskContent extends TasksAppModel {
 	}
 
 /**
- * プラリマリキーを除いた新規レコード配列を返す
- * ex) array('ModelName' => array('filedName' => default, ...));
- *
- * @return array
- */
-	protected function _getNew() {
-		if (is_null($this->_newRecord)) {
-			$newRecord = array();
-			foreach ($this->_schema as $fieldName => $fieldDetail) {
-				if ($fieldName != $this->primaryKey) {
-					$newRecord[$this->name][$fieldName] = $fieldDetail['default'];
-				}
-			}
-			$this->_newRecord = $newRecord;
-		}
-		return $this->_newRecord;
-	}
-
-/**
- * 空の新規データを返す
- *
- * @return array
- */
-	public function getNew() {
-		$new = $this->_getNew();
-		return $new;
-	}
-
-/**
  * ToDoの一覧データを返す
  *
  * @param array $params 絞り込み条件
@@ -242,7 +213,7 @@ class TaskContent extends TasksAppModel {
 				if (intval($list['TaskContent']['task_end_date']) <= intval($deadLine)
 						&& intval($list['TaskContent']['task_end_date']) >= intval($now)
 				) {
-					$list['TaskContent']['date_color'] = TaskContent::TASK_END_DATE_TWO_DAY_BEFORE;
+					$list['TaskContent']['date_color'] = TaskContent::TASK_DEADLINE_CLOSE;
 					$contentLists[] = $list;
 					$deadTasks[] = $list;
 					continue;
@@ -382,7 +353,7 @@ class TaskContent extends TasksAppModel {
 
 		$conditions = array_merge($conditions, array('TaskContent.key' => $key));
 
-		$lists = $this->find('all', array(
+		$lists = $this->find('first', array(
 			'recursive' => 1,
 			'conditions' => $conditions
 		));
@@ -391,13 +362,13 @@ class TaskContent extends TasksAppModel {
 			return array();
 		}
 
-		return $lists[0];
+		return $lists;
 	}
 
 /**
- * UserIdから参照可能なToDoを取得するCondition配列を返す
+ * blockIdから参照可能なToDoを取得するCondition配列を返す
  *
- * @param int $blockId ブロックId
+ * @param int $blockId blockId
  * @param array $conditions ソート絞り込み条件
  * @return array condition
  */
