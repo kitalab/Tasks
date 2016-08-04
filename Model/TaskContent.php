@@ -26,7 +26,7 @@ class TaskContent extends TasksAppModel {
 	const TASK_START_DATE_BEFORE = 1;
 
 /**
- * 実施終了日2日前のタスク
+ * 実施終了日間近のタスク
  *
  * @var const
  */
@@ -484,5 +484,30 @@ class TaskContent extends TasksAppModel {
 		}
 
 		return true;
+	}
+
+/**
+ * TODO削除
+ *
+ * @param int $key オリジンID
+ * @throws InternalErrorException
+ * @return bool
+ */
+	public function deleteContentByKey($key) {
+		$this->begin();
+		try{
+			// 記事削除
+			$this->contentKey = $key;
+			$conditions = array('TaskContent.key' => $key);
+			if ($result = $this->deleteAll($conditions, true, true)) {
+				$this->commit();
+			} else {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		} catch (Exception $e) {
+			$this->rollback($e);
+			//エラー出力
+		}
+		return $result;
 	}
 }

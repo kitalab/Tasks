@@ -321,7 +321,7 @@ class TaskContentsController extends TasksAppController {
 			return $this->throwBadRequest();
 		}
 
-		if ($this->TaskContent->deleteEntryByKey($key) === false) {
+		if ($this->TaskContent->deleteContentByKey($key) === false) {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 		}
 		return $this->redirect(
