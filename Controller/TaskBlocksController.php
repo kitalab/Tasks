@@ -65,7 +65,6 @@ class TaskBlocksController extends TasksAppController {
 			'blockTabs' => array('block_settings', 'mail_settings', 'role_permissions'),
 		),
 		'Blocks.BlockIndex',
-		'Likes.Like',
 	);
 
 /**

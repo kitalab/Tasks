@@ -20,14 +20,6 @@ echo $this->Html->css(
 		'inline' => false
 	)
 );
-echo $this->Html->script(
-	'/likes/js/likes.js',
-	array(
-		'plugin' => false,
-		'once' => true,
-		'inline' => false
-	)
-);
 ?>
 <div class="taskContents form">
 	<div class="ng-scope">
