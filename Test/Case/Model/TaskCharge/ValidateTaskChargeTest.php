@@ -1,6 +1,6 @@
 <?php
 /**
- * TaskBlocksController::index()のテスト
+ * TaskCharge::validateTaskCharge()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
@@ -9,15 +9,15 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('BlocksControllerTest', 'Blocks.TestSuite');
+App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
 
 /**
- * TaskBlocksController::index()のテスト
+ * TaskCharge::validateTaskCharge()のテスト
  *
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
- * @package NetCommons\Tasks\Test\Case\Controller\TaskBlocksController
+ * @package NetCommons\Tasks\Test\Case\Model\TaskCharge
  */
-class TaskBlocksControllerIndexTest extends BlocksControllerTest {
+class TaskChargeValidateTaskChargeTest extends NetCommonsModelTestCase {
 
 /**
  * Fixtures
@@ -42,17 +42,36 @@ class TaskBlocksControllerIndexTest extends BlocksControllerTest {
 	public $plugin = 'tasks';
 
 /**
- * Controller name
+ * Model name
  *
  * @var string
  */
-	protected $_controller = 'task_blocks';
+	protected $_modelName = 'TaskCharge';
 
 /**
- * Edit controller name
+ * Method name
  *
  * @var string
  */
-	protected $_editController = 'task_blocks';
+	protected $_methodName = 'validateTaskCharge';
+
+/**
+ * validateTaskCharge()のテスト
+ *
+ * @return void
+ */
+	public function testValidateTaskCharge() {
+		$model = $this->_modelName;
+		$methodName = $this->_methodName;
+
+		//データ生成
+		$data = null;
+
+		//テスト実施
+		$result = $this->$model->$methodName($data);
+
+		//チェック
+		$this->assertTrue($result);
+	}
 
 }

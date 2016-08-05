@@ -30,7 +30,7 @@ class TaskBlocksControllerBeforeFilterTest extends NetCommonsControllerTestCase 
 		'plugin.tasks.task',
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
-		'plugin.tasks.task_setting',
+		'plugin.tasks.block_setting_for_task',
 		'plugin.workflow.workflow_comment',
 	);
 
