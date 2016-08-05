@@ -31,7 +31,7 @@ class TaskSettingSaveTaskSettingTest extends NetCommonsSaveTest {
 		'plugin.tasks.task',
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
-		'plugin.tasks.task_setting',
+		'plugin.tasks.block_setting_for_task',
 		'plugin.workflow.workflow_comment',
 	);
 
@@ -69,6 +69,8 @@ class TaskSettingSaveTaskSettingTest extends NetCommonsSaveTest {
 			'use_comment' => 1,
 			'use_workflow' => 0,
 			'use_comment_approval' => 0,
+			'use_like' => 1,
+			'use_unlike' => 1,
 		);
 
 		$results = array();
