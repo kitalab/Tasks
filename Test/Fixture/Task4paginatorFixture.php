@@ -39,14 +39,12 @@ class Task4paginatorFixture extends TaskFixture {
 			'block_id' => '1',
 			'key' => 'Task_1',
 			'name' => 'Task name 1',
-			//'language_id' => '1',
 		),
 		array(
 			'id' => '2',
 			'block_id' => '2',
 			'key' => 'Task_1',
 			'name' => 'Task name 1',
-			//'language_id' => '2',
 		),
 		//Task 2
 		array(
@@ -54,7 +52,6 @@ class Task4paginatorFixture extends TaskFixture {
 			'block_id' => '4',
 			'key' => 'Task_2',
 			'name' => 'Task name 2',
-			//'language_id' => '2',
 		),
 		//Task 3
 		array(
@@ -62,7 +59,6 @@ class Task4paginatorFixture extends TaskFixture {
 			'block_id' => '6',
 			'key' => 'Task_3',
 			'name' => 'Task name 2',
-			//'language_id' => '2',
 		),
 
 		//101-200まで、ページ遷移のためのテスト
@@ -80,7 +76,6 @@ class Task4paginatorFixture extends TaskFixture {
 				'block_id' => $i,
 				'key' => 'Task_' . $i,
 				'name' => 'Task_name_' . $i,
-				//'language_id' => '2',
 			);
 		}
 		parent::init();
