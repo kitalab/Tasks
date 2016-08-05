@@ -131,7 +131,7 @@ class TaskChargeSetChargesTest extends NetCommonsModelTestCase {
 	}
 
 /**
- * validateCircularNoticeTargetUser() falseのテスト
+ * validateTaskCharge() falseのテスト
  *
  * @return void
  */
