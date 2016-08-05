@@ -30,7 +30,7 @@ class TaskBlocksControllerIndexPaginatorTest extends BlocksControllerPaginatorTe
 		'plugin.tasks.task',
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
-		'plugin.tasks.task_setting',
+		'plugin.tasks.block_setting_for_task',
 		'plugin.tasks.task4paginator',
 		'plugin.workflow.workflow_comment',
 	);
