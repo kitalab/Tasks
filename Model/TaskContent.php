@@ -181,7 +181,7 @@ class TaskContent extends TasksAppModel {
 		$lists = $this->find('threaded',
 			array('recursive' => 1, 'conditions' => $conditions, 'order' => $order));
 
-		if (!$lists) {
+		if (! $lists) {
 			return array();
 		}
 
@@ -211,20 +211,21 @@ class TaskContent extends TasksAppModel {
 				continue;
 			}
 			// 現在の日付が開始日より前
-			if (!empty($list['TaskContent']['task_start_date'])
-					&& intval($list['TaskContent']['task_start_date']) > $now
+			if (! empty($list['TaskContent']['task_start_date'])
+				&& intval(date('Ymd', strtotime($list['TaskContent']['task_start_date']))) > $now
 			) {
 				$list['TaskContent']['date_color'] = TaskContent::TASK_START_DATE_BEFORE;
 			}
-			if (!empty($list['TaskContent']['task_end_date'])) {
+			if (! empty($list['TaskContent']['task_end_date'])) {
 				// 終了期限間近
 				if (intval($list['TaskContent']['task_end_date']) >= intval($now)
-						&& intval($list['TaskContent']['task_end_date']) <= intval($deadLine)
+					&& intval(date('Ymd', strtotime($list['TaskContent']['task_end_date']))) <= intval($deadLine)
 				) {
 					$list['TaskContent']['date_color'] = TaskContent::TASK_DEADLINE_CLOSE;
 					$deadTasks[] = $list;
 					// 終了期限切れ
-				} elseif (intval($list['TaskContent']['task_end_date']) < intval($now)) {
+				} elseif (intval(date('Ymd', strtotime($list['TaskContent']['task_end_date']))) < intval($now)
+				) {
 					$list['TaskContent']['date_color'] = TaskContent::TASK_BEYOND_THE_END_DATE;
 					$deadTasks[] = $list;
 				}
@@ -351,7 +352,7 @@ class TaskContent extends TasksAppModel {
 			'conditions' => $conditions
 		));
 
-		if (!$lists) {
+		if (! $lists) {
 			return array();
 		}
 
@@ -420,7 +421,7 @@ class TaskContent extends TasksAppModel {
 			$this->create(); // 常に新規登録
 			// 先にvalidate 失敗したらfalse返す
 			$this->set($data);
-			if (!$this->validates($data)) {
+			if (! $this->validates($data)) {
 				$this->rollback();
 				return false;
 			}
@@ -431,9 +432,15 @@ class TaskContent extends TasksAppModel {
 			}
 			$data['TaskContent'] = $savedData['TaskContent'];
 			// 担当者を登録
-			if (!$this->TaskCharge->setCharges($data)) {
+			if (! $this->TaskCharge->saveCharges($data)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
+			// メール処理
+			$sendTimes = array($data['TaskContent']['modified']);
+			$this->setSendTimeReminder($sendTimes);
+			$mailSendUserIdArr =
+				Hash::extract($data, 'TaskCharges.{n}.TaskCharge.user_id');
+			$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_USER_IDS, $mailSendUserIdArr);
 
 			$this->commit();
 
@@ -466,7 +473,7 @@ class TaskContent extends TasksAppModel {
 			$conditions = array(
 				'TaskContent.key' => $key,
 			);
-			if (!$this->updateAll($data, $conditions)) {
+			if (! $this->updateAll($data, $conditions)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
@@ -488,7 +495,7 @@ class TaskContent extends TasksAppModel {
  */
 	public function deleteContentByKey($key) {
 		$this->begin();
-		try{
+		try {
 			// 記事削除
 			$this->contentKey = $key;
 			$conditions = array('TaskContent.key' => $key);

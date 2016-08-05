@@ -41,7 +41,7 @@ class TaskCharge extends TasksAppModel {
  * @return bool
  * @throws InternalErrorException
  */
-	public function setCharges($data) {
+	public function saveCharges($data) {
 		$taskId = $data['TaskContent']['id'];
 
 		// すべてDelete
@@ -74,7 +74,7 @@ class TaskCharge extends TasksAppModel {
  * @param array $taskContent ToDoデータ
  * @return {void}
  */
-	public function setSelectUsers($taskContent) {
+	public function getSelectUsers($taskContent) {
 		$this->loadModels([
 			'User' => 'Users.User',
 		]);
@@ -97,7 +97,7 @@ class TaskCharge extends TasksAppModel {
  * @param array $taskContents ToDoListデータ
  * @return array
  */
-	public function setSelectChargeUsers($taskContents) {
+	public function getSelectChargeUsers($taskContents) {
 		$this->loadModels([
 			'User' => 'Users.User',
 		]);

@@ -75,18 +75,14 @@
 					<?php if (empty($content['TaskContent']['task_end_date'])): ?>
 						<?php echo h('--:--'); ?>
 					<?php else: ?>
-					<?php echo $this->Date->dateFormat(
-						date("Y-m-d H:i:s", strtotime($content['TaskContent']['task_end_date']))
-					); ?>
+						<?php echo $this->Date->dateFormat($content['TaskContent']['task_end_date']); ?>
 					<?php endif; ?>
 				<?php else: ?>
 					<div style="position: absolute">
 						<?php if (empty($content['TaskContent']['task_end_date'])): ?>
 							<?php echo h('--:--'); ?>
 						<?php else: ?>
-							<?php echo $this->Date->dateFormat(
-								date("Y-m-d H:i:s", strtotime($content['TaskContent']['task_end_date']))
-							); ?>
+							<?php echo $this->Date->dateFormat($content['TaskContent']['task_end_date']); ?>
 						<?php endif; ?>
 					</div>
 					<?php echo $this->element('TaskContents/priority_icon', array(
