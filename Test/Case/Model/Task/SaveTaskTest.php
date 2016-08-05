@@ -66,7 +66,7 @@ class TaskSaveTaskTest extends NetCommonsSaveTest {
  */
 	public function dataProviderSave() {
 		$data['Task'] = (new TaskFixture())->records[0];
-		
+
 		$results = array();
 		// * 編集の登録処理
 		$results[0] = array($data);
@@ -76,7 +76,7 @@ class TaskSaveTaskTest extends NetCommonsSaveTest {
 		$results[1] = Hash::insert($results[1], '0.Task.key', null);
 		$results[1] = Hash::remove($results[1], '0.Task.created_user');
 		$results[1] = Hash::remove($results[1], '0.Task.created');
-		
+
 		return $results;
 	}
 
@@ -92,7 +92,7 @@ class TaskSaveTaskTest extends NetCommonsSaveTest {
  */
 	public function dataProviderSaveOnExceptionError() {
 		$data = $this->dataProviderSave()[0][0];
-		
+
 		return array(
 			array($data, 'Tasks.Task', 'save'),
 		);
@@ -110,7 +110,7 @@ class TaskSaveTaskTest extends NetCommonsSaveTest {
  */
 	public function dataProviderSaveOnValidationError() {
 		$data = $this->dataProviderSave()[0][0];
-		
+
 		return array(
 			array($data, 'Tasks.Task'),
 		);

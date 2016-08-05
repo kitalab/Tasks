@@ -69,7 +69,7 @@ class TaskDeleteTaskTest extends NetCommonsDeleteTest {
 		$data['Task'] = (new TaskFixture())->records[0];
 		$data['Block']['key'] = 'block_1';
 		$association = array();
-		
+
 		$results = array();
 		$results[0] = array($data, $association);
 
@@ -88,7 +88,7 @@ class TaskDeleteTaskTest extends NetCommonsDeleteTest {
  */
 	public function dataProviderDeleteOnExceptionError() {
 		$data = $this->dataProviderDelete()[0][0];
-		
+
 		return array(
 			array($data, 'Tasks.Task', 'deleteAll'),
 			array($data, 'Tasks.TaskContent', 'deleteAll'),
