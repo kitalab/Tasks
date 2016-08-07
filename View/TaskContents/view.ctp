@@ -57,15 +57,15 @@ echo $this->Html->css(
 				<?php if (empty($taskContent['TaskContent']['task_start_date'])): ?>
 					<?php echo h('--:--'); ?>
 				<?php else: ?>
-					<?php echo $this->Date->dateFormat(date("Y-m-d H:i:s", strtotime($taskContent['TaskContent']['task_start_date']))); ?>
+					<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_start_date']); ?>
 				<?php endif; ?>
-				
+
 				<?php echo h(__d('tasks', 'Till')); ?>
-				
+
 				<?php if (empty($taskContent['TaskContent']['task_end_date'])): ?>
 					<?php echo h('--:--'); ?>
 				<?php else: ?>
-					<?php echo $this->Date->dateFormat(date("Y-m-d H:i:s", strtotime($taskContent['TaskContent']['task_end_date']))); ?>
+					<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_end_date']); ?>
 				<?php endif; ?>
 			</div>
 			<div class="pull-left" style="margin-left: 10px">
@@ -84,11 +84,11 @@ echo $this->Html->css(
 				<?php if ($taskContent['Category']['name']): ?>
 					<?php
 					$url = array(
-							'controller' => 'task_contents',
-							'action' => 'index');
+						'controller' => 'task_contents',
+						'action' => 'index');
 					?>
 					<?php echo $this->NetCommonsHtml->link($taskContent['Category']['name'],
-							Hash::merge($url, array('category_id' => $taskContent['Category']['id'])));
+						Hash::merge($url, array('category_id' => $taskContent['Category']['id'])));
 					?>
 				<?php else : ?>
 					<?php echo h(__d('tasks', 'Not selected')); ?>

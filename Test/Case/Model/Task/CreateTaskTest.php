@@ -1,6 +1,6 @@
 <?php
 /**
- * TaskSetting::getTaskSetting()のテスト
+ * Task::createTask()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
@@ -9,15 +9,15 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsGetTest', 'NetCommons.TestSuite');
+App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
 
 /**
- * TaskSetting::getTaskSetting()のテスト
+ * Task::createTask()のテスト
  *
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
- * @package NetCommons\Tasks\Test\Case\Model\TaskSetting
+ * @package NetCommons\Tasks\Test\Case\Model\Task
  */
-class TaskSettingGetTaskSettingTest extends NetCommonsGetTest {
+class TaskCreateTaskTest extends NetCommonsModelTestCase {
 
 /**
  * Fixtures
@@ -46,36 +46,31 @@ class TaskSettingGetTaskSettingTest extends NetCommonsGetTest {
  *
  * @var string
  */
-	protected $_modelName = 'TaskSetting';
+	protected $_modelName = 'Task';
 
 /**
  * Method name
  *
  * @var string
  */
-	protected $_methodName = 'getTaskSetting';
+	protected $_methodName = 'createTask';
 
 /**
- * getTaskSetting()のテスト
+ * createTask()のテスト
  *
  * @return void
  */
-	public function testGetTaskSetting() {
+	public function testCreateTask() {
 		$model = $this->_modelName;
 		$methodName = $this->_methodName;
 
-		//データ生成
-
 		//テスト実施
 		$result = $this->$model->$methodName();
-		$expects = [
-			'TaskSetting' => [
-				'use_comment' => 1,
-				'use_workflow' => 0,
-				'use_comment_approval' => 0,
-			]
-		];
-		$this->assertEquals($expects, $result);
+
+		//チェック
+		$this->assertContains(__d('tasks', 'New task list', date('YmdHis')), $result['Task']['name']);
+		$this->assertEquals(null, $result['Block']['room_id']);
+		$this->assertEquals(2, $result['Block']['language_id']);
 	}
 
 }

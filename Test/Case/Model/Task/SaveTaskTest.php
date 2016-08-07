@@ -1,6 +1,6 @@
 <?php
 /**
- * TaskSetting::saveTaskSetting()のテスト
+ * Task::saveTask()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
@@ -10,15 +10,15 @@
  */
 
 App::uses('NetCommonsSaveTest', 'NetCommons.TestSuite');
-App::uses('TaskSettingFixture', 'Tasks.Test/Fixture');
+App::uses('TaskFixture', 'Tasks.Test/Fixture');
 
 /**
- * TaskSetting::saveTaskSetting()のテスト
+ * Task::saveTask()のテスト
  *
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
- * @package NetCommons\Tasks\Test\Case\Model\TaskSetting
+ * @package NetCommons\Tasks\Test\Case\Model\Task
  */
-class TaskSettingSaveTaskSettingTest extends NetCommonsSaveTest {
+class TaskSaveTaskTest extends NetCommonsSaveTest {
 
 /**
  * Fixtures
@@ -47,14 +47,14 @@ class TaskSettingSaveTaskSettingTest extends NetCommonsSaveTest {
  *
  * @var string
  */
-	protected $_modelName = 'TaskSetting';
+	protected $_modelName = 'Task';
 
 /**
  * Method name
  *
  * @var string
  */
-	protected $_methodName = 'saveTaskSetting';
+	protected $_methodName = 'saveTask';
 
 /**
  * Save用DataProvider
@@ -65,39 +65,19 @@ class TaskSettingSaveTaskSettingTest extends NetCommonsSaveTest {
  * @return array テストデータ
  */
 	public function dataProviderSave() {
-		$data['TaskSetting'] = array(
-			'use_comment' => 1,
-			'use_workflow' => 0,
-			'use_comment_approval' => 0,
-		);
+		$data['Task'] = (new TaskFixture())->records[0];
 
 		$results = array();
 		// * 編集の登録処理
 		$results[0] = array($data);
+		// * 新規の登録処理
+		$results[1] = array($data);
+		$results[1] = Hash::insert($results[1], '0.Task.id', null);
+		$results[1] = Hash::insert($results[1], '0.Task.key', null);
+		$results[1] = Hash::remove($results[1], '0.Task.created_user');
+		$results[1] = Hash::remove($results[1], '0.Task.created');
 
 		return $results;
-	}
-
-/**
- * Saveのテスト
- *
- * @param array $data 登録データ
- * @dataProvider dataProviderSave
- * @return void
- */
-	public function testSave($data) {
-		$model = $this->_modelName;
-		$method = $this->_methodName;
-
-		//テスト実行
-		$result = $this->$model->$method($data);
-		$this->assertNotEmpty($result);
-
-		//登録データ取得
-		$actual = $this->$model->getTaskSetting();
-		$expected = $data;
-
-		$this->assertEquals($expected, $actual);
 	}
 
 /**
@@ -114,7 +94,7 @@ class TaskSettingSaveTaskSettingTest extends NetCommonsSaveTest {
 		$data = $this->dataProviderSave()[0][0];
 
 		return array(
-			array($data, 'Blocks.BlockSetting', 'save'),
+			array($data, 'Tasks.Task', 'save'),
 		);
 	}
 
@@ -132,7 +112,7 @@ class TaskSettingSaveTaskSettingTest extends NetCommonsSaveTest {
 		$data = $this->dataProviderSave()[0][0];
 
 		return array(
-			array($data, 'Tasks.TaskSetting'),
+			array($data, 'Tasks.Task'),
 		);
 	}
 

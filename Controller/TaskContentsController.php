@@ -126,11 +126,11 @@ class TaskContentsController extends TasksAppController {
 			// 実施期間のデータを文字列として取得
 			if ($data['TaskContent']['task_start_date']) {
 				$data['TaskContent']['task_start_date']
-					= date('Ymd', strtotime($data['TaskContent']['task_start_date']));
+					= date('Y-m-d H:i:s', strtotime($data['TaskContent']['task_start_date']));
 			}
 			if ($data['TaskContent']['task_end_date']) {
 				$data['TaskContent']['task_end_date']
-					= date('Ymd', strtotime($data['TaskContent']['task_end_date']));
+					= date('Y-m-d H:i:s', strtotime($data['TaskContent']['task_end_date']));
 			}
 
 			if (($result = $this->TaskContent->saveContent($data))) {
@@ -153,8 +153,14 @@ class TaskContentsController extends TasksAppController {
 
 		} else {
 			$this->request->data = Hash::merge($this->request->data, $this->TaskContent->create());
-			$this->set('taskContent', $this->request->data);
 		}
+		$this->request->data = $this->NetCommonsTime->toUserDatetimeArray(
+			$this->request->data,
+			array(
+				'TaskContent.task_start_date',
+				'TaskContent.task_end_date',
+			));
+		$this->set('taskContent', $this->request->data);
 
 		$this->render('edit');
 	}
@@ -171,13 +177,6 @@ class TaskContentsController extends TasksAppController {
 
 		// ToDo担当者ユーザー保持
 		$taskContent = $this->TaskCharge->setSelectUsers($taskContent);
-
-		$taskContent['TaskContent'] = $this->NetCommonsTime->toUserDatetimeArray(
-			$taskContent['TaskContent'],
-			array(
-				'TaskContent.task_start_date',
-				'TaskContent.task_end_date',
-			));
 
 		if (empty($taskContent)) {
 			return $this->throwBadRequest();
@@ -206,16 +205,6 @@ class TaskContentsController extends TasksAppController {
 
 			$data = $this->request->data;
 
-			// 実施期間のデータを文字列として取得
-			if ($data['TaskContent']['task_start_date']) {
-				$data['TaskContent']['task_start_date']
-					= date('Ymd', strtotime($data['TaskContent']['task_start_date']));
-			}
-			if ($data['TaskContent']['task_end_date']) {
-				$data['TaskContent']['task_end_date']
-					= date('Ymd', strtotime($data['TaskContent']['task_end_date']));
-			}
-
 			unset($data['TaskContent']['id']); // 常に新規保存
 
 			if ($this->TaskContent->saveContent($data)) {
@@ -242,8 +231,8 @@ class TaskContentsController extends TasksAppController {
 			$this->request->data = $taskContent;
 		}
 
-		$taskContent['TaskContent'] = $this->NetCommonsTime->toUserDatetimeArray(
-			$taskContent['TaskContent'],
+		$taskContent = $this->NetCommonsTime->toUserDatetimeArray(
+			$taskContent,
 			array(
 				'TaskContent.task_start_date',
 				'TaskContent.task_end_date',
@@ -432,7 +421,7 @@ class TaskContentsController extends TasksAppController {
 				'user_id' => $myUser[0]['id'],
 			),
 		);
-		$selectChargeUsers = $this->TaskCharge->setSelectChargeUsers($taskContents);
+		$selectChargeUsers = $this->TaskCharge->getSelectChargeUsers($taskContents);
 
 		// 担当者絞り込み条件をマージする
 		$userOptions = array_merge($options, $selectChargeUsers);

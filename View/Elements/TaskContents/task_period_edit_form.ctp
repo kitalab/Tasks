@@ -22,6 +22,7 @@
 		'format' => 'YYYY-MM-DD',
 	)));
 	?>
+
 	<div>
 		<div class="form-inline">
 			<div class="input-group" style="margin-bottom: 10px">
