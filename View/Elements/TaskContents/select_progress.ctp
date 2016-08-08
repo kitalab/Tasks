@@ -12,10 +12,11 @@
 <?php
 
 $url = $this->NetCommonsHtml->url(array(
-	'controller' => 'task_progress_rate',
-	'action' => 'edit',
-	'key' => $taskContent['TaskContent']['key'],
-));
+		'controller' => 'task_progress_rate',
+		'action' => 'edit',
+		'key' => $taskContent['TaskContent']['key']
+	)
+);
 echo $this->NetCommonsForm->create(
 	'TaskProgressRate', array('type' => 'post', 'url' => $url)
 );
@@ -33,10 +34,11 @@ $options[90] = '90%';
 $options[100] = '100%';
 
 echo $this->NetCommonsForm->input('TaskContent.progress_rate', array(
-	'type' => 'select',
-	'options' => $options,
-	'value' => $progressRate,
-	'onChange' => 'submit();',
-));
+		'type' => 'select',
+		'options' => $options,
+		'value' => $progressRate,
+		'onChange' => 'submit();',
+	)
+);
 
 echo $this->NetCommonsForm->end();

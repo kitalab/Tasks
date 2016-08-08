@@ -11,9 +11,10 @@
 ?>
 
 <?php echo $this->NetCommonsForm->create('TaskContent', array(
-	'type' => 'delete',
-	'url' => $this->NetCommonsHtml->url(array('action' => 'delete'))
-)); ?>
+		'type' => 'delete',
+		'url' => $this->NetCommonsHtml->url(array('action' => 'delete'))
+	)
+); ?>
 <?php echo $this->NetCommonsForm->hidden('Frame.id'); ?>
 <?php echo $this->NetCommonsForm->hidden('Block.id'); ?>
 <?php echo $this->NetCommonsForm->hidden('Block.key'); ?>

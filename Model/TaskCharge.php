@@ -45,9 +45,7 @@ class TaskCharge extends TasksAppModel {
 		$taskId = $data['TaskContent']['id'];
 
 		// すべてDelete
-		if (! $this->deleteAll(array(
-			'TaskCharge.task_content_id' => $taskId), false)
-		) {
+		if (! $this->deleteAll(array('TaskCharge.task_content_id' => $taskId), false)) {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 		}
 
@@ -75,9 +73,7 @@ class TaskCharge extends TasksAppModel {
  * @return {void}
  */
 	public function getSelectUsers($taskContent) {
-		$this->loadModels([
-			'User' => 'Users.User',
-		]);
+		$this->loadModels(['User' => 'Users.User']);
 
 		$selectUsers['selectUsers'] = array();
 		if (isset($taskContent['TaskCharge'])) {
@@ -98,9 +94,7 @@ class TaskCharge extends TasksAppModel {
  * @return array
  */
 	public function getSelectChargeUsers($taskContents) {
-		$this->loadModels([
-			'User' => 'Users.User',
-		]);
+		$this->loadModels(['User' => 'Users.User']);
 
 		$selectChargeUsers = array();
 

@@ -103,7 +103,7 @@ class Task extends TasksAppModel {
 
 		if (isset($this->data['TaskSetting'])) {
 			$this->TaskSetting->set($this->data['TaskSetting']);
-			if (! $this->TaskSetting->validates()) {
+			if (!$this->TaskSetting->validates()) {
 				$this->validationErrors = Hash::merge($this->validationErrors,
 					$this->TaskSetting->validationErrors);
 				return false;
@@ -142,14 +142,15 @@ class Task extends TasksAppModel {
 		$this->loadModels(['TaskSetting' => 'Tasks.TaskSetting']);
 
 		$task = $this->createAll(array(
-			'Task' => array(
-				'name' => __d('tasks', 'New task list', date('YmdHis'))
-			),
-			'Block' => array(
-				'room_id' => Current::read('Room.id'),
-				'language_id' => Current::read('Language.id'),
-			),
-		));
+				'Task' => array(
+					'name' => __d('tasks', 'New task list', date('YmdHis'))
+				),
+				'Block' => array(
+					'room_id' => Current::read('Room.id'),
+					'language_id' => Current::read('Language.id'),
+				),
+			)
+		);
 		$task = Hash::merge($task, $this->TaskSetting->createBlockSetting());
 
 		return $task;
@@ -164,24 +165,25 @@ class Task extends TasksAppModel {
 		$this->loadModels(['TaskSetting' => 'Tasks.TaskSetting']);
 
 		$task = $this->find('all', array(
-			'recursive' => -1,
-			'fields' => array(
-				$this->alias . '.*',
-				$this->Block->alias . '.*',
-			),
-			'joins' => array(
-				array(
-					'table' => $this->Block->table,
-					'alias' => $this->Block->alias,
-					'type' => 'INNER',
-					'conditions' => array(
-						$this->alias . '.block_id' . ' = ' . $this->Block->alias . ' .id',
+				'recursive' => -1,
+				'fields' => array(
+					$this->alias . '.*',
+					$this->Block->alias . '.*',
+				),
+				'joins' => array(
+					array(
+						'table' => $this->Block->table,
+						'alias' => $this->Block->alias,
+						'type' => 'INNER',
+						'conditions' => array(
+							$this->alias . '.block_id' . ' = ' . $this->Block->alias . ' .id',
+						),
 					),
 				),
-			),
-			'conditions' => $this->getBlockConditionById(),
-		));
-		if (! $task) {
+				'conditions' => $this->getBlockConditionById(),
+			)
+		);
+		if (!$task) {
 			return $task;
 		}
 		return Hash::merge($task[0], $this->TaskSetting->getTaskSetting());
@@ -195,23 +197,20 @@ class Task extends TasksAppModel {
  * @throws InternalErrorException
  */
 	public function saveTask($data) {
-		$this->loadModels([
-			'Task' => 'Tasks.Task',
-			'TaskSetting' => 'Tasks.TaskSetting',
-		]);
+		$this->loadModels(['Task' => 'Tasks.Task', 'TaskSetting' => 'Tasks.TaskSetting']);
 
 		//トランザクションBegin
 		$this->begin();
 
 		//バリデーション
 		$this->set($data);
-		if (! $this->validates()) {
+		if (!$this->validates()) {
 			return false;
 		}
 
 		try {
 			//登録処理
-			if (! $this->save(null, false)) {
+			if (!$this->save(null, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 			//トランザクションCommit
@@ -244,7 +243,7 @@ class Task extends TasksAppModel {
 
 		try {
 			$conditions = array($this->alias . '.key' => $data['Task']['key']);
-			if (! $this->deleteAll($conditions, false, false)) {
+			if (!$this->deleteAll($conditions, false, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
@@ -252,7 +251,7 @@ class Task extends TasksAppModel {
 			$ContentConditions = array(
 				$this->TaskContent->alias . '.key' => $data['Task']['key']
 			);
-			if (! $this->TaskContent->deleteAll($ContentConditions, false, true)) {
+			if (!$this->TaskContent->deleteAll($ContentConditions, false, true)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 

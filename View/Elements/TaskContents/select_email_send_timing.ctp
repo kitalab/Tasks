@@ -18,7 +18,8 @@ $options = array(
 );
 
 echo $this->NetCommonsForm->select('TaskContent.email_send_timing', $options, array(
-	'class' => 'form-control',
-	'empty' => false,
-	'style' => 'float: left',
-));
+		'class' => 'form-control',
+		'empty' => false,
+		'style' => 'float: left',
+	)
+);

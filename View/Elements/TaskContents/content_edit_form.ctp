@@ -11,7 +11,8 @@
 
 <div class="form-group">
 	<?php echo $this->NetCommonsForm->wysiwyg('TaskContent.content', array(
-		'label' => __d('tasks', 'Content'),
-		'required' => true,
-	)); ?>
+			'label' => __d('tasks', 'Content'),
+			'required' => true,
+		)
+	); ?>
 </div>

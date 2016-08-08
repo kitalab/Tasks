@@ -18,22 +18,24 @@
 					<div data-toggle="buttons">
 						<?php echo $this->NetCommonsForm->input(
 							'<span class="glyphicon glyphicon-ok" style="color: #00AA00"></span>', array(
-							'type' => 'button',
-							'checked' => true,
-							'disabled' => 'disabled',
-							'class' => 'btn btn-default active',
-							'div' => false,
-						)); ?>
+								'type' => 'button',
+								'checked' => true,
+								'disabled' => 'disabled',
+								'class' => 'btn btn-default active',
+								'div' => false,
+							)
+						); ?>
 					</div>
 				</td>
 			<?php else: ?>
 				<?php
 				$url = $this->NetCommonsHtml->url(array(
-					'controller' => 'task_progress_rate',
-					'action' => 'edit',
-					'key' => $content['TaskContent']['key'],
-					'TaskContent' => array('progress_rate' => TaskContent::TASK_COMPLETION_PROGRESS_RATE),
-				));
+						'controller' => 'task_progress_rate',
+						'action' => 'edit',
+						'key' => $content['TaskContent']['key'],
+						'TaskContent' => array('progress_rate' => TaskContent::TASK_COMPLETION_PROGRESS_RATE),
+					)
+				);
 				echo $this->NetCommonsForm->create(
 					'TaskProgressRate', array('type' => 'post', 'url' => $url)
 				); ?>
@@ -41,13 +43,14 @@
 					<div data-toggle="buttons">
 						<?php echo $this->NetCommonsForm->input(
 							'<span class="glyphicon glyphicon-ok" style="color: #BBBBBB"></span>', array(
-							'type' => 'button',
-							'onClick' => "submit();",
-							'checked' => true,
-							'class' => 'btn btn-default',
-							'div' => false,
-							'value' => TaskContent::TASK_COMPLETION_PROGRESS_RATE
-						)); ?>
+								'type' => 'button',
+								'onClick' => "submit();",
+								'checked' => true,
+								'class' => 'btn btn-default',
+								'div' => false,
+								'value' => TaskContent::TASK_COMPLETION_PROGRESS_RATE
+							)
+						); ?>
 					</div>
 				</td>
 				<?php echo $this->NetCommonsForm->end(); ?>
@@ -79,9 +82,10 @@
 						<?php endif; ?>
 					</div>
 					<?php echo $this->element('TaskContents/priority_icon', array(
-						'priority' => $content['TaskContent']['priority'],
-						'style' => "position: relative; bottom: 12px;"
-					)); ?>
+							'priority' => $content['TaskContent']['priority'],
+							'style' => "position: relative; bottom: 12px;"
+						)
+					); ?>
 				<?php endif; ?>
 			</td>
 

@@ -23,4 +23,5 @@ $priorityOptions[] = __d('tasks', 'High');
 		'type' => 'select',
 		'options' => $priorityOptions,
 		'style' => 'width: auto',
-	));
+	)
+);
