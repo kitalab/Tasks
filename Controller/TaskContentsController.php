@@ -146,7 +146,7 @@ class TaskContentsController extends TasksAppController {
 				return $this->redirect($url);
 			} else {
 				// ToDo担当者ユーザー保持
-				$this->request->data = $this->TaskCharge->setSelectUsers($this->request->data);
+				$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
 			}
 
 			$this->NetCommons->handleValidationError($this->TaskContent->validationErrors);
@@ -176,7 +176,7 @@ class TaskContentsController extends TasksAppController {
 		$taskContent = $this->TaskContent->getTask($key);
 
 		// ToDo担当者ユーザー保持
-		$taskContent = $this->TaskCharge->setSelectUsers($taskContent);
+		$taskContent = $this->TaskCharge->getSelectUsers($taskContent);
 
 		if (empty($taskContent)) {
 			return $this->throwBadRequest();
@@ -197,7 +197,6 @@ class TaskContentsController extends TasksAppController {
 			// set status
 			$status = $this->Workflow->parseStatus();
 			$this->request->data['TaskContent']['status'] = $status;
-
 			// set block_id
 			$this->request->data['TaskContent']['block_id'] = Current::read('Block.id');
 			// set language_id
@@ -222,7 +221,7 @@ class TaskContentsController extends TasksAppController {
 			}
 
 			// ToDo担当者ユーザー保持
-			$this->request->data = $this->TaskCharge->setSelectUsers($this->request->data);
+			$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
 			// 入力値を保持する
 			$taskContent = $this->request->data;
 

@@ -304,9 +304,28 @@ class TaskContent extends TasksAppModel {
  * @return array
  */
 	public function getCategoryContentList($categoryArr, $contentLists) {
+		// カテゴリなしは進捗率を表示しないので条件から省く
+		$categoryRateParam = array('Not' => array('TaskContent.category_id' => 0));
+		$categoryCondition = $this->getConditions(Current::read('Block.id'), $categoryRateParam);
+		// バーチャルフィールドを追加
+		$this->virtualFields['cnt'] = 0;
+		$this->virtualFields['sum'] = 0;
+		// カテゴリ毎の全体のToDo数と進捗率を取得
+		$categoryData = $this->find('all', array(
+			'fields' => array(
+				'TaskContent.category_id', 'count(TaskContent.category_id) as TaskContent__cnt',
+				'TaskContent.progress_rate', 'sum(TaskContent.progress_rate) as TaskContent__sum'
+			),
+			'conditions' => $categoryCondition,
+			'group' => array('TaskContent.category_id'),
+		));
+		$categoryData = Hash::combine($categoryData, '{n}.TaskContent.category_id', '{n}.TaskContent');
+
 		$taskContentList = array();
+
 		foreach ($categoryArr as $category) {
 			$results = array();
+			$categoryPriority = 0;
 			if (empty($category['id'])) {
 				$category['id'] = 0;
 				$category['name'] = __d('tasks', 'No category');
@@ -324,7 +343,10 @@ class TaskContent extends TasksAppModel {
 				$results['TaskContents'][] = array('TaskContent' => $content, 'TaskCharge' => $taskCharge);
 			}
 
-			$categoryPriority = $this->getCategoryPriority($contents);
+			// ToDoListカテゴリがある場合進捗率の平均値を取得する
+			if (isset($categoryData[$category['id']])) {
+				$categoryPriority = $this->getCategoryPriority($categoryData[$category['id']]);
+			}
 
 			$results['Category'] = $category;
 			$results['Category']['category_priority'] = $categoryPriority;
@@ -378,20 +400,16 @@ class TaskContent extends TasksAppModel {
 /**
  * カテゴリごとのToDoの進捗率の平均値を取得
  *
- * @param array $contents ToDoデータ
+ * @param array $categoryData カテゴリデータ
  * @return int
  */
-	public function getCategoryPriority($contents) {
-		$taskPriority = array();
-		foreach ($contents as $content) {
-			$taskPriority[] = $content['progress_rate'];
-		}
-
+	public function getCategoryPriority($categoryData) {
 		// ToDoの進捗率の合計を求める
-		$total = array_sum($taskPriority);
+		$total = $categoryData['sum'];
+		$count = $categoryData['cnt'];
 
 		// 実際の値より大きくならないよう小数点以下切り捨て
-		$categoryPriority = floor($total / count($taskPriority));
+		$categoryPriority = floor($total / $count);
 
 		return $categoryPriority;
 	}
