@@ -23,6 +23,14 @@ echo $this->Html->script(
 );
 ?>
 
+<?php
+$checkMailStyle = '';
+if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
+		$mailSetting['MailSetting']['is_mail_send'] == 0) {
+	$checkMailStyle = "style='display: none;'";
+}
+?>
+
 <div class="taskContents form"
 	 ng-controller="TaskContent"
 	 ng-init="initialize(<?php echo h(json_encode($this->request->data)); ?>)">
@@ -74,17 +82,19 @@ echo $this->Html->script(
 
 					<?php echo $this->element('TaskContents/content_edit_form'); ?>
 
-					<?php
-					echo $this->NetCommonsForm->checkbox('TaskContent.is_enable_mail', array(
-						'class' => 'text-left',
-						'style' => 'float: left',
-					));
-					?>
-					<label style='float: left; font-weight: 400; font-size: 14px'>
-						<?php echo __d('tasks', 'Inform in advance by mail'); ?>
-					</label>
-
-					<?php echo $this->element('TaskContents/select_email_send_timing'); ?>
+					<div class="form-group" data-calendar-name="checkMail" <?php echo $checkMailStyle; ?>>
+						<?php
+						echo $this->NetCommonsForm->checkbox('TaskContent.is_enable_mail', array(
+							'class' => 'text-left',
+							'style' => 'float: left',
+						));
+						?>
+						<label style='float: left; font-weight: 400; font-size: 14px'>
+							<?php echo __d('tasks', 'Inform in advance by mail'); ?>
+						</label>
+	
+						<?php echo $this->element('TaskContents/select_email_send_timing'); ?>
+					</div>
 
 					<?php
 					echo $this->NetCommonsForm->checkbox('TaskContent.use_calendar', array(

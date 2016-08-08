@@ -33,6 +33,7 @@ class TaskContentsController extends TasksAppController {
 		'Categories.Category',
 		'Groups.GroupUserList',
 		'User' => 'Users.User',
+		'Mails.MailSetting',
 	);
 
 /**
@@ -161,6 +162,8 @@ class TaskContentsController extends TasksAppController {
 				'TaskContent.task_end_date',
 			));
 		$this->set('taskContent', $this->request->data);
+		$mailSetting = $this->getMailSetting();
+		$this->set('mailSetting', $mailSetting);
 
 		$this->render('edit');
 	}
@@ -172,6 +175,7 @@ class TaskContentsController extends TasksAppController {
  * @throws BadRequestException
  */
 	public function edit() {
+		$this->log($this->request->data);
 		$key = $this->params['key'];
 		$taskContent = $this->TaskContent->getTask($key);
 
@@ -237,6 +241,8 @@ class TaskContentsController extends TasksAppController {
 				'TaskContent.task_end_date',
 			));
 
+		$mailSetting = $this->getMailSetting();
+		$this->set('mailSetting', $mailSetting);
 		$this->set('taskContent', $taskContent);
 		$this->set('isDeletable', $this->TaskContent->canDeleteWorkflowContent($taskContent));
 
@@ -427,5 +433,23 @@ class TaskContentsController extends TasksAppController {
 		$this->set('userOptions', $userOptions);
 
 		$this->TaskContent->Behaviors->unload('ContentComments.ContentComment');
+	}
+
+/**
+ * getMailSetting
+ *
+ * メール設定情報の取得
+ *
+ * @return array メール設定情報の配列
+ */
+	public function getMailSetting() {
+		$mailSetting = $this->MailSetting->find('first', array(
+			'conditions' => array(
+				$this->MailSetting->alias . '.plugin_key' => 'tasks',
+				$this->MailSetting->alias . '.block_key' => Current::read('Block.key'),
+			),
+			'recursive' => -1,
+		));
+		return $mailSetting;
 	}
 }
