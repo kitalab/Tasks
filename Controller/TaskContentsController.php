@@ -175,7 +175,6 @@ class TaskContentsController extends TasksAppController {
  * @throws BadRequestException
  */
 	public function edit() {
-		$this->log($this->request->data);
 		$key = $this->params['key'];
 		$taskContent = $this->TaskContent->getTask($key);
 
