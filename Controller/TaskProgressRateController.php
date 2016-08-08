@@ -46,8 +46,14 @@ class TaskProgressRateController extends TasksAppController {
  * @throws BadRequestException
  */
 	public function edit() {
+		$this->log($this->params['key']);
+		$this->log($this->params['named']);
 		if ($this->request->is('post')) {
 			$key = $this->params['key'];
+			// 一覧からの完了ボタンの処理時
+			if ($this->params['named']) {
+				$this->params['data'] = array_merge($this->params['data'], $this->params['named']);
+			}
 			$progressRate = $this->params['data']['TaskContent']['progress_rate'];
 			// 進捗率を更新する
 			if (!$this->TaskContent->saveProgressRate($key, $progressRate)) {

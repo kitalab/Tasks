@@ -52,7 +52,7 @@ class MailSettingRecords extends MailsMigration {
 				'plugin_key' => self::PLUGIN_KEY,
 				'block_key' => null,
 				'is_mail_send' => false,
-				'is_mail_send_approval' => false,
+				'is_mail_send_approval' => true,
 			),
 		),
 		'MailSettingFixedPhrase' => array(

@@ -33,6 +33,7 @@ class TaskContentsController extends TasksAppController {
 		'Categories.Category',
 		'Groups.GroupUserList',
 		'User' => 'Users.User',
+		'Mails.MailSetting',
 	);
 
 /**
@@ -146,7 +147,7 @@ class TaskContentsController extends TasksAppController {
 				return $this->redirect($url);
 			} else {
 				// ToDo担当者ユーザー保持
-				$this->request->data = $this->TaskCharge->setSelectUsers($this->request->data);
+				$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
 			}
 
 			$this->NetCommons->handleValidationError($this->TaskContent->validationErrors);
@@ -161,6 +162,8 @@ class TaskContentsController extends TasksAppController {
 				'TaskContent.task_end_date',
 			));
 		$this->set('taskContent', $this->request->data);
+		$mailSetting = $this->getMailSetting();
+		$this->set('mailSetting', $mailSetting);
 
 		$this->render('edit');
 	}
@@ -172,11 +175,12 @@ class TaskContentsController extends TasksAppController {
  * @throws BadRequestException
  */
 	public function edit() {
+		$this->log($this->request->data);
 		$key = $this->params['key'];
 		$taskContent = $this->TaskContent->getTask($key);
 
 		// ToDo担当者ユーザー保持
-		$taskContent = $this->TaskCharge->setSelectUsers($taskContent);
+		$taskContent = $this->TaskCharge->getSelectUsers($taskContent);
 
 		if (empty($taskContent)) {
 			return $this->throwBadRequest();
@@ -197,7 +201,6 @@ class TaskContentsController extends TasksAppController {
 			// set status
 			$status = $this->Workflow->parseStatus();
 			$this->request->data['TaskContent']['status'] = $status;
-
 			// set block_id
 			$this->request->data['TaskContent']['block_id'] = Current::read('Block.id');
 			// set language_id
@@ -222,7 +225,7 @@ class TaskContentsController extends TasksAppController {
 			}
 
 			// ToDo担当者ユーザー保持
-			$this->request->data = $this->TaskCharge->setSelectUsers($this->request->data);
+			$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
 			// 入力値を保持する
 			$taskContent = $this->request->data;
 
@@ -238,6 +241,8 @@ class TaskContentsController extends TasksAppController {
 				'TaskContent.task_end_date',
 			));
 
+		$mailSetting = $this->getMailSetting();
+		$this->set('mailSetting', $mailSetting);
 		$this->set('taskContent', $taskContent);
 		$this->set('isDeletable', $this->TaskContent->canDeleteWorkflowContent($taskContent));
 
@@ -428,5 +433,23 @@ class TaskContentsController extends TasksAppController {
 		$this->set('userOptions', $userOptions);
 
 		$this->TaskContent->Behaviors->unload('ContentComments.ContentComment');
+	}
+
+/**
+ * getMailSetting
+ *
+ * メール設定情報の取得
+ *
+ * @return array メール設定情報の配列
+ */
+	public function getMailSetting() {
+		$mailSetting = $this->MailSetting->find('first', array(
+			'conditions' => array(
+				$this->MailSetting->alias . '.plugin_key' => 'tasks',
+				$this->MailSetting->alias . '.block_key' => Current::read('Block.key'),
+			),
+			'recursive' => -1,
+		));
+		return $mailSetting;
 	}
 }

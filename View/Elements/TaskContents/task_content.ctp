@@ -16,47 +16,40 @@
 			<?php if ($content['TaskContent']['is_completion'] === true): ?>
 				<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1" style="vertical-align: middle;">
 					<div data-toggle="buttons">
-						<label class="btn btn-default active">
-							<?php echo $this->NetCommonsForm->input(
-								'', array(
-								'type' => 'checkbox',
-								'checked' => true,
-								'div' => false,
-							)); ?>
-							<span class="glyphicon glyphicon-ok" style="color: #00AA00">
-					</span>
-						</label>
+						<?php echo $this->NetCommonsForm->input(
+							'<span class="glyphicon glyphicon-ok" style="color: #00AA00"></span>', array(
+							'type' => 'button',
+							'checked' => true,
+							'disabled' => 'disabled',
+							'class' => 'btn btn-default active',
+							'div' => false,
+						)); ?>
 					</div>
 				</td>
 			<?php else: ?>
-
 				<?php
 				$url = $this->NetCommonsHtml->url(array(
 					'controller' => 'task_progress_rate',
 					'action' => 'edit',
 					'key' => $content['TaskContent']['key'],
-					'TaskContent.progress_rate' => TaskContent::TASK_COMPLETION_PROGRESS_RATE,
+					'TaskContent' => array('progress_rate' => TaskContent::TASK_COMPLETION_PROGRESS_RATE),
 				));
 				echo $this->NetCommonsForm->create(
 					'TaskProgressRate', array('type' => 'post', 'url' => $url)
 				); ?>
-
 				<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1" style="vertical-align: middle;">
 					<div data-toggle="buttons">
-						<label class="btn btn-default form-group" onClick="submit();">
-							<?php echo $this->NetCommonsForm->input(
-								'TaskContent.progress_rate', array(
-								'type' => 'checkbox',
-								'checked' => true,
-								'div' => false,
-								'value' => TaskContent::TASK_COMPLETION_PROGRESS_RATE
-							)); ?>
-							<span class="glyphicon glyphicon-ok" style="color: #BBBBBB">
-						</span>
-						</label>
+						<?php echo $this->NetCommonsForm->input(
+							'<span class="glyphicon glyphicon-ok" style="color: #BBBBBB"></span>', array(
+							'type' => 'button',
+							'onClick' => "submit();",
+							'checked' => true,
+							'class' => 'btn btn-default',
+							'div' => false,
+							'value' => TaskContent::TASK_COMPLETION_PROGRESS_RATE
+						)); ?>
 					</div>
 				</td>
-
 				<?php echo $this->NetCommonsForm->end(); ?>
 			<?php endif; ?>
 
