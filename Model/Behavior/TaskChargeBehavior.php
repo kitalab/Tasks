@@ -31,7 +31,8 @@ class TaskChargeBehavior extends ModelBehavior {
 		$model->loadModels(array(
 			'TaskCharge' => 'Tasks.TaskCharge',
 			'User' => 'Users.User',
-		));
+				)
+		);
 
 		// ToDo担当者のバリデーション処理
 		if (! isset($model->data['TaskCharge'])) {

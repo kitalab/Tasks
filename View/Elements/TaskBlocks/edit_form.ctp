@@ -20,20 +20,22 @@
 <?php echo $this->Form->hidden('TaskFrameSetting.articles_per_page'); ?>
 
 <?php echo $this->NetCommonsForm->input('Task.name', array(
-	'type' => 'text',
-	'label' => __d('tasks', 'Task list'),
-	'required' => true,
-)); ?>
+		'type' => 'text',
+		'label' => __d('tasks', 'Task list'),
+		'required' => true,
+	)
+); ?>
 
 <?php echo $this->element('Blocks.public_type'); ?>
 
 <?php echo $this->NetCommonsForm->inlineCheckbox('TaskSetting.use_comment', array(
-	'label' => __d('tasks', 'Use comment')
-)); ?>
+		'label' => __d('tasks', 'Use comment')
+	)
+); ?>
 
 <?php
 echo $this->element('Categories.edit_form', array(
-	'categories' => isset($categories) ? $categories : null
-));
-?>
+		'categories' => isset($categories) ? $categories : null
+	)
+); ?>
 <?php echo $this->element('Blocks.modifed_info', array('displayModified' => true));

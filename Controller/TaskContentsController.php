@@ -89,7 +89,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function index() {
-		if (! Current::read('Block.id')) {
+		if (!Current::read('Block.id')) {
 			$this->autoRender = false;
 			return;
 		}
@@ -255,7 +255,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function view() {
-		if (! Current::read('Block.id')) {
+		if (!Current::read('Block.id')) {
 			$this->autoRender = false;
 			return;
 		}
@@ -283,7 +283,7 @@ class TaskContentsController extends TasksAppController {
 
 					$taskContentKey = $taskContent['TaskContent']['key'];
 					$useCommentApproval = $this->_taskSetting['TaskSetting']['use_comment_approval'];
-					if (! $this->ContentComments->comment('tasks', $taskContentKey,
+					if (!$this->ContentComments->comment('tasks', $taskContentKey,
 						$useCommentApproval)
 					) {
 						return $this->throwBadRequest();
@@ -369,7 +369,7 @@ class TaskContentsController extends TasksAppController {
 		}
 		// 担当者絞り込み
 		if (isset($conditions['user_id'])) {
-			if (! empty($conditions['user_id'])) {
+			if (!empty($conditions['user_id'])) {
 				$userParam = array(
 					'TaskCharge.user_id' => $conditions['user_id']
 				);
@@ -404,10 +404,8 @@ class TaskContentsController extends TasksAppController {
 		$taskContents = $this->TaskContent->getList($params, $order, $userParam);
 
 		// 期限間近のToDo一覧を分けて取得
-		if (isset($taskContents['DeadLine'])) {
-			$this->set('deadLineTasks', $taskContents['DeadLine']);
-			unset($taskContents['DeadLine']);
-		}
+		$deadLineTasks = Hash::extract($taskContents, '{n}.TaskContents.{n}[isDeadLine=' . true . ']');
+		$this->set('deadLineTasks', $deadLineTasks);
 
 		// 通常のToDo一覧
 		$this->set('taskContents', $taskContents);
@@ -443,12 +441,13 @@ class TaskContentsController extends TasksAppController {
  */
 	public function getMailSetting() {
 		$mailSetting = $this->MailSetting->find('first', array(
-			'conditions' => array(
-				$this->MailSetting->alias . '.plugin_key' => 'tasks',
-				$this->MailSetting->alias . '.block_key' => Current::read('Block.key'),
-			),
-			'recursive' => -1,
-		));
+				'conditions' => array(
+					$this->MailSetting->alias . '.plugin_key' => 'tasks',
+					$this->MailSetting->alias . '.block_key' => Current::read('Block.key'),
+				),
+				'recursive' => -1,
+			)
+		);
 		return $mailSetting;
 	}
 }

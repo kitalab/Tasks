@@ -159,6 +159,23 @@ class TaskContent extends TasksAppModel {
 					'required' => true,
 				],
 			),
+			'task_start_date' => array(
+					'datetime' => array(
+							'rule' => array('datetime'),
+							'message' => __d('net_commons', 'Invalid request.'),
+					),
+			),
+			'task_end_date' => array(
+					'datetime' => array(
+							'rule' => array('datetime'),
+							'message' => __d('net_commons', 'Invalid request.'),
+					),
+					'fromTo' => array(
+							'rule' => array('validateDatetimeFromTo',
+									array('from' => $this->data['TaskContent']['task_start_date'])),
+							'message' => __d('net_commons', 'Invalid request.'),
+					)
+			),
 		);
 		return $validate;
 	}
@@ -198,49 +215,11 @@ class TaskContent extends TasksAppModel {
  * @return array
  */
 	public function getTaskContentList($lists) {
-		$now = date('Ymd', strtotime(date('Y/m/d H:i:s')));
-		$deadLine = date("Ymd", strtotime("+2 day"));
-		$deadTasks = array();
-		$contentLists = array();
-
-		foreach ($lists as $list) {
-			// 現在実施中
-			$list['TaskContent']['date_color'] = TaskContent::TASK_BEING_PERFORMED;
-			if ($list['TaskContent']['is_completion'] === true) {
-				$contentLists[] = $list;
-				continue;
-			}
-			// 現在の日付が開始日より前
-			if (! empty($list['TaskContent']['task_start_date'])
-				&& intval(date('Ymd', strtotime($list['TaskContent']['task_start_date']))) > $now
-			) {
-				$list['TaskContent']['date_color'] = TaskContent::TASK_START_DATE_BEFORE;
-			}
-			if (! empty($list['TaskContent']['task_end_date'])) {
-				// 終了期限間近
-				if (intval($list['TaskContent']['task_end_date']) >= intval($now)
-					&& intval(date('Ymd', strtotime($list['TaskContent']['task_end_date']))) <= intval($deadLine)
-				) {
-					$list['TaskContent']['date_color'] = TaskContent::TASK_DEADLINE_CLOSE;
-					$deadTasks[] = $list;
-					// 終了期限切れ
-				} elseif (intval(date('Ymd', strtotime($list['TaskContent']['task_end_date']))) < intval($now)
-				) {
-					$list['TaskContent']['date_color'] = TaskContent::TASK_BEYOND_THE_END_DATE;
-					$deadTasks[] = $list;
-				}
-			}
-			$contentLists[] = $list;
-		}
-
 		// カテゴリ情報を取得
-		$categoryArr = $this->getCategory($contentLists);
+		$categoryArr = $this->getCategory($lists);
 
 		// ToDo一覧情報を取得
-		$taskContentList = $this->getCategoryContentList($categoryArr, $contentLists);
-
-		// 期限間近のToDoをDeadLineデータとしてToDo一覧情報に追加する
-		$taskContentList['DeadLine'] = $deadTasks;
+		$taskContentList = $this->getCategoryContentList($categoryArr, $lists);
 
 		return $taskContentList;
 	}
@@ -340,7 +319,14 @@ class TaskContent extends TasksAppModel {
 				$taskCharge = Hash::extract(
 					$contentLists, '{n}.TaskCharge.{n}[task_content_id=' . $content['id'] . ']'
 				);
-				$results['TaskContents'][] = array('TaskContent' => $content, 'TaskCharge' => $taskCharge);
+				// ここでdate_colorをセット＆Controllerで期限間近判定用のフラグをセット
+				$content['date_color'] = $this->getTaskDateColor($content);
+				$isDeadLine = $this->isDeadLine($content['date_color']);
+				$results['TaskContents'][] = array(
+					'TaskContent' => $content,
+					'TaskCharge' => $taskCharge,
+					'isDeadLine' => $isDeadLine,
+				);
 			}
 
 			// ToDoListカテゴリがある場合進捗率の平均値を取得する
@@ -353,6 +339,59 @@ class TaskContent extends TasksAppModel {
 			$taskContentList[] = $results;
 		}
 		return $taskContentList;
+	}
+
+/**
+ * 登録されている実施日によりdate_colorを取得
+ *
+ * @param array $taskContent ToDoデータ
+ *
+ * @return array
+ */
+	public function getTaskDateColor($taskContent) {
+		$now = date('Ymd', strtotime(date('Y/m/d H:i:s')));
+		$deadLine = date('Ymd', strtotime('+2 day'));
+
+		// 現在実施中
+		$dateColor = TaskContent::TASK_BEING_PERFORMED;
+		if ($taskContent['is_completion'] === true) {
+			return $dateColor;
+		}
+		// 現在の日付が開始日より前
+		if (! empty($taskContent['task_start_date'])
+			&& intval(date('Ymd', strtotime($taskContent['task_start_date']))) > $now
+		) {
+			$dateColor = TaskContent::TASK_START_DATE_BEFORE;
+		}
+		if (! empty($taskContent['task_end_date'])) {
+			// 終了期限間近
+			if (intval($taskContent['task_end_date']) >= intval($now)
+				&& intval(date('Ymd', strtotime($taskContent['task_end_date']))) <= intval($deadLine)
+			) {
+				$dateColor = TaskContent::TASK_DEADLINE_CLOSE;
+				// 終了期限切れ
+			} elseif (intval(date('Ymd', strtotime($taskContent['task_end_date']))) < intval($now)
+			) {
+				$dateColor = TaskContent::TASK_BEYOND_THE_END_DATE;
+			}
+		}
+
+		return $dateColor;
+	}
+
+/**
+ * date_colorにより期限間近か否か判定
+ *
+ * @param array $dateColor ToDoの実施期間判定色
+ *
+ * @return array
+ */
+	public function isDeadLine($dateColor) {
+		if ($dateColor == TaskContent::TASK_DEADLINE_CLOSE
+				|| $dateColor == TaskContent::TASK_BEYOND_THE_END_DATE) {
+			return true;
+		}
+		return false;
 	}
 
 /**

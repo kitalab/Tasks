@@ -12,9 +12,10 @@ $params = $this->params['named'];
 $url = Hash::merge(array(
 	'controller' => 'task_contents',
 	'action' => 'index'),
-	$params);
+	$params
+);
 
-if (! isset($params['sort']) || !$params['direction']) :
+if (!isset($params['sort']) || !$params['direction']) :
 	$currentSort = 'TaskContent.task_end_date.asc';
 else:
 	$currentSort = $params['sort'] . '.' . $params['direction'];
