@@ -46,8 +46,6 @@ class TaskProgressRateController extends TasksAppController {
  * @throws BadRequestException
  */
 	public function edit() {
-		$this->log($this->params['key']);
-		$this->log($this->params['named']);
 		if ($this->request->is('post')) {
 			$key = $this->params['key'];
 			// 一覧からの完了ボタンの処理時
