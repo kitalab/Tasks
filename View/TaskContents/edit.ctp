@@ -35,8 +35,9 @@ echo $this->Html->css(
 
 <?php
 $checkMailClass = '';
-if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
-		$mailSetting['MailSetting']['is_mail_send'] == 0) {
+if (!isset($mailSetting['MailSetting']['is_mail_send']) ||
+	$mailSetting['MailSetting']['is_mail_send'] == 0
+) {
 	$checkMailClass = 'hidden';
 }
 ?>
@@ -65,7 +66,7 @@ if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 			?>
 			<?php echo $this->NetCommonsForm->input('key', array('type' => 'hidden')); ?>
 			<?php echo $this->NetCommonsForm->hidden('Frame.id', array('value' => Current::read('Frame.id'))); ?>
-			<?php echo $this->NetCommonsForm->hidden('Block.id', array('value' => Current::read('Block.id'),)); ?>
+			<?php echo $this->NetCommonsForm->hidden('Block.id', array('value' => Current::read('Block.id'))); ?>
 
 			<div class="panel-body">
 
@@ -73,21 +74,42 @@ if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 
 					<?php echo $this->NetCommonsForm->input(
 						'TaskContent.title', array(
-						'type' => 'text',
-						'required' => 'required',
-						'label' => __d('tasks', 'Title')
-					)
+							'type' => 'text',
+							'required' => 'required',
+							'label' => __d('tasks', 'Title')
+						)
 					); ?>
 
 					<?php echo $this->Category->select('TaskContent.category_id', array('empty' => true)); ?>
 
-					<?php echo $this->element('TaskContents/select_priority'); ?>
+					<?php
+					$priorityOptions = array(
+						__d('tasks', 'Undefined'),
+						__d('tasks', 'Low'),
+						__d('tasks', 'Medium'),
+						__d('tasks', 'High')
+					);
+					?>
+					<?php echo $this->NetCommonsForm->input('TaskContent.priority',
+						array(
+							'label' => __d('tasks', 'Priority'),
+							'type' => 'select',
+							'options' => $priorityOptions,
+							'style' => 'width: auto',
+						)
+					); ?>
 
 					<?php echo $this->element('TaskContents/task_period_edit_form'); ?>
 
 					<?php echo $this->element('TaskContents/charge_edit_form'); ?>
 
-					<?php echo $this->element('TaskContents/content_edit_form'); ?>
+					<div class="form-group">
+						<?php echo $this->NetCommonsForm->wysiwyg('TaskContent.content', array(
+								'label' => __d('tasks', 'Content'),
+								'required' => true,
+							)
+						); ?>
+					</div>
 
 					<div class="form-group <?php echo $checkMailClass; ?>" data-calendar-name="checkMail">
 						<?php
@@ -99,7 +121,7 @@ if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 						<label style='float: left; font-weight: 400; font-size: 14px'>
 							<?php echo __d('tasks', 'Inform in advance by mail'); ?>
 						</label>
-	
+
 						<?php echo $this->element('TaskContents/select_email_send_timing'); ?>
 					</div>
 
@@ -116,19 +138,14 @@ if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 
 				<hr/>
 
-				<div class="form-group" name="inputCommentArea">
-					<div class="col-xs-12 col-sm-10 col-sm-offset-1">
 						<?php echo $this->Workflow->inputComment('TaskContent.status'); ?>
-					</div>
-				</div>
 
 			</div>
 
-			<div class="panel-footer text-center">
-				<?php echo $this->Button->cancelAndSaveAndSaveTemp(); ?>
-			</div>
-
+			<?php echo $this->Workflow->buttons('TaskContent.status'); ?>
+			
 			<?php echo $this->NetCommonsForm->end(); ?>
+
 
 			<?php if ($this->request->params['action'] === 'edit') : ?>
 				<div class="panel-footer text-right">

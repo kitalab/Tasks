@@ -21,17 +21,10 @@ echo $this->NetCommonsForm->create(
 	'TaskProgressRate', array('type' => 'post', 'url' => $url)
 );
 
-$options[0] = '0%';
-$options[10] = '10%';
-$options[20] = '20%';
-$options[30] = '30%';
-$options[40] = '40%';
-$options[50] = '50%';
-$options[60] = '60%';
-$options[70] = '70%';
-$options[80] = '80%';
-$options[90] = '90%';
-$options[100] = '100%';
+for ($i = 0; $i <= TaskContent::TASK_COMPLETION_PROGRESS_RATE;) {
+	$options[$i] = $i . '%';
+	$i += TaskContent::TASK_PROGRESS_RATE_INCREMENTS;
+}
 
 echo $this->NetCommonsForm->input('TaskContent.progress_rate', array(
 		'type' => 'select',

@@ -9,29 +9,38 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 ?>
-
-<div class="ng-scope">
-
+<?php
+echo $this->Html->css(
+	array(
+		'/tasks/css/tasks.css'
+	),
+	array(
+		'plugin' => false,
+		'once' => true,
+		'inline' => false
+	)
+);
+?>
+<article class="tasks index " ng-controller="Tasks.Contents" ng-init="init(<?php echo Current::read('Frame.id') ?>)">
 	<h1 class="tasks_taskTitle"><?php echo $listTitle ?></h1>
 
-	<div class="clearfix" style="margin-top: 10px; margin-bottom: 10px;">
+	<?php if (Current::permission('content_creatable')) : ?>
 
 		<div class="pull-right">
-			<span class="nc-tooltip" tooltip="<?php echo h(__d('net_commons', 'Add')); ?>" style="margin-right: 8px">
-				<?php
-				$addUrl = $this->NetCommonsHtml->url(array(
-					'controller' => 'task_contents',
-					'action' => 'add',
-				));
-				echo $this->Button->addLink('',
-					$addUrl,
-					array('tooltip' => __d('tasks', 'ToDo Add'))
-				);
-				?>
-			</span>
+			<?php
+			$addUrl = $this->NetCommonsHtml->url(array(
+				'controller' => 'task_contents',
+				'action' => 'add',
+			));
+			echo $this->Button->addLink('',
+				$addUrl,
+				array('tooltip' => __d('tasks', 'ToDo Add'))
+			);
+			?>
 		</div>
-	</div>
-	<div class="clearfix" style="margin-bottom: 20px">
+	<?php endif ?>
+
+	<div class="clearfix task-margin-bottom-1">
 		<div class="pull-left">
 			<?php echo $this->element('TaskContents/select_is_completion'); ?>
 			<?php echo $this->Category->dropDownToggle(array(
@@ -55,7 +64,7 @@
 			<?php echo h(__d('tasks', 'Not task')); ?>
 		</div>
 	<?php else: ?>
-		
+
 		<?php $isNotShow = false; ?>
 		<?php if (isset($params['user_id']) && $params['user_id'] !== Current::read('User.id')): ?>
 			<?php $isNotShow = true; ?>
@@ -63,8 +72,8 @@
 		<?php $params = $this->params['named']; ?>
 
 		<?php if ($deadLineTasks && empty($params['category_id']) && $isNotShow === false): ?>
-			<div class="clearfix" style="height: 25px;">
-				<div style="border-bottom-width: 5px;" class="pull-left">
+			<div class="clearfix task-margin-height-1">
+				<div class="pull-left">
 					<?php echo __d('tasks', 'Deadline close Expiration'); ?>
 				</div>
 			</div>
@@ -98,4 +107,4 @@
 		<?php endforeach; ?>
 
 	<?php endif; ?>
-</div>
+</article>

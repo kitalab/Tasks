@@ -47,6 +47,20 @@ class TaskContent extends TasksAppModel {
 	const TASK_BEING_PERFORMED = 4;
 
 /**
+ * 一覧画面でのユーザーアイコン表示上限
+ *
+ * @var const
+ */
+	const LIST_DISPLAY_NUM = 5;
+
+/**
+ * タスクの進捗率の刻み数
+ *
+ * @var const
+ */
+	const TASK_PROGRESS_RATE_INCREMENTS = 10;
+
+/**
  * タスク完了時の進捗率
  *
  * @var const
@@ -100,6 +114,16 @@ class TaskContent extends TasksAppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'Block' => array(
+			'className' => 'Blocks.Block',
+			'foreignKey' => 'block_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'counterCache' => array(
+				'content_count' => array('TaskContent.is_latest' => 1),
+			),
 		),
 	);
 

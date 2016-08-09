@@ -9,15 +9,28 @@
  */
 ?>
 
+<?php
+echo $this->Html->css(
+	array(
+		'/tasks/css/tasks.css'
+	),
+	array(
+		'plugin' => false,
+		'once' => true,
+		'inline' => false
+	)
+);
+?>
+
 <table class="table table-hover">
 	<tbody>
 	<?php foreach ($taskContents as $content): ?>
 		<tr>
 			<?php if ($content['TaskContent']['is_completion'] === true): ?>
-				<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1" style="vertical-align: middle;">
+				<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1 table-cell-text-middle">
 					<div data-toggle="buttons">
 						<?php echo $this->NetCommonsForm->input(
-							'<span class="glyphicon glyphicon-ok" style="color: #00AA00"></span>', array(
+							'<span class="glyphicon glyphicon-ok button-completion-color"></span>', array(
 								'type' => 'button',
 								'checked' => true,
 								'disabled' => 'disabled',
@@ -39,16 +52,15 @@
 				echo $this->NetCommonsForm->create(
 					'TaskProgressRate', array('type' => 'post', 'url' => $url)
 				); ?>
-				<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1" style="vertical-align: middle;">
+				<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1 table-cell-text-middle">
 					<div data-toggle="buttons">
 						<?php echo $this->NetCommonsForm->input(
-							'<span class="glyphicon glyphicon-ok" style="color: #BBBBBB"></span>', array(
+							'<span class="glyphicon glyphicon-ok text-muted color-un-active"></span>', array(
 								'type' => 'button',
 								'onClick' => 'submit();',
 								'checked' => true,
 								'class' => 'btn btn-default',
 								'div' => false,
-								'value' => TaskContent::TASK_COMPLETION_PROGRESS_RATE
 							)
 						); ?>
 					</div>
@@ -58,15 +70,14 @@
 
 			<?php
 			$color = array(
-				1 => 'color: #BBBBBB',
-				2 => 'color: #f0ad4e',
-				3 => 'color: #FF0000',
-				4 => '',
+				TaskContent::TASK_START_DATE_BEFORE => 'color: #BBBBBB',
+				TaskContent::TASK_DEADLINE_CLOSE => 'color: #f0ad4e',
+				TaskContent::TASK_BEYOND_THE_END_DATE => 'color: #FF0000',
+				TaskContent::TASK_BEING_PERFORMED => ''
 			);
 			?>
-
-			<td class="col-xs-2 col-ms-2 col-md-2 col-lg-2"
-				style="vertical-align: middle; <?php echo $color[$content['TaskContent']['date_color']]; ?>">
+			<td class="col-xs-2 col-ms-2 col-md-2 col-lg-2 table-cell-text-middle"
+				style="<?php echo $color[$content['TaskContent']['date_color']]; ?>">
 				<?php if (empty($content['TaskContent']['priority'])): ?>
 					<?php if (empty($content['TaskContent']['is_date_set'])): ?>
 						<?php echo __d('tasks', 'Not Date Set'); ?>
@@ -89,7 +100,7 @@
 				<?php endif; ?>
 			</td>
 
-			<td class="col-xs-4 col-ms-4 col-md-5 col-lg-5" style="vertical-align: middle;">
+			<td class="col-xs-4 col-ms-4 col-md-5 col-lg-5 table-cell-text-middle">
 				<?php echo $this->Workflow->label($content['TaskContent']['status']); ?>
 				<?php echo $this->Html->link(
 					$content['TaskContent']['title'],
@@ -103,18 +114,18 @@
 				); ?>
 			</td>
 
-			<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1" style="vertical-align: middle; text-align: right">
+			<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1 table-cell-text-middle">
 				<?php echo $content['TaskContent']['progress_rate']; ?>%
 			</td>
 
-			<td class="" align="col-xs-4 col-ms-3 col-md-3 col-lg-3" style="vertical-align: middle;">
+			<td class="col-xs-4 col-ms-3 col-md-3 col-lg-3 table-cell-text-middle">
 				<span class="nc-groups-avatar-list">
 					<?php $count = 0; ?>
 					<?php foreach ($content['TaskCharge'] as $userInCharge): ?>
 						<?php
 						$count++;
 						echo $this->DisplayUser->avatar($userInCharge, [], 'user_id');
-						if ($count > 5):
+						if ($count > TaskContent::LIST_DISPLAY_NUM):
 							echo '...';
 							break;
 						endif;

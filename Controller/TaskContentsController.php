@@ -42,6 +42,12 @@ class TaskContentsController extends TasksAppController {
  * @var array
  */
 	public $components = array(
+		'NetCommons.Permission' => array(
+			//アクセスの権限
+			'allow' => array(
+					'add,edit,delete' => 'content_creatable',
+			),
+		),
 		'Categories.Categories',
 		'ContentComments.ContentComments' => array(
 			'viewVarsKey' => array(
@@ -69,6 +75,7 @@ class TaskContentsController extends TasksAppController {
  */
 	public $helpers = array(
 		'Workflow.Workflow',
+		'NetCommons.NetCommonsForm',
 		'ContentComments.ContentComment' => array(
 			'viewVarsKey' => array(
 				'contentKey' => 'taskContent.TaskContent.key',
@@ -112,7 +119,6 @@ class TaskContentsController extends TasksAppController {
 
 		if ($this->request->is('post')) {
 			$data = $this->request->data;
-			$this->log($data);
 
 			$data['TaskContent']['task_key'] = $this->_taskSetting['TaskSetting']['task_key'];
 

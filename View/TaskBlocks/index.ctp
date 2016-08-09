@@ -59,7 +59,7 @@
 				array('editUrl' => array('block_id' => $task['Block']['id']))
 			); ?>
 			<?php echo $this->BlockIndex->tableData(
-				'Task.entries_count', $task['Task']['entries_count'], array('type' => 'numeric')
+				'Task.entries_count', $task['Block']['content_count'], array('type' => 'numeric')
 			); ?>
 			<?php echo $this->BlockIndex->tableData(
 				'Block.public_type', $task

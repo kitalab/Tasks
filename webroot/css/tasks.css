@@ -9,3 +9,31 @@
     display: table-cell;
     padding-bottom: 5px;
 }
+
+.table-cell-text-middle {
+    vertical-align: middle;
+}
+
+.button-completion-color {
+    color: #00AA00;
+}
+
+.color-un-active {
+    color: #BBBBBB;
+}
+
+.color-un-active {
+    color: #BBBBBB;
+}
+
+.task-margin-bottom-1 {
+    margin-bottom: 20px;
+}
+
+.task-margin-height-1 {
+    height: 25px;
+}
+
+.task-margin-height-1 {
+    height: 25px;
+}
