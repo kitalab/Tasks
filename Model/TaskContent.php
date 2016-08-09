@@ -489,7 +489,7 @@ class TaskContent extends TasksAppModel {
 			}
 			$data['TaskContent'] = $savedData['TaskContent'];
 			// 担当者を登録
-			if (! $this->TaskCharge->saveCharges($data)) {
+			if (! $this->TaskCharge->setCharges($data)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 			// メール処理
