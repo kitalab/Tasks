@@ -112,6 +112,7 @@ class TaskContentsController extends TasksAppController {
 
 		if ($this->request->is('post')) {
 			$data = $this->request->data;
+			$this->log($data);
 
 			$data['TaskContent']['task_key'] = $this->_taskSetting['TaskSetting']['task_key'];
 
@@ -124,25 +125,21 @@ class TaskContentsController extends TasksAppController {
 			// set language_id
 			$data['TaskContent']['language_id'] = Current::read('Language.id');
 
-			// 実施期間のデータを文字列として取得
-			if ($data['TaskContent']['task_start_date']) {
-				$data['TaskContent']['task_start_date']
-					= date('Y-m-d H:i:s', strtotime($data['TaskContent']['task_start_date']));
-			}
-			if ($data['TaskContent']['task_end_date']) {
-				$data['TaskContent']['task_end_date']
-					= date('Y-m-d H:i:s', strtotime($data['TaskContent']['task_end_date']));
+			// 実施期間を設定しない場合nullを代入する
+			if (empty($data['TaskContent']['date_set_flag'])) {
+				$data['TaskContent']['task_start_date'] = null;
+				$data['TaskContent']['task_end_date'] = null;
 			}
 
 			if (($result = $this->TaskContent->saveContent($data))) {
-				$url = NetCommonsUrl::actionUrl(
+				$url = Router::url(NetCommonsUrl::actionUrl(
 					array(
 						'controller' => 'task_contents',
 						'action' => 'view',
 						'frame_id' => Current::read('Frame.id'),
 						'block_id' => Current::read('Block.id'),
 						'key' => $result['TaskContent']['key'])
-				);
+				));
 
 				return $this->redirect($url);
 			} else {
@@ -160,7 +157,14 @@ class TaskContentsController extends TasksAppController {
 			array(
 				'TaskContent.task_start_date',
 				'TaskContent.task_end_date',
-			));
+			)
+		);
+
+		// 実施期間設定フラグを持たせる
+		if (!isset($this->request->data['TaskContent']['is_date'])) {
+			$this->request->data['TaskContent']['date_set_flag'] = 0;
+		}
+
 		$this->set('taskContent', $this->request->data);
 		$mailSetting = $this->getMailSetting();
 		$this->set('mailSetting', $mailSetting);
@@ -178,6 +182,13 @@ class TaskContentsController extends TasksAppController {
 		$key = $this->params['key'];
 		$taskContent = $this->TaskContent->getTask($key);
 
+		// 実施期間設定フラグを持たせる
+		if ($taskContent['TaskContent']['task_start_date'] === null) {
+			$taskContent['TaskContent']['date_set_flag'] = 0;
+		} else {
+			$taskContent['TaskContent']['date_set_flag'] = 1;
+		}
+
 		// ToDo担当者ユーザー保持
 		$taskContent = $this->TaskCharge->getSelectUsers($taskContent);
 
@@ -191,6 +202,7 @@ class TaskContentsController extends TasksAppController {
 		$this->_prepare();
 
 		if ($this->request->is(array('post', 'put'))) {
+			$this->log($this->request->data);
 
 			$this->TaskContent->create();
 			$this->request->data['TaskContent']['task_key'] =
@@ -207,10 +219,16 @@ class TaskContentsController extends TasksAppController {
 
 			$data = $this->request->data;
 
+			// 実施期間を設定しない場合nullを代入する
+			if (empty($data['TaskContent']['is_date'])) {
+				$data['TaskContent']['task_start_date'] = null;
+				$data['TaskContent']['task_end_date'] = null;
+			}
+
 			unset($data['TaskContent']['id']); // 常に新規保存
 
 			if ($this->TaskContent->saveContent($data)) {
-				$url = NetCommonsUrl::actionUrl(
+				$url = Router::url(NetCommonsUrl::actionUrl(
 					array(
 						'controller' => 'task_contents',
 						'action' => 'view',
@@ -218,7 +236,7 @@ class TaskContentsController extends TasksAppController {
 						'block_id' => Current::read('Block.id'),
 						'key' => $data['TaskContent']['key']
 					)
-				);
+				));
 
 				return $this->redirect($url);
 			}
@@ -318,14 +336,14 @@ class TaskContentsController extends TasksAppController {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 		}
 		return $this->redirect(
-			NetCommonsUrl::actionUrl(
+				Router::url(NetCommonsUrl::actionUrl(
 				array(
 					'controller' => 'task_contents',
 					'action' => 'index',
 					'block_id' => Current::read('Block.id')
 				)
 			)
-		);
+		));
 	}
 
 /**

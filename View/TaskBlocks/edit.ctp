@@ -25,12 +25,12 @@
 		<?php if ($this->request->params['action'] === 'edit') : ?>
 			<?php echo $this->element('Blocks.delete_form', array(
 				'model' => 'TaskBlock',
-				'action' => NetCommonsUrl::actionUrl(array(
+				'action' => Router::url(NetCommonsUrl::actionUrl(array(
 					'controller' => $this->params['controller'],
 					'action' => 'delete',
 					'block_id' => Current::read('Block.id'),
 					'frame_id' => Current::read('Frame.id')
-				)),
+				))),
 				'callback' => 'Tasks.TaskBlocks/delete_form'
 			)); ?>
 		<?php endif; ?>

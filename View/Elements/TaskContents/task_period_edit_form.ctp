@@ -9,32 +9,46 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 ?>
-
-<div class="form-group" style="margin-bottom: 10px;">
+<div class="form-group" ng-controller="TaskIsDate"
+	 ng-init="initialize(<?php echo $taskContent['TaskContent']['date_set_flag']; ?>)">
 	<div>
 		<?php echo $this->NetCommonsForm->label(
-			'Task.period',
+			'TaskContent.date_set_flag',
 			__d('tasks', 'Implementation period')
 		); ?>
 	</div>
-	<?php
-	$pickerOpt = str_replace('"', "'", json_encode(array(
-				'format' => 'YYYY-MM-DD',
-			)
-		)
-	);
 
-	$initStartDate = sprintf(
-		"%s = '%s'; ", 'TaskContent.task_start_date',
-		substr($taskContent['TaskContent']['task_start_date'], 0, 10)
+	<?php
+	$options = array(
+		'0' => __d('Tasks', 'No Date'),
+		'1' => __d('Tasks', 'Set Date'),
 	);
-	$initEndDate = sprintf(
-		"%s = '%s'; ", 'TaskContent.task_end_date',
-		substr($taskContent['TaskContent']['task_end_date'], 0, 10)
+	echo $this->NetCommonsForm->radio(
+		'TaskContent.date_set_flag', $options, array(
+			'value' => $taskContent['TaskContent']['date_set_flag'],
+			'ng-click' => 'switchDeadline($event)',
+			'outer' => false,
+		)
 	);
 	?>
 
-	<div>
+	<div ng-show="deadline==1" style="margin-bottom: 10px;">
+		<?php
+		$pickerOpt = str_replace('"', "'", json_encode(array(
+					'format' => 'YYYY-MM-DD',
+				)
+			)
+		);
+
+		$initStartDate = sprintf(
+			"%s = '%s'; ", 'TaskContent.task_start_date',
+			substr($taskContent['TaskContent']['task_start_date'], 0, 10)
+		);
+		$initEndDate = sprintf(
+			"%s = '%s'; ", 'TaskContent.task_end_date',
+			substr($taskContent['TaskContent']['task_end_date'], 0, 10)
+		);
+		?>
 		<div class="form-inline">
 			<div class="input-group" style="margin-bottom: 10px">
 				<?php echo $this->NetCommonsForm->input('TaskContent.task_start_date', array(

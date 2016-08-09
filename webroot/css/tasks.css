@@ -9,14 +9,3 @@
     display: table-cell;
     padding-bottom: 5px;
 }
-
-@media (max-width: 767px) {
-    .progress-min-scale-xs {
-        transform: scale(1, 0.5);
-    !important;
-    }
-
-    .progress-min-width-xs {
-        width: 100px !important;
-    }
-}

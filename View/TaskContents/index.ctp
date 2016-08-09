@@ -36,13 +36,13 @@
 			<?php echo $this->Category->dropDownToggle(array(
 				'empty' => h(__d('tasks', 'No category assignment')),
 				'displayMenu' => true,
-				'url' => NetCommonsUrl::actionUrlAsArray(Hash::merge(array(
+				'url' => Router::url(NetCommonsUrl::actionUrlAsArray(Hash::merge(array(
 					'plugin' => 'tasks',
 					'controller' => 'task_contents',
 					'action' => 'index',
 					'block_id' => Current::read('Block.id'),
 					'frame_id' => Current::read('Frame.id')
-				), $this->params['named']))
+				), $this->params['named'])))
 			)); ?>
 			<?php echo $this->element('TaskContents/select_user', array('options' => $userOptions)); ?>
 			<?php echo $this->element('TaskContents/select_sort'); ?>

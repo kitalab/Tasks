@@ -159,22 +159,16 @@ class TaskContent extends TasksAppModel {
 					'required' => true,
 				],
 			),
-			'task_start_date' => array(
-					'datetime' => array(
-							'rule' => array('datetime'),
-							'message' => __d('net_commons', 'Invalid request.'),
-					),
-			),
 			'task_end_date' => array(
-					'datetime' => array(
-							'rule' => array('datetime'),
-							'message' => __d('net_commons', 'Invalid request.'),
+				'fromTo' => array(
+					'rule' => array('validateDatetimeFromTo',
+						array(
+							'from' => $this->data['TaskContent']['task_start_date'],
+							'to' => $this->data['TaskContent']['task_end_date']
+						)
 					),
-					'fromTo' => array(
-							'rule' => array('validateDatetimeFromTo',
-									array('from' => $this->data['TaskContent']['task_start_date'])),
-							'message' => __d('net_commons', 'Invalid request.'),
-					)
+					'message' => __d('net_commons', 'Invalid request.'),
+				)
 			),
 		);
 		return $validate;

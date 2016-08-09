@@ -96,6 +96,14 @@ msgid "High"
 msgstr "高"
 
 # 登録（編集）画面で使用
+msgid "Set Date"
+msgstr "設定する"
+
+# 登録（編集）画面で使用
+msgid "No Date"
+msgstr "設定しない"
+
+# 登録（編集）画面で使用
 msgid "Content"
 msgstr "内容"
 
