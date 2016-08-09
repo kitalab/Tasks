@@ -171,6 +171,10 @@ msgstr "コメントを付けられる"
 msgid "Task creatable roles"
 msgstr "ToDoを作成編集できる権限"
 
+# 権限設定画面で使用
+msgid "Task creatable"
+msgstr "ToDoの作成編集"
+
 # 共通で使用
 msgid "Undefined"
 msgstr "未設定"

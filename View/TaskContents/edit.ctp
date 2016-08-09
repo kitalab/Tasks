@@ -21,13 +21,23 @@ echo $this->Html->script(
 		'inline' => false
 	)
 );
+echo $this->Html->css(
+	array(
+		'/tasks/css/tasks.css'
+	),
+	array(
+		'plugin' => false,
+		'once' => true,
+		'inline' => false
+	)
+);
 ?>
 
 <?php
-$checkMailStyle = '';
+$checkMailClass = '';
 if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 		$mailSetting['MailSetting']['is_mail_send'] == 0) {
-	$checkMailStyle = "style='display: none;'";
+	$checkMailClass = 'hidden';
 }
 ?>
 
@@ -54,12 +64,8 @@ if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 			);
 			?>
 			<?php echo $this->NetCommonsForm->input('key', array('type' => 'hidden')); ?>
-			<?php echo $this->NetCommonsForm->hidden('Frame.id', array(
-				'value' => Current::read('Frame.id'),
-			)); ?>
-			<?php echo $this->NetCommonsForm->hidden('Block.id', array(
-				'value' => Current::read('Block.id'),
-			)); ?>
+			<?php echo $this->NetCommonsForm->hidden('Frame.id', array('value' => Current::read('Frame.id'))); ?>
+			<?php echo $this->NetCommonsForm->hidden('Block.id', array('value' => Current::read('Block.id'),)); ?>
 
 			<div class="panel-body">
 
@@ -70,7 +76,8 @@ if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 						'type' => 'text',
 						'required' => 'required',
 						'label' => __d('tasks', 'Title')
-					)); ?>
+					)
+					); ?>
 
 					<?php echo $this->Category->select('TaskContent.category_id', array('empty' => true)); ?>
 
@@ -82,7 +89,7 @@ if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 
 					<?php echo $this->element('TaskContents/content_edit_form'); ?>
 
-					<div class="form-group" data-calendar-name="checkMail" <?php echo $checkMailStyle; ?>>
+					<div class="form-group <?php echo $checkMailClass; ?>" data-calendar-name="checkMail">
 						<?php
 						echo $this->NetCommonsForm->checkbox('TaskContent.is_enable_mail', array(
 							'class' => 'text-left',

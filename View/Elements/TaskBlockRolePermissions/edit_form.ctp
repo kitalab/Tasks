@@ -42,7 +42,7 @@ echo $this->element('Blocks.block_approval_setting', array(
 			'content_comment_publishable' => __d('blocks', 'Content comment publishable roles'),
 		),
 		'options' => array(
-			Block::NEED_APPROVAL => __d('blocks', 'Need approval in both %s and comments ', __d('tasks', 'ToDoの作成編集')),
+			Block::NEED_APPROVAL => __d('blocks', 'Need approval in both %s and comments ', __d('tasks', 'Task creatable')),
 			Block::NEED_COMMENT_APPROVAL => __d('blocks', 'Need only comments approval'),
 			Block::NOT_NEED_APPROVAL => __d('blocks', 'Not need approval'),
 		),

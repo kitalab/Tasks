@@ -44,7 +44,7 @@
 						<?php echo $this->NetCommonsForm->input(
 							'<span class="glyphicon glyphicon-ok" style="color: #BBBBBB"></span>', array(
 								'type' => 'button',
-								'onClick' => "submit();",
+								'onClick' => 'submit();',
 								'checked' => true,
 								'class' => 'btn btn-default',
 								'div' => false,
@@ -83,7 +83,7 @@
 					</div>
 					<?php echo $this->element('TaskContents/priority_icon', array(
 							'priority' => $content['TaskContent']['priority'],
-							'style' => "position: relative; bottom: 12px;"
+							'style' => 'position: relative; bottom: 12px;'
 						)
 					); ?>
 				<?php endif; ?>
@@ -115,7 +115,7 @@
 						$count++;
 						echo $this->DisplayUser->avatar($userInCharge, [], 'user_id');
 						if ($count > 5):
-							echo "...";
+							echo '...';
 							break;
 						endif;
 						?>

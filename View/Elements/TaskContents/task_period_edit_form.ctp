@@ -41,11 +41,11 @@
 		);
 
 		$initStartDate = sprintf(
-			"%s = '%s'; ", 'TaskContent.task_start_date',
+			'%s = \'%s\'; ', 'TaskContent.task_start_date',
 			substr($taskContent['TaskContent']['task_start_date'], 0, 10)
 		);
 		$initEndDate = sprintf(
-			"%s = '%s'; ", 'TaskContent.task_end_date',
+			'%s = \'%s\'; ', 'TaskContent.task_end_date',
 			substr($taskContent['TaskContent']['task_end_date'], 0, 10)
 		);
 		?>

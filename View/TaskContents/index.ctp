@@ -25,7 +25,8 @@
 				));
 				echo $this->Button->addLink('',
 					$addUrl,
-					array('tooltip' => __d('tasks', 'ToDo Add')));
+					array('tooltip' => __d('tasks', 'ToDo Add'))
+				);
 				?>
 			</span>
 		</div>
@@ -34,16 +35,17 @@
 		<div class="pull-left">
 			<?php echo $this->element('TaskContents/select_is_completion'); ?>
 			<?php echo $this->Category->dropDownToggle(array(
-				'empty' => h(__d('tasks', 'No category assignment')),
-				'displayMenu' => true,
-				'url' => Router::url(NetCommonsUrl::actionUrlAsArray(Hash::merge(array(
-					'plugin' => 'tasks',
-					'controller' => 'task_contents',
-					'action' => 'index',
-					'block_id' => Current::read('Block.id'),
-					'frame_id' => Current::read('Frame.id')
-				), $this->params['named'])))
-			)); ?>
+					'empty' => h(__d('tasks', 'No category assignment')),
+					'displayMenu' => true,
+					'url' => Router::url(NetCommonsUrl::actionUrlAsArray(Hash::merge(array(
+						'plugin' => 'tasks',
+						'controller' => 'task_contents',
+						'action' => 'index',
+						'block_id' => Current::read('Block.id'),
+						'frame_id' => Current::read('Frame.id')
+					), $this->params['named'])))
+				)
+			); ?>
 			<?php echo $this->element('TaskContents/select_user', array('options' => $userOptions)); ?>
 			<?php echo $this->element('TaskContents/select_sort'); ?>
 		</div>
@@ -69,7 +71,8 @@
 
 			<?php echo $this->element('TaskContents/task_content', array(
 					'taskContents' => $deadLineTasks,
-			)); ?>
+				)
+			); ?>
 		<?php endif; ?>
 
 		<?php foreach ($taskContents as $taskContent): ?>
