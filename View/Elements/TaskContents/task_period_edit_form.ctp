@@ -10,10 +10,10 @@
  */
 ?>
 <div class="form-group" ng-controller="TaskIsDate"
-	 ng-init="initialize(<?php echo $taskContent['TaskContent']['date_set_flag']; ?>)">
+	 ng-init="initialize(<?php echo $taskContent['TaskContent']['is_date_set']; ?>)">
 	<div>
 		<?php echo $this->NetCommonsForm->label(
-			'TaskContent.date_set_flag',
+			'TaskContent.is_date_set',
 			__d('tasks', 'Implementation period')
 		); ?>
 	</div>
@@ -24,15 +24,15 @@
 		'1' => __d('Tasks', 'Set Date'),
 	);
 	echo $this->NetCommonsForm->radio(
-		'TaskContent.date_set_flag', $options, array(
-			'value' => $taskContent['TaskContent']['date_set_flag'],
-			'ng-click' => 'switchDeadline($event)',
+		'TaskContent.is_date_set', $options, array(
+			'value' => $taskContent['TaskContent']['is_date_set'],
+			'ng-click' => 'switchIsDate($event)',
 			'outer' => false,
 		)
 	);
 	?>
 
-	<div ng-show="deadline==1" style="margin-bottom: 10px;">
+	<div ng-show="flag==1" style="margin-bottom: 10px;">
 		<?php
 		$pickerOpt = str_replace('"', "'", json_encode(array(
 					'format' => 'YYYY-MM-DD',

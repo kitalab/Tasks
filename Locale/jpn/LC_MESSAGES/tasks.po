@@ -190,3 +190,7 @@ msgstr "実施期間"
 # 共通で使用
 msgid "Category"
 msgstr "カテゴリ"
+
+# 共通で使用
+msgid "Not Date Set"
+msgstr "--:--"

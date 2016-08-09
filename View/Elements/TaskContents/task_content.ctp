@@ -68,15 +68,15 @@
 			<td class="col-xs-2 col-ms-2 col-md-2 col-lg-2"
 				style="vertical-align: middle; <?php echo $color[$content['TaskContent']['date_color']]; ?>">
 				<?php if (empty($content['TaskContent']['priority'])): ?>
-					<?php if (empty($content['TaskContent']['task_end_date'])): ?>
-						<?php echo h('--:--'); ?>
+					<?php if (empty($content['TaskContent']['is_date_set'])): ?>
+						<?php echo __d('tasks', 'Not Date Set'); ?>
 					<?php else: ?>
 						<?php echo $this->Date->dateFormat($content['TaskContent']['task_end_date']); ?>
 					<?php endif; ?>
 				<?php else: ?>
 					<div style="position: absolute">
-						<?php if (empty($content['TaskContent']['task_end_date'])): ?>
-							<?php echo h('--:--'); ?>
+						<?php if (empty($content['TaskContent']['is_date_set'])): ?>
+							<?php echo __d('tasks', 'Not Date Set'); ?>
 						<?php else: ?>
 							<?php echo $this->Date->dateFormat($content['TaskContent']['task_end_date']); ?>
 						<?php endif; ?>

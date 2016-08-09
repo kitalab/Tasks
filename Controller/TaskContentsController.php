@@ -125,12 +125,6 @@ class TaskContentsController extends TasksAppController {
 			// set language_id
 			$data['TaskContent']['language_id'] = Current::read('Language.id');
 
-			// 実施期間を設定しない場合nullを代入する
-			if (empty($data['TaskContent']['date_set_flag'])) {
-				$data['TaskContent']['task_start_date'] = null;
-				$data['TaskContent']['task_end_date'] = null;
-			}
-
 			if (($result = $this->TaskContent->saveContent($data))) {
 				$url = Router::url(NetCommonsUrl::actionUrl(
 					array(
@@ -159,11 +153,6 @@ class TaskContentsController extends TasksAppController {
 				'TaskContent.task_end_date',
 			)
 		);
-
-		// 実施期間設定フラグを持たせる
-		if (!isset($this->request->data['TaskContent']['is_date'])) {
-			$this->request->data['TaskContent']['date_set_flag'] = 0;
-		}
 
 		$this->set('taskContent', $this->request->data);
 		$mailSetting = $this->getMailSetting();
@@ -202,7 +191,6 @@ class TaskContentsController extends TasksAppController {
 		$this->_prepare();
 
 		if ($this->request->is(array('post', 'put'))) {
-			$this->log($this->request->data);
 
 			$this->TaskContent->create();
 			$this->request->data['TaskContent']['task_key'] =
@@ -218,12 +206,6 @@ class TaskContentsController extends TasksAppController {
 			$this->request->data['TaskContent']['language_id'] = Current::read('Language.id');
 
 			$data = $this->request->data;
-
-			// 実施期間を設定しない場合nullを代入する
-			if (empty($data['TaskContent']['is_date'])) {
-				$data['TaskContent']['task_start_date'] = null;
-				$data['TaskContent']['task_end_date'] = null;
-			}
 
 			unset($data['TaskContent']['id']); // 常に新規保存
 

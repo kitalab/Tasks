@@ -54,16 +54,16 @@ echo $this->Html->css(
 		<div class="clearfix" style="margin-bottom: 10px;">
 			<div class="pull-left">
 				<?php echo h(__d('tasks', 'Implementation period') . __d('tasks', 'Colon')); ?>
-				<?php if (empty($taskContent['TaskContent']['task_start_date'])): ?>
-					<?php echo h('--:--'); ?>
+				<?php if (empty($taskContent['TaskContent']['is_date_set'])): ?>
+					<?php echo __d('tasks', 'Not Date Set'); ?>
 				<?php else: ?>
 					<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_start_date']); ?>
 				<?php endif; ?>
 
 				<?php echo h(__d('tasks', 'Till')); ?>
 
-				<?php if (empty($taskContent['TaskContent']['task_end_date'])): ?>
-					<?php echo h('--:--'); ?>
+				<?php if (empty($taskContent['TaskContent']['is_date_set'])): ?>
+					<?php echo __d('tasks', 'Not Date Set'); ?>
 				<?php else: ?>
 					<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_end_date']); ?>
 				<?php endif; ?>

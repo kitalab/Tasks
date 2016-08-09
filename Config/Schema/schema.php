@@ -85,6 +85,7 @@ class TasksSchema extends CakeSchema {
 		'priority' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 4, 'unsigned' => false, 'comment' => 'priority | 重要度 0:未設定、1:低、2:中、3:高'),
 		'task_start_date' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'task_end_date' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'is_date_set' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'is_enable_mail' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'email_send_timing' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 11, 'unsigned' => false),
 		'use_calendar' => array('type' => 'boolean', 'null' => false, 'default' => '0'),

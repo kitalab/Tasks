@@ -80,7 +80,7 @@ NetCommonsApp.controller('TaskIsDate',
        *
        * @type {object}
        */
-      $scope.deadline = false;
+      $scope.flag = false;
 
       /**
        * Initialize
@@ -89,10 +89,10 @@ NetCommonsApp.controller('TaskIsDate',
        * @return {void}
        */
       $scope.initialize = function(value) {
-        $scope.deadline = value;
+        $scope.flag = value;
       };
 
-      $scope.switchDeadline = function($event) {
-        $scope.deadline = $event.target.value;
+      $scope.switchIsDate = function($event) {
+        $scope.flag = $event.target.value;
       };
     }]);

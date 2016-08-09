@@ -159,16 +159,22 @@ class TaskContent extends TasksAppModel {
 					'required' => true,
 				],
 			),
-			'task_end_date' => array(
-				'fromTo' => array(
-					'rule' => array('validateDatetimeFromTo',
-						array(
-							'from' => $this->data['TaskContent']['task_start_date'],
-							'to' => $this->data['TaskContent']['task_end_date']
-						)
+			'task_start_date' => array(
+					'datetime' => array(
+							'rule' => array('datetime'),
+							'message' => __d('net_commons', 'Invalid request.'),
 					),
-					'message' => __d('net_commons', 'Invalid request.'),
-				)
+			),
+			'task_end_date' => array(
+					'datetime' => array(
+							'rule' => array('datetime'),
+							'message' => __d('net_commons', 'Invalid request.'),
+					),
+					'fromTo' => array(
+							'rule' => array('validateDatetimeFromTo',
+									array('from' => $this->data['TaskContent']['task_start_date'])),
+							'message' => __d('net_commons', 'Invalid request.'),
+					)
 			),
 		);
 		return $validate;
@@ -348,7 +354,7 @@ class TaskContent extends TasksAppModel {
 
 		// 現在実施中
 		$dateColor = TaskContent::TASK_BEING_PERFORMED;
-		if ($taskContent['is_completion'] === true) {
+		if ($taskContent['is_completion'] === true || empty($taskContent['is_date_set'])) {
 			return $dateColor;
 		}
 		// 現在の日付が開始日より前
