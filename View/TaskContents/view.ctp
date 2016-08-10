@@ -123,7 +123,7 @@ echo $this->Html->css(
 					<div class="pull-left">
 						<div class="progress-min-scale-xs" class="task-view-table-cell">
 							<div class="progress progress-min-width-xs task-view-progress"
-								 style="width: 300px;">
+								 style="width: <?php echo TaskContent::TASK_TODO_PROGRESS_WIDTH?>px;">
 								<div class="progress-bar progress-bar-success"
 									 style="width: <?php echo $taskContent['TaskContent']['progress_rate']; ?>%;">
 								</div>

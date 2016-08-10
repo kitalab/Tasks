@@ -82,6 +82,20 @@ class TaskContent extends TasksAppModel {
 	const TASK_COMPLETION_PROGRESS_RATE = 100;
 
 /**
+ * カテゴリのプログレスバーの長さ
+ *
+ * @var const
+ */
+	const TASK_CATEGORY_PROGRESS_WIDTH = 250;
+
+/**
+ * TODOのプログレスバーの長さ
+ *
+ * @var const
+ */
+	const TASK_TODO_PROGRESS_WIDTH = 300;
+
+/**
  * @var int recursiveはデフォルトアソシエーションなしに
  */
 	public $recursive = -1;
