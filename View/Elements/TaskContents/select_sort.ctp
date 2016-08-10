@@ -15,7 +15,7 @@ $url = Hash::merge(array(
 	$params
 );
 
-if (!isset($params['sort']) || !$params['direction']) :
+if (! isset($params['sort']) || !$params['direction']) :
 	$currentSort = 'TaskContent.task_end_date.asc';
 else:
 	$currentSort = $params['sort'] . '.' . $params['direction'];

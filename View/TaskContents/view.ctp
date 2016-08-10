@@ -152,7 +152,7 @@ echo $this->Html->css(
 						</div>
 						<div class="">
 					<span class="nc-groups-avatar-list text-left">
-						<?php if (!$this->request->data['selectUsers']) : ?>
+						<?php if (! $this->request->data['selectUsers']) : ?>
 							<?php echo h(__d('tasks', 'Not selected')); ?>
 						<?php else : ?>
 							<?php foreach ($this->request->data['selectUsers'] as $selectUsers): ?>

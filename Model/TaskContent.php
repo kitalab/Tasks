@@ -584,27 +584,42 @@ class TaskContent extends TasksAppModel {
 /**
  * TODO削除
  *
- * @param int $key オリジンID
+ * @param void $key オリジンKey
  * @throws InternalErrorException
  * @return bool
  */
 	public function deleteContentByKey($key) {
 		$this->begin();
 		try {
-			// 記事削除
-			$this->contentKey = $key;
-			$conditions = array('TaskContent.key' => $key);
-			if ($result = $this->deleteAll($conditions, true, true)) {
-				$this->commit();
-			} else {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+
+			// 削除対象となるIDを取得
+			$targetIds = $this->find('list', array(
+				'fields' => array('TaskContent.id', 'TaskContent.id'),
+				'recursive' => -1,
+				'conditions' => array(
+						'TaskContent.key' => $key,
+				)
+			));
+
+			// 関連するデータを一式削除
+			if (count($targetIds) > 0) {
+				$this->contentKey = $key;
+				if (! $this->TaskCharge->deleteAll(
+						array('TaskCharge.task_content_id' => $targetIds), false)) {
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				}
+				if (! $this->deleteAll(array($this->alias . '.key' => $key), false, true)) {
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				}
 			}
-			
-			$this->log($result);
-		} catch (Exception $e) {
-			$this->rollback($e);
-			//エラー出力
+
+			$this->commit();
+
+		} catch (Exception $ex) {
+			$this->rollback();
+			CakeLog::error($ex);
+			throw $ex;
 		}
-		return $result;
+		return true;
 	}
 }

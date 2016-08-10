@@ -35,7 +35,7 @@ echo $this->Html->css(
 
 <?php
 $checkMailClass = '';
-if (!isset($mailSetting['MailSetting']['is_mail_send']) ||
+if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 	$mailSetting['MailSetting']['is_mail_send'] == 0
 ) {
 	$checkMailClass = 'hidden';

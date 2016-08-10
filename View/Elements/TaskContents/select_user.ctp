@@ -14,7 +14,7 @@ $url = Hash::merge(array(
 	'action' => 'index'),
 	$params);
 
-if (!isset($params['user_id'])) :
+if (! isset($params['user_id'])) :
 	$chargeUser = Current::read('User.id');
 else:
 	$chargeUser = $params['user_id'];

@@ -96,7 +96,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function index() {
-		if (!Current::read('Block.id')) {
+		if (! Current::read('Block.id')) {
 			$this->autoRender = false;
 			return;
 		}
@@ -261,7 +261,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function view() {
-		if (!Current::read('Block.id')) {
+		if (! Current::read('Block.id')) {
 			$this->autoRender = false;
 			return;
 		}
@@ -289,7 +289,7 @@ class TaskContentsController extends TasksAppController {
 
 					$taskContentKey = $taskContent['TaskContent']['key'];
 					$useCommentApproval = $this->_taskSetting['TaskSetting']['use_comment_approval'];
-					if (!$this->ContentComments->comment('tasks', $taskContentKey,
+					if (! $this->ContentComments->comment('tasks', $taskContentKey,
 						$useCommentApproval)
 					) {
 						return $this->throwBadRequest();
@@ -367,7 +367,7 @@ class TaskContentsController extends TasksAppController {
 		}
 		// 担当者絞り込み
 		if (isset($conditions['user_id'])) {
-			if (!empty($conditions['user_id'])) {
+			if (! empty($conditions['user_id'])) {
 				$userParam = array(
 					'TaskCharge.user_id' => $conditions['user_id']
 				);
