@@ -58,7 +58,7 @@ class TaskFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => '2',
-			'block_id' => '2',
+			'block_id' => '4',
 			'key' => 'content_block_1',
 			'status' => '1',
 			'name' => 'Lorem ipsum dolor sit amet',
