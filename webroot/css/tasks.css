@@ -1,39 +1,82 @@
-.table-cell-1 {
+.task-view-table-cell-1 {
     width: 135px;
     display: table-cell;
     padding-bottom: 5px;
 }
 
-.table-cell-2 {
+.task-view-table-cell-2 {
     width: 50px;
     display: table-cell;
     padding-bottom: 5px;
 }
 
-.table-cell-text-middle {
+.task-index-content-text-middle {
     vertical-align: middle;
 }
 
-.button-completion-color {
+.task-index-button-completion-color {
     color: #00AA00;
 }
 
-.color-un-active {
+.task-color-un-active {
     color: #BBBBBB;
 }
 
-.color-un-active {
-    color: #BBBBBB;
+.task-color-deadline {
+    color: #f0ad4e;
 }
 
-.task-margin-bottom-1 {
+.task-color-danger {
+    color: #FF0000;
+}
+
+.task-content-margin-1 {
     margin-bottom: 20px;
 }
 
-.task-margin-height-1 {
-    height: 25px;
+.task-content-margin-2 {
+    margin-bottom: 10px;
 }
 
-.task-margin-height-1 {
-    height: 25px;
+.task-content-margin-3 {
+    margin-left: 10px
+}
+
+.task-view-progress {
+    height: 32px;
+    margin-left: 5px;
+}
+
+.task-index-priority-1 {
+    position: absolute;
+}
+
+.task-index-priority-2 {
+    position: relative;
+    bottom: 12px;
+}
+
+.task-category-name-margin {
+    border-bottom-width: 5px;
+}
+
+.task-spacer {
+    border: 0 none transparent;
+}
+
+.task-index-progress {
+    margin-bottom: 5px;
+    height: 20px;
+}
+
+.task-view-table {
+    display: table;
+}
+
+.task-view-table-cell {
+    display: table-cell;
+}
+
+.task-view-user-top {
+    vertical-align: top;
 }

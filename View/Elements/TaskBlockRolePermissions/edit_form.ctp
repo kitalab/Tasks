@@ -10,26 +10,17 @@
  */
 ?>
 
-<?php echo $this->Form->hidden('Block.id', array(
-		'value' => Current::read('Block.id'),
-	)
-); ?>
-
-<?php echo $this->Form->hidden('TaskSetting.id', array(
-		'value' => isset($taskSetting['id']) ? (int)$taskSetting['id'] : null,
-	)
-); ?>
-
-<?php echo $this->Form->hidden('TaskSetting.key', array(
-		'value' => isset($taskSetting['key']) ? $taskSetting['key'] : null,
-	)
-); ?>
+<?php echo $this->Form->hidden('Block.id'); ?>
+<?php echo $this->Form->hidden('Block.key'); ?>
 
 <?php
 echo $this->element('Blocks.block_creatable_setting', array(
 		'settingPermissions' => array(
 			'content_creatable' => __d('tasks', 'Task creatable roles'),
-			'content_comment_creatable' => __d('blocks', 'Content comment creatable roles'),
+			'content_comment_creatable' => array(
+				'label' => __d('blocks', 'Content comment creatable roles'),
+				'help' => __d('content_comments', 'Content comment creatable roles help'),
+			),
 		),
 	)
 );

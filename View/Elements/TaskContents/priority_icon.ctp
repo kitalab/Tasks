@@ -12,8 +12,8 @@
 <?php
 $iconPath = '';
 
-if ($style === false) {
-	$style = '';
+if ($class === false) {
+	$class = '';
 }
 switch ($priority) {
 	case 1;
@@ -30,5 +30,5 @@ switch ($priority) {
 
 <img src="<?php echo $iconPath; ?>"
 	 ng-src="<?php echo $iconPath; ?>"
-	 class="nc-title-icon"
-	 style="<?php echo $style ?>">
+	 class="nc-title-icon <?php echo $class ?>"
+>

@@ -15,7 +15,7 @@ $url = Hash::merge(array(
 	$params);
 
 if (!isset($params['is_completion'])) :
-	$currentIsCompletion = 0;
+	$currentIsCompletion = TaskContent::TASK_CONTENT_INCOMPLETE_TASK;
 else:
 	$currentIsCompletion = $params['is_completion'];
 endif;
@@ -23,13 +23,13 @@ endif;
 $options = array();
 
 $options = array(
-	'TaskContents.is_completion.' . 0 => array(
+	'TaskContents.is_completion.' . TaskContent::TASK_CONTENT_INCOMPLETE_TASK => array(
 		'label' => __d('tasks', 'Incomplete task'),
-		'is_completion' => 0,
+		'is_completion' => TaskContent::TASK_CONTENT_INCOMPLETE_TASK,
 	),
-	'TaskContents.is_completion.' . 1 => array(
+	'TaskContents.is_completion.' . TaskContent::TASK_CONTENT_IS_COMPLETION => array(
 		'label' => __d('tasks', 'Completed task'),
-		'is_completion' => 1,
+		'is_completion' => TaskContent::TASK_CONTENT_IS_COMPLETION,
 	),
 	'TaskContents.is_completion.' . 'all' => array(
 		'label' => __d('tasks', 'All task'),
@@ -39,8 +39,8 @@ $options = array(
 ?>
 
 <span class="btn-group">
-	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
-			style="width: 125px">
+	<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown" aria-expanded="false">
 		<?php echo h($options['TaskContents.is_completion.' . $currentIsCompletion]['label']); ?>
 		<span class="caret"></span>
 	</button>

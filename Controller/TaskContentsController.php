@@ -45,7 +45,7 @@ class TaskContentsController extends TasksAppController {
 		'NetCommons.Permission' => array(
 			//アクセスの権限
 			'allow' => array(
-					'add,edit,delete' => 'content_creatable',
+				'add,edit,delete' => 'content_creatable',
 			),
 		),
 		'Categories.Categories',
@@ -132,14 +132,14 @@ class TaskContentsController extends TasksAppController {
 			$data['TaskContent']['language_id'] = Current::read('Language.id');
 
 			if (($result = $this->TaskContent->saveContent($data))) {
-				$url = Router::url(NetCommonsUrl::actionUrl(
+				$url = NetCommonsUrl::actionUrl(
 					array(
 						'controller' => 'task_contents',
 						'action' => 'view',
 						'frame_id' => Current::read('Frame.id'),
 						'block_id' => Current::read('Block.id'),
 						'key' => $result['TaskContent']['key'])
-				));
+				);
 
 				return $this->redirect($url);
 			} else {
@@ -216,7 +216,7 @@ class TaskContentsController extends TasksAppController {
 			unset($data['TaskContent']['id']); // 常に新規保存
 
 			if ($this->TaskContent->saveContent($data)) {
-				$url = Router::url(NetCommonsUrl::actionUrl(
+				$url = NetCommonsUrl::actionUrl(
 					array(
 						'controller' => 'task_contents',
 						'action' => 'view',
@@ -224,7 +224,7 @@ class TaskContentsController extends TasksAppController {
 						'block_id' => Current::read('Block.id'),
 						'key' => $data['TaskContent']['key']
 					)
-				));
+				);
 
 				return $this->redirect($url);
 			}
@@ -323,15 +323,7 @@ class TaskContentsController extends TasksAppController {
 		if ($this->TaskContent->deleteContentByKey($key) === false) {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 		}
-		return $this->redirect(
-				Router::url(NetCommonsUrl::actionUrl(
-				array(
-					'controller' => 'task_contents',
-					'action' => 'index',
-					'block_id' => Current::read('Block.id')
-				)
-			)
-		));
+		$this->redirect(NetCommonsUrl::backToPageUrl());
 	}
 
 /**

@@ -40,19 +40,19 @@ echo $this->Html->css(
 		</div>
 	<?php endif ?>
 
-	<div class="clearfix task-margin-bottom-1">
+	<div class="clearfix task-content-margin-1">
 		<div class="pull-left">
 			<?php echo $this->element('TaskContents/select_is_completion'); ?>
 			<?php echo $this->Category->dropDownToggle(array(
 					'empty' => h(__d('tasks', 'No category assignment')),
 					'displayMenu' => true,
-					'url' => Router::url(NetCommonsUrl::actionUrlAsArray(Hash::merge(array(
+					'url' => NetCommonsUrl::actionUrlAsArray(Hash::merge(array(
 						'plugin' => 'tasks',
 						'controller' => 'task_contents',
 						'action' => 'index',
 						'block_id' => Current::read('Block.id'),
 						'frame_id' => Current::read('Frame.id')
-					), $this->params['named'])))
+					), $this->params['named']))
 				)
 			); ?>
 			<?php echo $this->element('TaskContents/select_user', array('options' => $userOptions)); ?>
@@ -72,7 +72,7 @@ echo $this->Html->css(
 		<?php $params = $this->params['named']; ?>
 
 		<?php if ($deadLineTasks && empty($params['category_id']) && $isNotShow === false): ?>
-			<div class="clearfix task-margin-height-1">
+			<div class="clearfix">
 				<div class="pull-left">
 					<?php echo __d('tasks', 'Deadline close Expiration'); ?>
 				</div>
@@ -86,16 +86,25 @@ echo $this->Html->css(
 
 		<?php foreach ($taskContents as $taskContent): ?>
 
-			<div class="clearfix" style="height: 25px;">
-				<div style="border-bottom-width: 5px;" class="pull-left">
+			<div class="clearfix">
+				<div class="pull-left task-category-name-margin">
 					<?php echo $taskContent['Category']['name']; ?>
 				</div>
 
 				<?php if ($taskContent['Category']['name'] !== __d('tasks', 'No category')): ?>
-					<?php echo $this->element('TaskContents/achievement_rate_progress_bar', array(
-						'progressWidth' => 250,
-						'achievedValue' => $taskContent['Category']['category_priority']
-					)); ?>
+					<div class="pull-right">
+						<div class="clearfix">
+							<div class="pull-left progress-min-scale-xs">
+								<div class="progress progress-min-width-xs task-index-progress"
+									 style="width: 250px;">
+									<div class="progress-bar progress-bar-info"
+										 style="width: <?php echo $taskContent['Category']['category_priority']; ?>%;">
+										<?php echo $taskContent['Category']['category_priority']; ?>%
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				<?php endif; ?>
 
 			</div>

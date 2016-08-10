@@ -32,7 +32,7 @@
 	);
 	?>
 
-	<div ng-show="flag==1" style="margin-bottom: 10px;">
+	<div ng-show="flag==1" class="task-content-margin-2">
 		<?php
 		$pickerOpt = str_replace('"', "'", json_encode(array(
 					'format' => 'YYYY-MM-DD',
@@ -50,7 +50,7 @@
 		);
 		?>
 		<div class="form-inline">
-			<div class="input-group" style="margin-bottom: 10px">
+			<div class="input-group task-content-margin-2">
 				<?php echo $this->NetCommonsForm->input('TaskContent.task_start_date', array(
 						'type' => 'datetime',
 						'datetimepicker-options' => $pickerOpt,

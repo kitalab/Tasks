@@ -19,28 +19,42 @@ App::uses('TasksAppModel', 'Tasks.Model');
 class TaskContent extends TasksAppModel {
 
 /**
- * 実施開始日前のタスク
+ * 完了したToDo
+ *
+ * @var const
+ */
+	const TASK_CONTENT_INCOMPLETE_TASK = 0;
+
+/**
+ * 完了したToDo
+ *
+ * @var const
+ */
+	const TASK_CONTENT_IS_COMPLETION = 1;
+
+/**
+ * 実施開始日前のToDo
  *
  * @var const
  */
 	const TASK_START_DATE_BEFORE = 1;
 
 /**
- * 実施終了日間近のタスク
+ * 実施終了日間近のToDo
  *
  * @var const
  */
 	const TASK_DEADLINE_CLOSE = 2;
 
 /**
- * 実施終了日を過ぎたタスク
+ * 実施終了日を過ぎたToDo
  *
  * @var const
  */
 	const TASK_BEYOND_THE_END_DATE = 3;
 
 /**
- * 実施中のタスク
+ * 実施中のToDo
  *
  * @var const
  */
@@ -54,14 +68,14 @@ class TaskContent extends TasksAppModel {
 	const LIST_DISPLAY_NUM = 5;
 
 /**
- * タスクの進捗率の刻み数
+ * ToDoの進捗率の刻み数
  *
  * @var const
  */
 	const TASK_PROGRESS_RATE_INCREMENTS = 10;
 
 /**
- * タスク完了時の進捗率
+ * ToDo完了時の進捗率
  *
  * @var const
  */
@@ -585,6 +599,8 @@ class TaskContent extends TasksAppModel {
 			} else {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
+			
+			$this->log($result);
 		} catch (Exception $e) {
 			$this->rollback($e);
 			//エラー出力

@@ -15,7 +15,7 @@
 	</label>
 
 	<div class="form-group">
-		<div class="col-xs-12" style="margin-bottom: 10px;">
+		<div class="col-xs-12">
 			<div>
 				<?php
 				$title = __d('tasks', 'Person in charge of user selection');

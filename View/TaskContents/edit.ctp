@@ -95,7 +95,7 @@ if (!isset($mailSetting['MailSetting']['is_mail_send']) ||
 							'label' => __d('tasks', 'Priority'),
 							'type' => 'select',
 							'options' => $priorityOptions,
-							'style' => 'width: auto',
+							'class' => 'form-control task-margin-width-2',
 						)
 					); ?>
 
@@ -114,36 +114,47 @@ if (!isset($mailSetting['MailSetting']['is_mail_send']) ||
 					<div class="form-group <?php echo $checkMailClass; ?>" data-calendar-name="checkMail">
 						<?php
 						echo $this->NetCommonsForm->checkbox('TaskContent.is_enable_mail', array(
-							'class' => 'text-left',
-							'style' => 'float: left',
+							'class' => 'text-left pull-left'
 						));
 						?>
-						<label style='float: left; font-weight: 400; font-size: 14px'>
-							<?php echo __d('tasks', 'Inform in advance by mail'); ?>
-						</label>
+						<?php echo $this->NetCommonsForm->label(
+							'TaskContent.email_send_timing',
+							__d('tasks', 'Inform in advance by mail')
+						); ?>
 
-						<?php echo $this->element('TaskContents/select_email_send_timing'); ?>
+						<?php
+						$options = array(
+							'0' => __d('tasks', 'One day before the task period'),
+							'1' => __d('tasks', 'Two days before the task period'),
+							'2' => __d('tasks', 'One week before the task period'),
+						);
+
+						echo $this->NetCommonsForm->select('TaskContent.email_send_timing', $options, array(
+								'class' => 'form-control pull-left task-content-margin-1',
+								'empty' => false,
+							)
+						); ?>
 					</div>
 
 					<?php
 					echo $this->NetCommonsForm->checkbox('TaskContent.use_calendar', array(
-						'class' => 'text-left',
-						'style' => 'float: left; margin-top: 13px',
+						'class' => 'text-left pull-left',
 					));
 					?>
-					<label style='margin-top: 10px; float: left; font-weight: 400; font-size: 14px'>
-						<?php echo __d('tasks', 'Use calendar'); ?>
-					</label>
+					<?php echo $this->NetCommonsForm->label(
+						'TaskContent.email_send_timing',
+						__d('tasks', 'Use calendar')
+					); ?>
 				</fieldset>
 
 				<hr/>
 
-						<?php echo $this->Workflow->inputComment('TaskContent.status'); ?>
+				<?php echo $this->Workflow->inputComment('TaskContent.status'); ?>
 
 			</div>
 
 			<?php echo $this->Workflow->buttons('TaskContent.status'); ?>
-			
+
 			<?php echo $this->NetCommonsForm->end(); ?>
 
 
