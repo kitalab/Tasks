@@ -103,7 +103,7 @@ class Task extends TasksAppModel {
 
 		if (isset($this->data['TaskSetting'])) {
 			$this->TaskSetting->set($this->data['TaskSetting']);
-			if (!$this->TaskSetting->validates()) {
+			if (! $this->TaskSetting->validates()) {
 				$this->validationErrors = Hash::merge($this->validationErrors,
 					$this->TaskSetting->validationErrors);
 				return false;
@@ -183,7 +183,7 @@ class Task extends TasksAppModel {
 				'conditions' => $this->getBlockConditionById(),
 			)
 		);
-		if (!$task) {
+		if (! $task) {
 			return $task;
 		}
 		return Hash::merge($task[0], $this->TaskSetting->getTaskSetting());
@@ -204,13 +204,13 @@ class Task extends TasksAppModel {
 
 		//バリデーション
 		$this->set($data);
-		if (!$this->validates()) {
+		if (! $this->validates()) {
 			return false;
 		}
 
 		try {
 			//登録処理
-			if (!$this->save(null, false)) {
+			if (! $this->save(null, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 			//トランザクションCommit
@@ -243,7 +243,7 @@ class Task extends TasksAppModel {
 
 		try {
 			$conditions = array($this->alias . '.key' => $data['Task']['key']);
-			if (!$this->deleteAll($conditions, false, false)) {
+			if (! $this->deleteAll($conditions, false, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
@@ -251,7 +251,7 @@ class Task extends TasksAppModel {
 			$ContentConditions = array(
 				$this->TaskContent->alias . '.key' => $data['Task']['key']
 			);
-			if (!$this->TaskContent->deleteAll($ContentConditions, false, true)) {
+			if (! $this->TaskContent->deleteAll($ContentConditions, false, true)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 

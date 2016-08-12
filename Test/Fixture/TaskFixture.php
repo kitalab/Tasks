@@ -56,6 +56,18 @@ class TaskFixture extends CakeTestFixture {
 			'modified_user' => '1',
 			'modified' => '2016-03-17 07:10:12',
 		),
+		array(
+			'id' => '2',
+			'block_id' => '4',
+			'key' => 'content_block_1',
+			'status' => '1',
+			'name' => 'Lorem ipsum dolor sit amet',
+			'public_type' => '1',
+			'created_user' => '1',
+			'created' => '2016-03-17 07:10:12',
+			'modified_user' => '1',
+			'modified' => '2016-03-17 07:10:12',
+		),
 	);
 
 }

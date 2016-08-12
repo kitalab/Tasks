@@ -41,7 +41,7 @@ class TaskCharge extends TasksAppModel {
  * @return bool
  * @throws InternalErrorException
  */
-	public function saveCharges($data) {
+	public function setCharges($data) {
 		$taskId = $data['TaskContent']['id'];
 
 		// すべてDelete

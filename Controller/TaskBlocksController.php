@@ -61,8 +61,14 @@ class TaskBlocksController extends TasksAppController {
 	public $helpers = array(
 		'Blocks.BlockForm',
 		'Blocks.BlockTabs' => array(
-			'mainTabs' => array('block_index'),
-			'blockTabs' => array('block_settings', 'mail_settings', 'role_permissions'),
+			'mainTabs' => array(
+				'block_index' => array('url' => array('controller' => 'task_blocks'))
+			),
+			'blockTabs' => array(
+				'block_settings' => array('url' => array('controller' => 'task_blocks')),
+				'mail_settings',
+				'role_permissions' => array('url' => array('controller' => 'task_block_role_permissions'))
+			)
 		),
 		'Blocks.BlockIndex',
 	);
@@ -95,17 +101,6 @@ class TaskBlocksController extends TasksAppController {
 		if (! $tasks) {
 			$this->view = 'Blocks.Blocks/not_found';
 			return;
-		}
-		foreach ($tasks as &$task) {
-			// is_latestで同一言語の件数をとってくる
-			$conditions = [
-				'TaskContent.language_id' => Current::read('Language.id'),
-				'TaskContent.is_latest' => true,
-				'TaskContent.task_key' => $task['Task']['key']
-			];
-			$count = $this->TaskContent->find('count', ['conditions' => $conditions]);
-
-			$task['Task']['entries_count'] = $count;
 		}
 		$this->set('tasks', $tasks);
 		$this->request->data['Frame'] = Current::read('Frame');

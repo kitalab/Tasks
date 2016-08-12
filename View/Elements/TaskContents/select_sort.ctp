@@ -15,7 +15,7 @@ $url = Hash::merge(array(
 	$params
 );
 
-if (!isset($params['sort']) || !$params['direction']) :
+if (! isset($params['sort']) || !$params['direction']) :
 	$currentSort = 'TaskContent.task_end_date.asc';
 else:
 	$currentSort = $params['sort'] . '.' . $params['direction'];
@@ -47,8 +47,8 @@ $options = array(
 ?>
 
 <span class="btn-group">
-	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
-			style="width: auto">
+	<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown" aria-expanded="false">
 		<?php echo h($options[$currentSort]['label']); ?>
 		<span class="caret"></span>
 	</button>

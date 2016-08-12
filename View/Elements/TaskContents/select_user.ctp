@@ -22,8 +22,8 @@ endif;
 ?>
 
 <span class="btn-group">
-	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
-			style="width: auto">
+	<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown" aria-expanded="false">
 		<?php echo h($options['TaskContents.charge_user_id_' . $chargeUser]['label']); ?>
 		<span class="caret"></span>
 	</button>

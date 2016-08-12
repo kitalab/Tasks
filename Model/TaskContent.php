@@ -19,39 +19,81 @@ App::uses('TasksAppModel', 'Tasks.Model');
 class TaskContent extends TasksAppModel {
 
 /**
- * 実施開始日前のタスク
+ * 完了したToDo
+ *
+ * @var const
+ */
+	const TASK_CONTENT_INCOMPLETE_TASK = 0;
+
+/**
+ * 完了したToDo
+ *
+ * @var const
+ */
+	const TASK_CONTENT_IS_COMPLETION = 1;
+
+/**
+ * 実施開始日前のToDo
  *
  * @var const
  */
 	const TASK_START_DATE_BEFORE = 1;
 
 /**
- * 実施終了日間近のタスク
+ * 実施終了日間近のToDo
  *
  * @var const
  */
 	const TASK_DEADLINE_CLOSE = 2;
 
 /**
- * 実施終了日を過ぎたタスク
+ * 実施終了日を過ぎたToDo
  *
  * @var const
  */
 	const TASK_BEYOND_THE_END_DATE = 3;
 
 /**
- * 実施中のタスク
+ * 実施中のToDo
  *
  * @var const
  */
 	const TASK_BEING_PERFORMED = 4;
 
 /**
- * タスク完了時の進捗率
+ * 一覧画面でのユーザーアイコン表示上限
+ *
+ * @var const
+ */
+	const LIST_DISPLAY_NUM = 5;
+
+/**
+ * ToDoの進捗率の刻み数
+ *
+ * @var const
+ */
+	const TASK_PROGRESS_RATE_INCREMENTS = 10;
+
+/**
+ * ToDo完了時の進捗率
  *
  * @var const
  */
 	const TASK_COMPLETION_PROGRESS_RATE = 100;
+
+/**
+ * カテゴリのプログレスバーの長さ
+ *
+ * @var const
+ */
+	const TASK_CATEGORY_PROGRESS_WIDTH = 250;
+
+/**
+ * TODOのプログレスバーの長さ
+ *
+ * @var const
+ */
+	const TASK_TODO_PROGRESS_WIDTH = 300;
 
 /**
  * @var int recursiveはデフォルトアソシエーションなしに
@@ -100,6 +142,16 @@ class TaskContent extends TasksAppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'Block' => array(
+			'className' => 'Blocks.Block',
+			'foreignKey' => 'block_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'counterCache' => array(
+				'content_count' => array('TaskContent.is_latest' => 1),
+			),
 		),
 	);
 
@@ -354,7 +406,7 @@ class TaskContent extends TasksAppModel {
 
 		// 現在実施中
 		$dateColor = TaskContent::TASK_BEING_PERFORMED;
-		if ($taskContent['is_completion'] === true) {
+		if ($taskContent['is_completion'] === true || empty($taskContent['is_date_set'])) {
 			return $dateColor;
 		}
 		// 現在の日付が開始日より前
@@ -489,7 +541,7 @@ class TaskContent extends TasksAppModel {
 			}
 			$data['TaskContent'] = $savedData['TaskContent'];
 			// 担当者を登録
-			if (! $this->TaskCharge->saveCharges($data)) {
+			if (! $this->TaskCharge->setCharges($data)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 			// メール処理
@@ -546,25 +598,42 @@ class TaskContent extends TasksAppModel {
 /**
  * TODO削除
  *
- * @param int $key オリジンID
+ * @param void $key オリジンKey
  * @throws InternalErrorException
  * @return bool
  */
 	public function deleteContentByKey($key) {
 		$this->begin();
 		try {
-			// 記事削除
-			$this->contentKey = $key;
-			$conditions = array('TaskContent.key' => $key);
-			if ($result = $this->deleteAll($conditions, true, true)) {
-				$this->commit();
-			} else {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+
+			// 削除対象となるIDを取得
+			$targetIds = $this->find('list', array(
+				'fields' => array('TaskContent.id', 'TaskContent.id'),
+				'recursive' => -1,
+				'conditions' => array(
+						'TaskContent.key' => $key,
+				)
+			));
+
+			// 関連するデータを一式削除
+			if (count($targetIds) > 0) {
+				$this->contentKey = $key;
+				if (! $this->TaskCharge->deleteAll(
+						array('TaskCharge.task_content_id' => $targetIds), false)) {
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				}
+				if (! $this->deleteAll(array($this->alias . '.key' => $key), false, true)) {
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				}
 			}
-		} catch (Exception $e) {
-			$this->rollback($e);
-			//エラー出力
+
+			$this->commit();
+
+		} catch (Exception $ex) {
+			$this->rollback();
+			CakeLog::error($ex);
+			throw $ex;
 		}
-		return $result;
+		return true;
 	}
 }

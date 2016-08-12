@@ -42,6 +42,12 @@ class TaskContentsController extends TasksAppController {
  * @var array
  */
 	public $components = array(
+		'NetCommons.Permission' => array(
+			//アクセスの権限
+			'allow' => array(
+				'add,edit,delete' => 'content_creatable',
+			),
+		),
 		'Categories.Categories',
 		'ContentComments.ContentComments' => array(
 			'viewVarsKey' => array(
@@ -69,6 +75,7 @@ class TaskContentsController extends TasksAppController {
  */
 	public $helpers = array(
 		'Workflow.Workflow',
+		'NetCommons.NetCommonsForm',
 		'ContentComments.ContentComment' => array(
 			'viewVarsKey' => array(
 				'contentKey' => 'taskContent.TaskContent.key',
@@ -89,7 +96,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function index() {
-		if (!Current::read('Block.id')) {
+		if (! Current::read('Block.id')) {
 			$this->autoRender = false;
 			return;
 		}
@@ -124,16 +131,6 @@ class TaskContentsController extends TasksAppController {
 			// set language_id
 			$data['TaskContent']['language_id'] = Current::read('Language.id');
 
-			// 実施期間のデータを文字列として取得
-			if ($data['TaskContent']['task_start_date']) {
-				$data['TaskContent']['task_start_date']
-					= date('Y-m-d H:i:s', strtotime($data['TaskContent']['task_start_date']));
-			}
-			if ($data['TaskContent']['task_end_date']) {
-				$data['TaskContent']['task_end_date']
-					= date('Y-m-d H:i:s', strtotime($data['TaskContent']['task_end_date']));
-			}
-
 			if (($result = $this->TaskContent->saveContent($data))) {
 				$url = NetCommonsUrl::actionUrl(
 					array(
@@ -160,7 +157,9 @@ class TaskContentsController extends TasksAppController {
 			array(
 				'TaskContent.task_start_date',
 				'TaskContent.task_end_date',
-			));
+			)
+		);
+
 		$this->set('taskContent', $this->request->data);
 		$mailSetting = $this->getMailSetting();
 		$this->set('mailSetting', $mailSetting);
@@ -177,6 +176,13 @@ class TaskContentsController extends TasksAppController {
 	public function edit() {
 		$key = $this->params['key'];
 		$taskContent = $this->TaskContent->getTask($key);
+
+		// 実施期間設定フラグを持たせる
+		if ($taskContent['TaskContent']['task_start_date'] === null) {
+			$taskContent['TaskContent']['date_set_flag'] = 0;
+		} else {
+			$taskContent['TaskContent']['date_set_flag'] = 1;
+		}
 
 		// ToDo担当者ユーザー保持
 		$taskContent = $this->TaskCharge->getSelectUsers($taskContent);
@@ -255,7 +261,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function view() {
-		if (!Current::read('Block.id')) {
+		if (! Current::read('Block.id')) {
 			$this->autoRender = false;
 			return;
 		}
@@ -283,7 +289,7 @@ class TaskContentsController extends TasksAppController {
 
 					$taskContentKey = $taskContent['TaskContent']['key'];
 					$useCommentApproval = $this->_taskSetting['TaskSetting']['use_comment_approval'];
-					if (!$this->ContentComments->comment('tasks', $taskContentKey,
+					if (! $this->ContentComments->comment('tasks', $taskContentKey,
 						$useCommentApproval)
 					) {
 						return $this->throwBadRequest();
@@ -317,15 +323,7 @@ class TaskContentsController extends TasksAppController {
 		if ($this->TaskContent->deleteContentByKey($key) === false) {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 		}
-		return $this->redirect(
-			NetCommonsUrl::actionUrl(
-				array(
-					'controller' => 'task_contents',
-					'action' => 'index',
-					'block_id' => Current::read('Block.id')
-				)
-			)
-		);
+		$this->redirect(NetCommonsUrl::backToPageUrl());
 	}
 
 /**
@@ -369,7 +367,7 @@ class TaskContentsController extends TasksAppController {
 		}
 		// 担当者絞り込み
 		if (isset($conditions['user_id'])) {
-			if (!empty($conditions['user_id'])) {
+			if (! empty($conditions['user_id'])) {
 				$userParam = array(
 					'TaskCharge.user_id' => $conditions['user_id']
 				);

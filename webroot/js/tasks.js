@@ -64,3 +64,35 @@ NetCommonsApp.controller('TaskCharge',
       };
 
     });
+
+
+/**
+ * CircularNotices.deadline Javascript
+ *
+ * @param {string} Controller name
+ * @param {function($scope, NetCommonsWysiwyg)} Controller
+ */
+NetCommonsApp.controller('TaskIsDate',
+    ['$scope', function($scope) {
+
+      /**
+       * tinymce
+       *
+       * @type {object}
+       */
+      $scope.flag = false;
+
+      /**
+       * Initialize
+       *
+       * @param {object} CircularNoticeContents data
+       * @return {void}
+       */
+      $scope.initialize = function(value) {
+        $scope.flag = value;
+      };
+
+      $scope.switchIsDate = function($event) {
+        $scope.flag = $event.target.value;
+      };
+    }]);

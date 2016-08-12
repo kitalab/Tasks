@@ -45,8 +45,6 @@ class TaskSetting extends BlockBaseModel {
 		'Blocks.BlockRolePermission',
 		'Blocks.BlockSetting' => array(
 			BlockSettingBehavior::FIELD_USE_WORKFLOW,
-			BlockSettingBehavior::FIELD_USE_LIKE,
-			BlockSettingBehavior::FIELD_USE_UNLIKE,
 			BlockSettingBehavior::FIELD_USE_COMMENT,
 			BlockSettingBehavior::FIELD_USE_COMMENT_APPROVAL
 		),
@@ -69,10 +67,6 @@ class TaskSetting extends BlockBaseModel {
  * @throws InternalErrorException
  */
 	public function saveTaskSetting($data) {
-		$this->loadModels([
-			'TaskSetting' => 'Tasks.TaskSetting',
-		]);
-
 		//トランザクションBegin
 		$this->begin();
 
