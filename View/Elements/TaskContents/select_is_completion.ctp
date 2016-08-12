@@ -13,29 +13,9 @@ $url = Hash::merge(array(
 	'controller' => 'task_contents',
 	'action' => 'index'),
 	$params);
-
-if (! isset($params['is_completion'])) :
+if (! $currentIsCompletion):
 	$currentIsCompletion = TaskContent::TASK_CONTENT_INCOMPLETE_TASK;
-else:
-	$currentIsCompletion = $params['is_completion'];
 endif;
-
-$options = array();
-
-$options = array(
-	'TaskContents.is_completion.' . TaskContent::TASK_CONTENT_INCOMPLETE_TASK => array(
-		'label' => __d('tasks', 'Incomplete task'),
-		'is_completion' => TaskContent::TASK_CONTENT_INCOMPLETE_TASK,
-	),
-	'TaskContents.is_completion.' . TaskContent::TASK_CONTENT_IS_COMPLETION => array(
-		'label' => __d('tasks', 'Completed task'),
-		'is_completion' => TaskContent::TASK_CONTENT_IS_COMPLETION,
-	),
-	'TaskContents.is_completion.' . 'all' => array(
-		'label' => __d('tasks', 'All task'),
-		'is_completion' => 'all',
-	),
-);
 ?>
 
 <span class="btn-group">

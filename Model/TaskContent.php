@@ -212,21 +212,21 @@ class TaskContent extends TasksAppModel {
 				],
 			),
 			'task_start_date' => array(
-					'datetime' => array(
-							'rule' => array('datetime'),
-							'message' => __d('net_commons', 'Invalid request.'),
-					),
+				'datetime' => array(
+					'rule' => array('datetime'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
 			),
 			'task_end_date' => array(
-					'datetime' => array(
-							'rule' => array('datetime'),
-							'message' => __d('net_commons', 'Invalid request.'),
-					),
-					'fromTo' => array(
-							'rule' => array('validateDatetimeFromTo',
-									array('from' => $this->data['TaskContent']['task_start_date'])),
-							'message' => __d('net_commons', 'Invalid request.'),
-					)
+				'datetime' => array(
+					'rule' => array('datetime'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
+				'fromTo' => array(
+					'rule' => array('validateDatetimeFromTo',
+						array('from' => $this->data['TaskContent']['task_start_date'])),
+					'message' => __d('net_commons', 'Invalid request.'),
+				)
 			),
 		);
 		return $validate;
@@ -440,7 +440,8 @@ class TaskContent extends TasksAppModel {
  */
 	public function isDeadLine($dateColor) {
 		if ($dateColor == TaskContent::TASK_DEADLINE_CLOSE
-				|| $dateColor == TaskContent::TASK_BEYOND_THE_END_DATE) {
+			|| $dateColor == TaskContent::TASK_BEYOND_THE_END_DATE
+		) {
 			return true;
 		}
 		return false;
@@ -562,6 +563,24 @@ class TaskContent extends TasksAppModel {
 /**
  * 進捗率を更新
  *
+ * @param int $userId ToDo進捗率
+ * @return bool
+ * @throws InternalErrorException
+ */
+	public function searchChargeUser($userId) {
+		// 必要なモデル読み込み
+		$this->loadModels([
+			'User' => 'Users.User',
+		]);
+		if (! $this->User->findById($userId)) {
+			return false;
+		}
+		return true;
+	}
+
+/**
+ * 進捗率を更新
+ *
  * @param array $key ToDoキー
  * @param array $progressRate ToDo進捗率
  * @return bool
@@ -611,7 +630,7 @@ class TaskContent extends TasksAppModel {
 				'fields' => array('TaskContent.id', 'TaskContent.id'),
 				'recursive' => -1,
 				'conditions' => array(
-						'TaskContent.key' => $key,
+					'TaskContent.key' => $key,
 				)
 			));
 
@@ -619,7 +638,8 @@ class TaskContent extends TasksAppModel {
 			if (count($targetIds) > 0) {
 				$this->contentKey = $key;
 				if (! $this->TaskCharge->deleteAll(
-						array('TaskCharge.task_content_id' => $targetIds), false)) {
+					array('TaskCharge.task_content_id' => $targetIds), false)
+				) {
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 				}
 				if (! $this->deleteAll(array($this->alias . '.key' => $key), false, true)) {

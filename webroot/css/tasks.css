@@ -18,6 +18,45 @@
     color: #00AA00;
 }
 
+.task-index-priority-1 {
+    position: absolute;
+}
+
+.task-index-priority-2 {
+    position: relative;
+    bottom: 12px;
+}
+
+.task-index-progress {
+    margin-bottom: 5px;
+    height: 20px;
+}
+
+.task-view-progress {
+    height: 32px;
+    margin-left: 5px;
+}
+
+.task-category-name-margin {
+    border-bottom-width: 5px;
+}
+
+.task-view-table {
+    display: table;
+}
+
+.task-view-table-cell {
+    display: table-cell;
+}
+
+.task-view-user-top {
+    vertical-align: top;
+}
+
+.task-view-content-top {
+    margin-top: 10px;
+}
+
 .task-color-un-active {
     color: #BBBBBB;
 }
@@ -40,43 +79,4 @@
 
 .task-content-margin-3 {
     margin-left: 10px
-}
-
-.task-view-progress {
-    height: 32px;
-    margin-left: 5px;
-}
-
-.task-index-priority-1 {
-    position: absolute;
-}
-
-.task-index-priority-2 {
-    position: relative;
-    bottom: 12px;
-}
-
-.task-category-name-margin {
-    border-bottom-width: 5px;
-}
-
-.task-spacer {
-    border: 0 none transparent;
-}
-
-.task-index-progress {
-    margin-bottom: 5px;
-    height: 20px;
-}
-
-.task-view-table {
-    display: table;
-}
-
-.task-view-table-cell {
-    display: table-cell;
-}
-
-.task-view-user-top {
-    vertical-align: top;
 }

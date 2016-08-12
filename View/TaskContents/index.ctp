@@ -42,7 +42,10 @@ echo $this->Html->css(
 
 	<div class="clearfix task-content-margin-1">
 		<div class="pull-left">
-			<?php echo $this->element('TaskContents/select_is_completion'); ?>
+			<?php echo $this->element('TaskContents/select_is_completion', array(
+					'options' => $isCompletionOptions,
+					'currentIsCompletion' => $currentIsCompletion
+			)); ?>
 			<?php echo $this->Category->dropDownToggle(array(
 					'empty' => h(__d('tasks', 'No category assignment')),
 					'displayMenu' => true,
@@ -55,8 +58,14 @@ echo $this->Html->css(
 					), $this->params['named']))
 				)
 			); ?>
-			<?php echo $this->element('TaskContents/select_user', array('options' => $userOptions)); ?>
-			<?php echo $this->element('TaskContents/select_sort'); ?>
+			<?php echo $this->element('TaskContents/select_user', array(
+					'options' => $userOptions,
+					'currentUserId' => $currentUserId
+			)); ?>
+			<?php echo $this->element('TaskContents/select_sort', array(
+					'options' => $sortOptions,
+					'currentSort' => $currentSort,
+			)); ?>
 		</div>
 	</div>
 	<?php if (empty(count($taskContents))): ?>

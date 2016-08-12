@@ -15,35 +15,9 @@ $url = Hash::merge(array(
 	$params
 );
 
-if (! isset($params['sort']) || !$params['direction']) :
+if (! $currentSort) :
 	$currentSort = 'TaskContent.task_end_date.asc';
-else:
-	$currentSort = $params['sort'] . '.' . $params['direction'];
 endif;
-$options = array();
-
-$options = array(
-	'TaskContent.task_end_date.asc' => array(
-		'label' => __d('tasks', 'Close of the deadline order'),
-		'sort' => 'TaskContent.task_end_date',
-		'direction' => 'asc'
-	),
-	'TaskContent.priority.desc' => array(
-		'label' => __d('tasks', 'Priority order'),
-		'sort' => 'TaskContent.priority',
-		'direction' => 'desc'
-	),
-	'TaskContent.progress_rate.desc' => array(
-		'label' => __d('tasks', 'High progress rate order'),
-		'sort' => 'TaskContent.progress_rate',
-		'direction' => 'desc'
-	),
-	'TaskContent.progress_rate.asc' => array(
-		'label' => __d('tasks', 'Low progress rate order'),
-		'sort' => 'TaskContent.progress_rate',
-		'direction' => 'asc'
-	),
-);
 ?>
 
 <span class="btn-group">

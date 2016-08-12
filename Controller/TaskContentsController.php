@@ -131,6 +131,11 @@ class TaskContentsController extends TasksAppController {
 			// set language_id
 			$data['TaskContent']['language_id'] = Current::read('Language.id');
 
+			// set task_end_date
+			if ($data['TaskContent']['is_date_set']) {
+				$data = $this->setTaskEndDateTime($data);
+			}
+
 			if (($result = $this->TaskContent->saveContent($data))) {
 				$url = NetCommonsUrl::actionUrl(
 					array(
@@ -212,6 +217,11 @@ class TaskContentsController extends TasksAppController {
 			$this->request->data['TaskContent']['language_id'] = Current::read('Language.id');
 
 			$data = $this->request->data;
+
+			// set task_end_date
+			if ($data['TaskContent']['is_date_set']) {
+				$data = $this->setTaskEndDateTime($data);
+			}
 
 			unset($data['TaskContent']['id']); // 常に新規保存
 
@@ -361,43 +371,51 @@ class TaskContentsController extends TasksAppController {
 
 		// カテゴリ絞り込み
 		if (isset($conditions['category_id'])) {
-			$params[] = array(
-				'TaskContent.category_id' => $conditions['category_id']
-			);
+			$params[] = array('TaskContent.category_id' => $conditions['category_id']);
 		}
+
+		$currentUserId = '';
 		// 担当者絞り込み
 		if (isset($conditions['user_id'])) {
-			if (! empty($conditions['user_id'])) {
+			if (! empty($conditions['user_id'])
+					&& $this->TaskContent->searchChargeUser($conditions['user_id'])) {
 				$userParam = array(
 					'TaskCharge.user_id' => $conditions['user_id']
 				);
 			}
+			$currentUserId = $conditions['user_id'];
 		} else {
 			$userParam = array(
 				'TaskCharge.user_id' => Current::read('User.id')
 			);
 		}
+
+		// 完了未完了option取得
+		$isCompletionOptions = $this->getSelectOptions('is_completion');
 		// 完了未完了絞り込み
+		$currentIsCompletion = '';
 		if (isset($conditions['is_completion'])) {
-			if ($conditions['is_completion'] !== 'all') {
+			if ($conditions['is_completion'] !== 'all'
+				&& isset($isCompletionOptions['TaskContents.is_completion.' . $conditions['is_completion']])
+			) {
 				$params[] = array(
 					'TaskContent.is_completion' => $conditions['is_completion']
 				);
 			}
+			$currentIsCompletion = $conditions['is_completion'];
 		} else {
 			$params[] = array(
-				'TaskContent.is_completion' => 0
+				'TaskContent.is_completion' => TaskContent::TASK_CONTENT_INCOMPLETE_TASK
 			);
 		}
+
+		// 並べ替えoption取得
+		$sortOptions = $this->getSelectOptions('sort');
 		// 並べ替え絞り込み
-		if (isset($conditions['sort']) && $conditions['direction']) {
-			$order = array($conditions['sort'] => $conditions['direction']);
-		} else {
-			$order = array('TaskContent.task_end_date' => 'asc');
-		}
+		$sort = $this->getSortParam($conditions, $sortOptions);
 
 		// order情報を整理
-		$order = array_merge($order, $defaultOrder);
+		$order = array_merge($sort['order'], $defaultOrder);
 
 		$taskContents = $this->TaskContent->getList($params, $order, $userParam);
 
@@ -412,9 +430,9 @@ class TaskContentsController extends TasksAppController {
 		$myUser = array(Current::read('User'));
 		// 担当者絞り込みデフォルト値
 		$options = array(
-			'TaskContents.charge_user_id_' . 0 => array(
+			'TaskContents.charge_user_id_all' => array(
 				'label' => __d('tasks', 'No person in charge'),
-				'user_id' => 0,
+				'user_id' => 'all',
 			),
 			'TaskContents.charge_user_id_' . $myUser[0]['id'] => array(
 				'label' => $myUser[0]['handlename'],
@@ -425,7 +443,10 @@ class TaskContentsController extends TasksAppController {
 
 		// 担当者絞り込み条件をマージする
 		$userOptions = array_merge($options, $selectChargeUsers);
+		$this->set('currentUserId', $currentUserId);
 		$this->set('userOptions', $userOptions);
+		$this->set('currentIsCompletion', $currentIsCompletion);
+		$this->set('currentSort', $sort['currentSort']);
 
 		$this->TaskContent->Behaviors->unload('ContentComments.ContentComment');
 	}
@@ -447,5 +468,109 @@ class TaskContentsController extends TasksAppController {
 			)
 		);
 		return $mailSetting;
+	}
+
+/**
+ * getMailSetting
+ *
+ * 絞り込み及びソートのoption取得
+ *
+ * @param void $selectTarget 絞り込み及びソート対象名
+ * @return array selectOptions
+ */
+	public function getSelectOptions($selectTarget = '') {
+		$selectOptions = array();
+
+		if ($selectTarget === 'is_completion') {
+			$selectOptions = array(
+				'TaskContents.is_completion.' . TaskContent::TASK_CONTENT_INCOMPLETE_TASK => array(
+					'label' => __d('tasks', 'Incomplete task'),
+					'is_completion' => TaskContent::TASK_CONTENT_INCOMPLETE_TASK,
+				),
+				'TaskContents.is_completion.' . TaskContent::TASK_CONTENT_IS_COMPLETION => array(
+					'label' => __d('tasks', 'Completed task'),
+					'is_completion' => TaskContent::TASK_CONTENT_IS_COMPLETION,
+				),
+				'TaskContents.is_completion.' . 'all' => array(
+					'label' => __d('tasks', 'All task'),
+					'is_completion' => 'all',
+				),
+			);
+			$this->set('isCompletionOptions', $selectOptions);
+		}
+
+		if ($selectTarget === 'sort') {
+			$selectOptions = array(
+				'TaskContent.task_end_date.asc' => array(
+					'label' => __d('tasks', 'Close of the deadline order'),
+					'sort' => 'TaskContent.task_end_date',
+					'direction' => 'asc'
+				),
+				'TaskContent.priority.desc' => array(
+					'label' => __d('tasks', 'Priority order'),
+					'sort' => 'TaskContent.priority',
+					'direction' => 'desc'
+				),
+				'TaskContent.progress_rate.desc' => array(
+					'label' => __d('tasks', 'High progress rate order'),
+					'sort' => 'TaskContent.progress_rate',
+					'direction' => 'desc'
+				),
+				'TaskContent.progress_rate.asc' => array(
+					'label' => __d('tasks', 'Low progress rate order'),
+					'sort' => 'TaskContent.progress_rate',
+					'direction' => 'asc'
+				),
+			);
+			$this->set('sortOptions', $selectOptions);
+		}
+
+		return $selectOptions;
+	}
+
+/**
+ * getSortParam
+ *
+ * 並び替えのorderパラメーターとcurrentSortの値を取得
+ *
+ * @param array $conditions POSTされた絞り込み及びソートデータ
+ * @param array $sortOptions 並び替え選択肢
+ * @return array sortパラメーター
+ */
+	public function getSortParam($conditions = array(), $sortOptions = array()) {
+		$sortPram = '';
+		$currentSort = '';
+		if (isset($conditions['sort']) && isset($conditions['direction'])) {
+			$sortPram = $conditions['sort'] . '.' . $conditions['direction'];
+		}
+		if (isset($sortOptions[$sortPram])) {
+			$order = array($conditions['sort'] => $conditions['direction']);
+			$currentSort = $conditions['sort'] . '.' . $conditions['direction'];
+		} else {
+			$order = array('TaskContent.task_end_date' => 'asc');
+		}
+
+		$sort = array(
+			'order' => $order,
+			'currentSort' => $currentSort
+		);
+
+		return $sort;
+	}
+
+/**
+ * setTaskEndDateTime
+ *
+ * ToDoの実施日終了日の時刻を23:59:59に設定
+ *
+ * @param array $data POSTされたToDoデータ
+ * @return array
+ */
+	public function setTaskEndDateTime($data) {
+		$endDate = $data['TaskContent']['task_end_date'];
+		$data['TaskContent']['task_end_date'] = date(
+			'Y-m-d H:i:s', strtotime($endDate . '+1 days -1 second')
+		);
+		return $data;
 	}
 }
