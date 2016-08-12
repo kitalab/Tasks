@@ -51,7 +51,14 @@ echo $this->Html->css(
 				);
 				echo $this->NetCommonsForm->create(
 					'TaskProgressRate', array('type' => 'post', 'url' => $url)
-				); ?>
+				);
+				$disabled = 'disabled';
+				if (Hash::extract($content, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']')
+						|| $this->Workflow->canEdit('Tasks.TaskContent', $content)
+				):
+					$disabled = '';
+				endif;
+				?>
 				<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1 task-index-content-text-middle">
 					<div data-toggle="buttons">
 						<?php echo $this->NetCommonsForm->input(
@@ -61,6 +68,7 @@ echo $this->Html->css(
 								'checked' => true,
 								'class' => 'btn btn-default',
 								'div' => false,
+								$disabled
 							)
 						); ?>
 					</div>

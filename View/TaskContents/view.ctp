@@ -112,16 +112,25 @@ echo $this->Html->css(
 							<div class="task-view-table-cell">
 								<?php echo h(__d('tasks', 'Progress rate')); ?>
 							</div>
+							<?php
+							$disabled = 'disabled';
+							if (Hash::extract($taskContent, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']')
+									|| $this->Workflow->canEdit('Tasks.TaskContent', $taskContent)
+							):
+								$disabled = '';
+							endif;
+							?>
 							<div class="task-view-table-cell">
 								<?php echo $this->element(
 									'TaskContents/select_progress', array(
-									'progressRate' => $taskContent['TaskContent']['progress_rate']
+									'progressRate' => $taskContent['TaskContent']['progress_rate'],
+									'disabled' => $disabled
 								)); ?>
 							</div>
 						</div>
 					</div>
 					<div class="pull-left">
-						<div class="progress-min-scale-xs" class="task-view-table-cell">
+						<div class="progress-min-scale-xs task-view-table-cell">
 							<div class="progress progress-min-width-xs task-view-progress"
 								 style="width: <?php echo TaskContent::TASK_TODO_PROGRESS_WIDTH?>px;">
 								<div class="progress-bar progress-bar-success"
