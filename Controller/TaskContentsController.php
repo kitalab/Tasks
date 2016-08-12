@@ -131,6 +131,11 @@ class TaskContentsController extends TasksAppController {
 			// set language_id
 			$data['TaskContent']['language_id'] = Current::read('Language.id');
 
+			// set task_end_date
+			if ($data['TaskContent']['is_date_set']) {
+				$data = $this->setTaskEndDateTime($data);
+			}
+
 			if (($result = $this->TaskContent->saveContent($data))) {
 				$url = NetCommonsUrl::actionUrl(
 					array(
@@ -212,6 +217,11 @@ class TaskContentsController extends TasksAppController {
 			$this->request->data['TaskContent']['language_id'] = Current::read('Language.id');
 
 			$data = $this->request->data;
+
+			// set task_end_date
+			if ($data['TaskContent']['is_date_set']) {
+				$data = $this->setTaskEndDateTime($data);
+			}
 
 			unset($data['TaskContent']['id']); // 常に新規保存
 
@@ -447,5 +457,21 @@ class TaskContentsController extends TasksAppController {
 			)
 		);
 		return $mailSetting;
+	}
+
+/**
+ * setTaskEndDateTime
+ *
+ * ToDoの実施日終了日の時刻を23:59:59に設定
+ *
+ * @param array $data POSTされたToDoデータ
+ * @return array 
+ */
+	public function setTaskEndDateTime($data) {
+		$endDate = $data['TaskContent']['task_end_date'];
+		$data['TaskContent']['task_end_date'] = date(
+				'Y-m-d H:i:s', strtotime($endDate . '+1 days -1 second')
+		);
+		return $data;
 	}
 }
