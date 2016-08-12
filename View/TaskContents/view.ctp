@@ -169,15 +169,12 @@ echo $this->Html->css(
 				</div>
 			</div>
 
-			<hr style="border: 0 none transparent;">
-
-			<div>
+			<div class="task-view-content-top">
 				<?php echo $taskContent['TaskContent']['content']; ?>
 			</div>
-
-			<hr style="border: 0 none transparent;">
-
+			
 			<?php echo $this->ContentComment->index($taskContent); ?>
+
 		</article>
 	</div>
 </div>
