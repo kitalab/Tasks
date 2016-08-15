@@ -29,9 +29,6 @@ class TaskContentsController extends TasksAppController {
 	public $uses = array(
 		'Tasks.TaskContent',
 		'Tasks.TaskCharge',
-		'Workflow.WorkflowComment',
-		'Categories.Category',
-		'Groups.GroupUserList',
 		'User' => 'Users.User',
 		'Mails.MailSetting',
 	);
@@ -106,7 +103,7 @@ class TaskContentsController extends TasksAppController {
 
 		$conditions = $this->request->params['named'];
 
-		$this->_list($conditions);
+		$this->__list($conditions);
 	}
 
 /**
@@ -133,7 +130,7 @@ class TaskContentsController extends TasksAppController {
 
 			// set task_end_date
 			if ($data['TaskContent']['is_date_set']) {
-				$data = $this->setTaskEndDateTime($data);
+				$data = $this->__setTaskEndDateTime($data);
 			}
 
 			if (($result = $this->TaskContent->saveContent($data))) {
@@ -165,11 +162,10 @@ class TaskContentsController extends TasksAppController {
 			)
 		);
 
-		$this->set('taskContent', $this->request->data);
-		$mailSetting = $this->getMailSetting();
+		$mailSetting = $this->__getMailSetting();
 		$this->set('mailSetting', $mailSetting);
 
-		$this->render('edit');
+		$this->view = 'edit';
 	}
 
 /**
@@ -201,7 +197,7 @@ class TaskContentsController extends TasksAppController {
 		}
 		$this->_prepare();
 
-		if ($this->request->is(array('post', 'put'))) {
+		if ($this->request->is('put')) {
 
 			$this->TaskContent->create();
 			$this->request->data['TaskContent']['task_key'] =
@@ -220,7 +216,7 @@ class TaskContentsController extends TasksAppController {
 
 			// set task_end_date
 			if ($data['TaskContent']['is_date_set']) {
-				$data = $this->setTaskEndDateTime($data);
+				$data = $this->__setTaskEndDateTime($data);
 			}
 
 			unset($data['TaskContent']['id']); // 常に新規保存
@@ -256,7 +252,7 @@ class TaskContentsController extends TasksAppController {
 				'TaskContent.task_end_date',
 			));
 
-		$mailSetting = $this->getMailSetting();
+		$mailSetting = $this->__getMailSetting();
 		$this->set('mailSetting', $mailSetting);
 		$this->set('taskContent', $taskContent);
 		$this->set('isDeletable', $this->TaskContent->canDeleteWorkflowContent($taskContent));
@@ -361,7 +357,7 @@ class TaskContentsController extends TasksAppController {
  * @param array $conditions ソート絞り込み条件
  * @return void
  */
-	protected function _list($conditions) {
+	private function __list($conditions) {
 		$this->TaskContent->recursive = 0;
 		$this->TaskContent->Behaviors->load('ContentComments.ContentComment');
 
@@ -391,7 +387,7 @@ class TaskContentsController extends TasksAppController {
 		}
 
 		// 完了未完了option取得
-		$isCompletionOptions = $this->getSelectOptions('is_completion');
+		$isCompletionOptions = $this->__getSelectOptions('is_completion');
 		// 完了未完了絞り込み
 		$currentIsCompletion = '';
 		if (isset($conditions['is_completion'])) {
@@ -410,9 +406,9 @@ class TaskContentsController extends TasksAppController {
 		}
 
 		// 並べ替えoption取得
-		$sortOptions = $this->getSelectOptions('sort');
+		$sortOptions = $this->__getSelectOptions('sort');
 		// 並べ替え絞り込み
-		$sort = $this->getSortParam($conditions, $sortOptions);
+		$sort = $this->__getSortParam($conditions, $sortOptions);
 
 		// order情報を整理
 		$order = array_merge($sort['order'], $defaultOrder);
@@ -452,13 +448,13 @@ class TaskContentsController extends TasksAppController {
 	}
 
 /**
- * getMailSetting
+ * Get Mail Setting
  *
  * メール設定情報の取得
  *
  * @return array メール設定情報の配列
  */
-	public function getMailSetting() {
+	private function __getMailSetting() {
 		$mailSetting = $this->MailSetting->find('first', array(
 				'conditions' => array(
 					$this->MailSetting->alias . '.plugin_key' => 'tasks',
@@ -471,14 +467,14 @@ class TaskContentsController extends TasksAppController {
 	}
 
 /**
- * getMailSetting
+ * Get Select Options
  *
  * 絞り込み及びソートのoption取得
  *
  * @param void $selectTarget 絞り込み及びソート対象名
  * @return array selectOptions
  */
-	public function getSelectOptions($selectTarget = '') {
+	private function __getSelectOptions($selectTarget = '') {
 		$selectOptions = array();
 
 		if ($selectTarget === 'is_completion') {
@@ -529,7 +525,7 @@ class TaskContentsController extends TasksAppController {
 	}
 
 /**
- * getSortParam
+ * Get Sort Param
  *
  * 並び替えのorderパラメーターとcurrentSortの値を取得
  *
@@ -537,7 +533,7 @@ class TaskContentsController extends TasksAppController {
  * @param array $sortOptions 並び替え選択肢
  * @return array sortパラメーター
  */
-	public function getSortParam($conditions = array(), $sortOptions = array()) {
+	private function __getSortParam($conditions = array(), $sortOptions = array()) {
 		$sortPram = '';
 		$currentSort = '';
 		if (isset($conditions['sort']) && isset($conditions['direction'])) {
@@ -559,14 +555,14 @@ class TaskContentsController extends TasksAppController {
 	}
 
 /**
- * setTaskEndDateTime
+ * Get Task End Date Time
  *
  * ToDoの実施日終了日の時刻を23:59:59に設定
  *
  * @param array $data POSTされたToDoデータ
  * @return array
  */
-	public function setTaskEndDateTime($data) {
+	private function __setTaskEndDateTime($data) {
 		$endDate = $data['TaskContent']['task_end_date'];
 		$data['TaskContent']['task_end_date'] = date(
 			'Y-m-d H:i:s', strtotime($endDate . '+1 days -1 second')

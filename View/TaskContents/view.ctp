@@ -10,18 +10,9 @@
  */
 ?>
 <?php
-echo $this->Html->css(
-	array(
-		'/tasks/css/tasks.css'
-	),
-	array(
-		'plugin' => false,
-		'once' => true,
-		'inline' => false
-	)
-);
+echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 ?>
-<div class="taskContents form" xmlns="http://www.w3.org/1999/html">
+<div class="taskContents form">
 	<div class="ng-scope">
 
 		<header class="clearfix">
@@ -112,16 +103,25 @@ echo $this->Html->css(
 							<div class="task-view-table-cell">
 								<?php echo h(__d('tasks', 'Progress rate')); ?>
 							</div>
+							<?php
+							$disabled = 'disabled';
+							if (Hash::extract($taskContent, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']')
+									|| $this->Workflow->canEdit('Tasks.TaskContent', $taskContent)
+							):
+								$disabled = '';
+							endif;
+							?>
 							<div class="task-view-table-cell">
 								<?php echo $this->element(
 									'TaskContents/select_progress', array(
-									'progressRate' => $taskContent['TaskContent']['progress_rate']
+									'progressRate' => $taskContent['TaskContent']['progress_rate'],
+									'disabled' => $disabled
 								)); ?>
 							</div>
 						</div>
 					</div>
 					<div class="pull-left">
-						<div class="progress-min-scale-xs" class="task-view-table-cell">
+						<div class="progress-min-scale-xs task-view-table-cell">
 							<div class="progress progress-min-width-xs task-view-progress"
 								 style="width: <?php echo TaskContent::TASK_TODO_PROGRESS_WIDTH?>px;">
 								<div class="progress-bar progress-bar-success"
@@ -150,20 +150,20 @@ echo $this->Html->css(
 						<div class="task-view-table-cell-2 task-view-user-top">
 							<?php echo h(__d('tasks', 'Person in charge')); ?>
 						</div>
-						<div class="">
-					<span class="nc-groups-avatar-list text-left">
-						<?php if (! $this->request->data['selectUsers']) : ?>
-							<?php echo h(__d('tasks', 'Not selected')); ?>
-						<?php else : ?>
-							<?php foreach ($this->request->data['selectUsers'] as $selectUsers): ?>
-								<?php
-								echo $this->DisplayUser->handlelink(
-									$selectUsers, array('avatar' => true), array(), 'User'
-								);
-								?>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</span>
+						<div>
+							<span class="nc-groups-avatar-list text-left">
+								<?php if (! $this->request->data['selectUsers']) : ?>
+									<?php echo h(__d('tasks', 'Not selected')); ?>
+								<?php else : ?>
+									<?php foreach ($this->request->data['selectUsers'] as $selectUsers): ?>
+										<?php
+										echo $this->DisplayUser->handlelink(
+											$selectUsers, array('avatar' => true), array(), 'User'
+										);
+										?>
+									<?php endforeach; ?>
+								<?php endif; ?>
+							</span>
 						</div>
 					</div>
 				</div>

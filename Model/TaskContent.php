@@ -19,6 +19,13 @@ App::uses('TasksAppModel', 'Tasks.Model');
 class TaskContent extends TasksAppModel {
 
 /**
+ * メールを送信しない
+ *
+ * @var const
+ */
+	const TASK_CONTENT_NOT_IS_MAIL_SEND = 0;
+
+/**
  * 完了したToDo
  *
  * @var const
@@ -228,6 +235,58 @@ class TaskContent extends TasksAppModel {
 					'message' => __d('net_commons', 'Invalid request.'),
 				)
 			),
+			'category_id' => array(
+					'numeric' => array(
+							'rule' => array('numeric'),
+							'allowEmpty' => true,
+					'message' => __d('net_commons', 'Invalid request.')
+					),
+			),
+			'priority' => array(
+					'numeric' => array(
+							'rule' => array('numeric'),
+							'allowEmpty' => true,
+					'message' => __d('net_commons', 'Invalid request.')
+					),
+			),
+			'status' => array(
+					'numeric' => array(
+							'rule' => array('numeric'),
+					'message' => __d('net_commons', 'Invalid request.')
+					),
+			),
+			'is_enable_mail' => array(
+					'boolean' => array(
+							'rule' => array('boolean'),
+					'message' => __d('net_commons', 'Invalid request.')
+					),
+			),
+			'is_date_set' => array(
+					'boolean' => array(
+							'rule' => array('boolean'),
+					'message' => __d('net_commons', 'Invalid request.')
+					),
+			),
+			'use_calendar' => array(
+					'boolean' => array(
+							'rule' => array('boolean'),
+					'message' => __d('net_commons', 'Invalid request.')
+					),
+			),
+			'email_send_timing' => array(
+					'numeric' => array(
+							'rule' => array('numeric'),
+							'allowEmpty' => true,
+					'message' => __d('net_commons', 'Invalid request.')
+					),
+			),
+			'progress_rate' => array(
+					'numeric' => array(
+							'rule' => array('numeric'),
+							'allowEmpty' => true,
+					'message' => __d('net_commons', 'Invalid request.')
+					),
+			),
 		);
 		return $validate;
 	}
@@ -417,7 +476,7 @@ class TaskContent extends TasksAppModel {
 		}
 		if (! empty($taskContent['task_end_date'])) {
 			// 終了期限間近
-			if (intval($taskContent['task_end_date']) >= intval($now)
+			if (intval(date('Ymd', strtotime($taskContent['task_end_date']))) >= intval($now)
 				&& intval(date('Ymd', strtotime($taskContent['task_end_date']))) <= intval($deadLine)
 			) {
 				$dateColor = TaskContent::TASK_DEADLINE_CLOSE;

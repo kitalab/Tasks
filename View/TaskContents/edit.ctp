@@ -11,32 +11,14 @@
 ?>
 
 <?php
-echo $this->Html->script(
-	array(
-		'/tasks/js/tasks.js',
-	),
-	array(
-		'plugin' => false,
-		'once' => true,
-		'inline' => false
-	)
-);
-echo $this->Html->css(
-	array(
-		'/tasks/css/tasks.css'
-	),
-	array(
-		'plugin' => false,
-		'once' => true,
-		'inline' => false
-	)
-);
+echo $this->NetCommonsHtml->script('/tasks/js/tasks.js');
+echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 ?>
 
 <?php
 $checkMailClass = '';
-if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
-	$mailSetting['MailSetting']['is_mail_send'] == 0
+if (! isset($mailSetting['MailSetting']['is_mail_send'])
+		|| $mailSetting['MailSetting']['is_mail_send'] == TaskContent::TASK_CONTENT_NOT_IS_MAIL_SEND
 ) {
 	$checkMailClass = 'hidden';
 }
@@ -117,6 +99,7 @@ if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 							'class' => 'text-left pull-left'
 						));
 						?>
+						<?php echo $this->NetCommonsForm->error('TaskContent.is_enable_mail'); ?>
 						<?php echo $this->NetCommonsForm->label(
 							'TaskContent.email_send_timing',
 							__d('tasks', 'Inform in advance by mail')
@@ -134,6 +117,7 @@ if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 								'empty' => false,
 							)
 						); ?>
+						<?php echo $this->NetCommonsForm->error('TaskContent.email_send_timing'); ?>
 					</div>
 
 					<?php
@@ -142,9 +126,10 @@ if (! isset($mailSetting['MailSetting']['is_mail_send']) ||
 					));
 					?>
 					<?php echo $this->NetCommonsForm->label(
-						'TaskContent.email_send_timing',
+						'TaskContent.use_calendar',
 						__d('tasks', 'Use calendar')
 					); ?>
+					<?php echo $this->NetCommonsForm->error('TaskContent.use_calendar'); ?>
 				</fieldset>
 
 				<hr/>

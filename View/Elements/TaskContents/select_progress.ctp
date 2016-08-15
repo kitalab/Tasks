@@ -31,6 +31,7 @@ echo $this->NetCommonsForm->input('TaskContent.progress_rate', array(
 		'options' => $options,
 		'value' => $progressRate,
 		'onChange' => 'submit();',
+		$disabled
 	)
 );
 
