@@ -10,16 +10,7 @@
  */
 ?>
 <?php
-echo $this->Html->css(
-	array(
-		'/tasks/css/tasks.css'
-	),
-	array(
-		'plugin' => false,
-		'once' => true,
-		'inline' => false
-	)
-);
+echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 ?>
 <article class="tasks index " ng-controller="Tasks.Contents" ng-init="init(<?php echo Current::read('Frame.id') ?>)">
 	<h1 class="tasks_taskTitle"><?php echo $listTitle ?></h1>
@@ -31,6 +22,7 @@ echo $this->Html->css(
 			$addUrl = $this->NetCommonsHtml->url(array(
 				'controller' => 'task_contents',
 				'action' => 'add',
+				'frame_id' => Current::read('Frame.id')
 			));
 			echo $this->Button->addLink('',
 				$addUrl,

@@ -29,9 +29,6 @@ class TaskContentsController extends TasksAppController {
 	public $uses = array(
 		'Tasks.TaskContent',
 		'Tasks.TaskCharge',
-		'Workflow.WorkflowComment',
-		'Categories.Category',
-		'Groups.GroupUserList',
 		'User' => 'Users.User',
 		'Mails.MailSetting',
 	);
@@ -165,7 +162,6 @@ class TaskContentsController extends TasksAppController {
 			)
 		);
 
-		$this->set('taskContent', $this->request->data);
 		$mailSetting = $this->getMailSetting();
 		$this->set('mailSetting', $mailSetting);
 
@@ -201,7 +197,7 @@ class TaskContentsController extends TasksAppController {
 		}
 		$this->_prepare();
 
-		if ($this->request->is(array('post', 'put'))) {
+		if ($this->request->is('put')) {
 
 			$this->TaskContent->create();
 			$this->request->data['TaskContent']['task_key'] =

@@ -10,12 +10,8 @@
     padding-bottom: 5px;
 }
 
-.task-index-content-text-middle {
+.table>tbody>tr>td.task-index-content-text-middle {
     vertical-align: middle;
-}
-
-.task-index-button-completion-color {
-    color: #00AA00;
 }
 
 .task-index-priority-1 {
@@ -55,18 +51,6 @@
 
 .task-view-content-top {
     margin-top: 10px;
-}
-
-.task-color-un-active {
-    color: #BBBBBB;
-}
-
-.task-color-deadline {
-    color: #f0ad4e;
-}
-
-.task-color-danger {
-    color: #FF0000;
 }
 
 .task-content-margin-1 {

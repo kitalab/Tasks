@@ -10,16 +10,7 @@
  */
 ?>
 <?php
-echo $this->Html->css(
-	array(
-		'/tasks/css/tasks.css'
-	),
-	array(
-		'plugin' => false,
-		'once' => true,
-		'inline' => false
-	)
-);
+echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 ?>
 <div class="taskContents form">
 	<div class="ng-scope">

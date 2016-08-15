@@ -10,16 +10,7 @@
 ?>
 
 <?php
-echo $this->Html->css(
-	array(
-		'/tasks/css/tasks.css'
-	),
-	array(
-		'plugin' => false,
-		'once' => true,
-		'inline' => false
-	)
-);
+echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 ?>
 
 <table class="table table-hover">
@@ -27,10 +18,10 @@ echo $this->Html->css(
 	<?php foreach ($taskContents as $content): ?>
 		<tr>
 			<?php if ($content['TaskContent']['is_completion'] === true): ?>
-				<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1 task-index-content-text-middle">
+				<td class="col-xs-1 col-sm-1 col-md-1 col-lg-1 task-index-content-text-middle">
 					<div data-toggle="buttons">
 						<?php echo $this->NetCommonsForm->input(
-							'<span class="glyphicon glyphicon-ok task-index-button-completion-color"></span>', array(
+							'<span class="glyphicon glyphicon-ok text-success"></span>', array(
 								'type' => 'button',
 								'checked' => true,
 								'disabled' => 'disabled',
@@ -59,7 +50,7 @@ echo $this->Html->css(
 					$disabled = '';
 				endif;
 				?>
-				<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1 task-index-content-text-middle">
+				<td class="col-xs-1 col-sm-1 col-md-1 col-lg-1 task-index-content-text-middle">
 					<div data-toggle="buttons">
 						<?php echo $this->NetCommonsForm->input(
 							'<span class="glyphicon glyphicon-ok text-muted color-un-active"></span>', array(
@@ -78,13 +69,13 @@ echo $this->Html->css(
 
 			<?php
 			$color = array(
-				TaskContent::TASK_START_DATE_BEFORE => 'task-color-un-active',
-				TaskContent::TASK_DEADLINE_CLOSE => 'task-color-deadline',
-				TaskContent::TASK_BEYOND_THE_END_DATE => 'task-color-danger',
+				TaskContent::TASK_START_DATE_BEFORE => 'text-muted',
+				TaskContent::TASK_DEADLINE_CLOSE => 'text-warning',
+				TaskContent::TASK_BEYOND_THE_END_DATE => 'text-danger',
 				TaskContent::TASK_BEING_PERFORMED => ''
 			);
 			?>
-			<td class="col-xs-2 col-ms-2 col-md-2 col-lg-2 task-index-content-text-middle 
+			<td class="col-xs-2 col-sm-2 col-md-2 col-lg-2 task-index-content-text-middle 
 				<?php echo $color[$content['TaskContent']['date_color']]; ?>">
 				<?php if (empty($content['TaskContent']['priority'])): ?>
 					<?php if (empty($content['TaskContent']['is_date_set'])): ?>
@@ -108,8 +99,10 @@ echo $this->Html->css(
 				<?php endif; ?>
 			</td>
 
-			<td class="col-xs-4 col-ms-4 col-md-5 col-lg-5 task-index-content-text-middle">
-				<?php echo $this->Workflow->label($content['TaskContent']['status']); ?>
+			<td class="col-xs-8 col-sm-5 col-md-5 col-lg-5 task-index-content-text-middle">
+				<div>
+					<?php echo $this->Workflow->label($content['TaskContent']['status']); ?>
+				</div>
 				<?php echo $this->Html->link(
 					$content['TaskContent']['title'],
 					$this->NetCommonsHtml->url(
@@ -122,11 +115,11 @@ echo $this->Html->css(
 				); ?>
 			</td>
 
-			<td class="col-xs-1 col-ms-1 col-md-1 col-lg-1 task-index-content-text-middle">
+			<td class="col-xs-1 col-sm-2 col-md-1 col-lg-1 task-index-content-text-middle">
 				<?php echo $content['TaskContent']['progress_rate']; ?>%
 			</td>
 
-			<td class="col-xs-4 col-ms-3 col-md-3 col-lg-3 task-index-content-text-middle">
+			<td class="hidden-xs hidden-sm col-md-3 col-lg-3 task-index-content-text-middle">
 				<span class="nc-groups-avatar-list">
 					<?php $count = 0; ?>
 					<?php foreach ($content['TaskCharge'] as $userInCharge): ?>

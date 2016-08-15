@@ -15,19 +15,17 @@
 	</label>
 
 	<div class="form-group">
-		<div class="col-xs-12">
-			<div>
-				<?php
-				$title = __d('tasks', 'Person in charge of user selection');
-				$pluginModel = 'TaskCharge';
-				$roomId = Current::read('Room.id');
-				$selectUsers = (isset($this->request->data['selectUsers'])) ? $this->request->data['selectUsers'] : null;
-				echo $this->GroupUserList->select($title, $pluginModel, $roomId, $selectUsers);
-				?>
-			</div>
-			<div class="has-error">
-				<?php echo $this->NetCommonsForm->error('TaskCharge.user_id', null, array('class' => 'help-block')); ?>
-			</div>
+		<div>
+			<?php
+			$title = __d('tasks', 'Person in charge of user selection');
+			$pluginModel = 'TaskCharge';
+			$roomId = Current::read('Room.id');
+			$selectUsers = (isset($this->request->data['selectUsers'])) ? $this->request->data['selectUsers'] : null;
+			echo $this->GroupUserList->select($title, $pluginModel, $roomId, $selectUsers);
+			?>
+		</div>
+		<div class="has-error">
+			<?php echo $this->NetCommonsForm->error('TaskCharge.user_id', null, array('class' => 'help-block')); ?>
 		</div>
 	</div>
 </div>
