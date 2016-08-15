@@ -92,7 +92,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function index() {
-		if (! Current::read('Block.id')) {
+		if (! Current::read('Block.id') || ! Current::read('User.id')) {
 			$this->autoRender = false;
 			return;
 		}
