@@ -42,23 +42,27 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 			</div>
 
 			<div class="clearfix task-content-margin-2">
-				<div class="pull-left">
-					<?php echo h(__d('tasks', 'Implementation period') . __d('tasks', 'Colon')); ?>
-					<?php if (empty($taskContent['TaskContent']['is_date_set'])): ?>
-						<?php echo __d('tasks', 'Not Date Set'); ?>
-					<?php else: ?>
-						<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_start_date']); ?>
-					<?php endif; ?>
-
-					<?php echo h(__d('tasks', 'Till')); ?>
-
-					<?php if (empty($taskContent['TaskContent']['is_date_set'])): ?>
-						<?php echo __d('tasks', 'Not Date Set'); ?>
-					<?php else: ?>
-						<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_end_date']); ?>
-					<?php endif; ?>
-				</div>
 				<div class="pull-left task-content-margin-3">
+					<div class="task-view-table-cell-3">
+						<?php echo h(__d('tasks', 'Implementation period') . __d('tasks', 'Colon')); ?>
+					</div>
+					<div class="task-view-table-cell">
+						<?php if (empty($taskContent['TaskContent']['is_date_set'])): ?>
+							<?php echo __d('tasks', 'Not Date Set'); ?>
+						<?php else: ?>
+							<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_start_date']); ?>
+						<?php endif; ?>
+	
+						<?php echo h(__d('tasks', 'Till')); ?>
+	
+						<?php if (empty($taskContent['TaskContent']['is_date_set'])): ?>
+							<?php echo __d('tasks', 'Not Date Set'); ?>
+						<?php else: ?>
+							<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_end_date']); ?>
+						<?php endif; ?>
+					</div>
+				</div>
+				<div class="task-view-table-cell pull-left task-content-margin-3">
 					<?php echo h(__d('tasks', 'Priority') . __d('tasks', 'Colon')); ?>
 					<?php if ($taskContent['TaskContent']['priority']) : ?>
 						<?php echo $this->element('TaskContents/priority_icon', array(
@@ -69,7 +73,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						<?php echo h(__d('tasks', 'Undefined')); ?>
 					<?php endif; ?>
 				</div>
-				<div class="pull-left task-content-margin-3">
+				<div class="task-view-table-cell pull-left task-content-margin-3">
 					<?php echo h(__d('tasks', 'Category') . __d('tasks', 'Colon')); ?>
 					<?php if ($taskContent['Category']['name']): ?>
 						<?php
@@ -97,10 +101,21 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				</div>
 			</div>
 			<div class="clearfix">
+				<div class="pull-right ">
+					<div class="task-view-table">
+						<?php echo h(__d('tasks', 'Modified user')); ?>
+						<div class="task-view-table-cell-1">
+							<?php echo $this->DisplayUser->handlelink(
+									$taskContent, array('avatar' => true), array(), 'TrackableUpdater'
+							); ?>
+						</div>
+						<?php echo $this->Date->dateFormat($taskContent['TaskContent']['modified']); ?>
+					</div>
+				</div>
 				<div class="pull-left">
 					<div class="pull-left">
 						<div class="task-view-table">
-							<div class="task-view-table-cell">
+							<div class="task-view-table-cell-2 task-view-user-top task-view-padding-top">
 								<?php echo h(__d('tasks', 'Progress rate')); ?>
 							</div>
 							<?php
@@ -131,17 +146,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						</div>
 					</div>
 				</div>
-				<div class="pull-right ">
-					<div class="task-view-table">
-						<?php echo h(__d('tasks', 'Modified user')); ?>
-						<div class="task-view-table-cell-1">
-							<?php echo $this->DisplayUser->handlelink(
-								$taskContent, array('avatar' => true), array(), 'TrackableUpdater'
-							); ?>
-						</div>
-						<?php echo $this->Date->dateFormat($taskContent['TaskContent']['modified']); ?>
-					</div>
-				</div>
+
 			</div>
 
 			<div class="clearfix">
@@ -150,21 +155,19 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						<div class="task-view-table-cell-2 task-view-user-top">
 							<?php echo h(__d('tasks', 'Person in charge')); ?>
 						</div>
-						<div>
-							<span class="nc-groups-avatar-list text-left">
-								<?php if (! $this->request->data['selectUsers']) : ?>
-									<?php echo h(__d('tasks', 'Not selected')); ?>
-								<?php else : ?>
-									<?php foreach ($this->request->data['selectUsers'] as $selectUsers): ?>
-										<?php
-										echo $this->DisplayUser->handlelink(
-											$selectUsers, array('avatar' => true), array(), 'User'
-										);
-										?>
-									<?php endforeach; ?>
-								<?php endif; ?>
-							</span>
-						</div>
+						<?php if (! $this->request->data['selectUsers']) : ?>
+							<?php echo h(__d('tasks', 'Not selected')); ?>
+						<?php else : ?>
+							<?php foreach ($this->request->data['selectUsers'] as $selectUsers): ?>
+								<div class="task-view-table-cell pull-left task-content-margin-2 task-content-margin-3">
+									<?php
+									echo $this->DisplayUser->handlelink(
+										$selectUsers, array('avatar' => true), array(), 'User'
+									);
+									?>
+								</div>
+							<?php endforeach; ?>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>

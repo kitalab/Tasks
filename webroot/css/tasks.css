@@ -5,9 +5,14 @@
 }
 
 .task-view-table-cell-2 {
-    width: 50px;
+    width: 60px;
     display: table-cell;
-    padding-bottom: 5px;
+}
+
+.task-view-table-cell-3 {
+    width: auto;
+    display: table-cell;
+    padding-right: 5px;
 }
 
 .table>tbody>tr>td.task-index-content-text-middle {
@@ -53,6 +58,10 @@
     margin-top: 10px;
 }
 
+.task-view-padding-top {
+    padding-top: 8px;
+}
+
 .task-content-margin-1 {
     margin-bottom: 20px;
 }
@@ -62,5 +71,9 @@
 }
 
 .task-content-margin-3 {
-    margin-left: 10px
+    margin-right: 10px
+}
+
+.task-width-auto {
+    width: auto;
 }

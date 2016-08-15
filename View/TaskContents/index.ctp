@@ -12,7 +12,7 @@
 <?php
 echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 ?>
-<article class="tasks index " ng-controller="Tasks.Contents" ng-init="init(<?php echo Current::read('Frame.id') ?>)">
+<article>
 	<h1 class="tasks_taskTitle"><?php echo $listTitle ?></h1>
 
 	<?php if (Current::permission('content_creatable')) : ?>
@@ -36,7 +36,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 		<div class="pull-left">
 			<?php echo $this->element('TaskContents/select_is_completion', array(
 					'options' => $isCompletionOptions,
-					'currentIsCompletion' => $currentIsCompletion
+					'currentIsCompletion' => $currentIsCompletion,
 			)); ?>
 			<?php echo $this->Category->dropDownToggle(array(
 					'empty' => h(__d('tasks', 'No category assignment')),

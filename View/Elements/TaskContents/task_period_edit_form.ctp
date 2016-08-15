@@ -34,12 +34,6 @@
 
 	<div ng-show="flag==1" class="task-content-margin-2">
 		<?php
-		$pickerOpt = str_replace('"', "'", json_encode(array(
-					'format' => 'YYYY-MM-DD',
-				)
-			)
-		);
-
 		$initStartDate = sprintf(
 			'%s = \'%s\'; ', 'TaskContent.task_start_date',
 			substr($this->request->data['TaskContent']['task_start_date'], 0, 10)
@@ -50,37 +44,34 @@
 		);
 		?>
 		<div class="form-inline">
-			<div class="input-group task-content-margin-2">
-				<?php echo $this->NetCommonsForm->input('TaskContent.task_start_date', array(
-						'type' => 'datetime',
-						'datetimepicker-options' => $pickerOpt,
-						'ng-model' => 'TaskContent.task_start_date',
-						'data-toggle' => 'dropdown',
+			<div class="input-group">
+				<?php
+				echo $this->TaskContentEdit->taskContentAttributeDatetime('task_start_date',
+					array(
 						'label' => false,
-						'error' => false,
+						'start' => '',
+						'end' => 'TaskContent.task_end_date',
 						'div' => false,
-						'class' => 'form-control',
-						'placeholder' => 'yyyy-mm-dd',
-						'convert_timezone' => false,
+						'error' => false,
+						'ng-model' => 'TaskContent.task_start_date',
 						'ng-init' => $initStartDate
-					)
-				); ?>
+					));
+				?>
 				<span class="input-group-addon">
 					<span class="glyphicon glyphicon-minus"></span>
 				</span>
-				<?php echo $this->NetCommonsForm->input('TaskContent.task_end_date', array(
-						'type' => 'datetime',
-						'datetimepicker-options' => $pickerOpt,
-						'ng-model' => 'TaskContent.task_end_date',
-						'data-toggle' => 'dropdown',
+				<?php
+				echo $this->TaskContentEdit->taskContentAttributeDatetime('task_end_date',
+					array(
 						'label' => false,
-						'error' => false,
+						'start' => 'TaskContent.task_start_date',
+						'end' => '',
 						'div' => false,
-						'class' => 'form-control',
-						'placeholder' => 'yyyy-mm-dd',
+						'error' => false,
+						'ng-model' => 'TaskContent.task_end_date',
 						'ng-init' => $initEndDate
-					)
-				); ?>
+					));
+				?>
 			</div>
 			<?php echo $this->NetCommonsForm->error('TaskContent.task_start_date'); ?>
 			<?php echo $this->NetCommonsForm->error('TaskContent.task_end_date'); ?>
