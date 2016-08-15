@@ -29,7 +29,6 @@ class TaskContentsController extends TasksAppController {
 	public $uses = array(
 		'Tasks.TaskContent',
 		'Tasks.TaskCharge',
-		'User' => 'Users.User',
 		'Mails.MailSetting',
 	);
 
@@ -93,7 +92,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function index() {
-		if (! Current::read('Block.id')) {
+		if (! Current::read('Block.id') || ! Current::read('User.id')) {
 			$this->autoRender = false;
 			return;
 		}
@@ -178,15 +177,12 @@ class TaskContentsController extends TasksAppController {
 		$key = $this->params['key'];
 		$taskContent = $this->TaskContent->getTask($key);
 
-		// 実施期間設定フラグを持たせる
-		if ($taskContent['TaskContent']['task_start_date'] === null) {
-			$taskContent['TaskContent']['date_set_flag'] = 0;
-		} else {
-			$taskContent['TaskContent']['date_set_flag'] = 1;
+		if (! $this->request->data) {
+			$this->request->data = $taskContent;
 		}
 
 		// ToDo担当者ユーザー保持
-		$taskContent = $this->TaskCharge->getSelectUsers($taskContent);
+		$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
 
 		if (empty($taskContent)) {
 			return $this->throwBadRequest();
@@ -235,26 +231,19 @@ class TaskContentsController extends TasksAppController {
 				return $this->redirect($url);
 			}
 
-			// ToDo担当者ユーザー保持
-			$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
-			// 入力値を保持する
-			$taskContent = $this->request->data;
-
 			$this->NetCommons->handleValidationError($this->TaskContent->validationErrors);
-		} else {
-			$this->request->data = $taskContent;
 		}
 
-		$taskContent = $this->NetCommonsTime->toUserDatetimeArray(
-			$taskContent,
+		$this->request->data = $this->NetCommonsTime->toUserDatetimeArray(
+				$this->request->data,
 			array(
 				'TaskContent.task_start_date',
 				'TaskContent.task_end_date',
 			));
 
 		$mailSetting = $this->__getMailSetting();
-		$this->set('mailSetting', $mailSetting);
 		$this->set('taskContent', $taskContent);
+		$this->set('mailSetting', $mailSetting);
 		$this->set('isDeletable', $this->TaskContent->canDeleteWorkflowContent($taskContent));
 
 		$comments = $this->TaskContent->getCommentsByContentKey($taskContent['TaskContent']['key']);
@@ -284,6 +273,7 @@ class TaskContentsController extends TasksAppController {
 			$selectUsers = Hash::extract($taskContent['TaskCharge'], '{n}.user_id');
 
 			$this->request->data['selectUsers'] = array();
+			$this->loadModel('Users.User');
 			foreach ($selectUsers as $userId) {
 				$this->request->data['selectUsers'][] = $this->User->getUser($userId);
 			}
@@ -362,7 +352,11 @@ class TaskContentsController extends TasksAppController {
 		$this->TaskContent->Behaviors->load('ContentComments.ContentComment');
 
 		$params = array();
-		$defaultOrder = array('TaskContent.modified' => 'desc');
+		$afterOrder = array(
+			'TaskContent.task_end_date' => 'asc',
+			'TaskContent.priority' => 'desc',
+			'TaskContent.modified' => 'desc'
+		);
 		$userParam = array();
 
 		// カテゴリ絞り込み
@@ -411,7 +405,7 @@ class TaskContentsController extends TasksAppController {
 		$sort = $this->__getSortParam($conditions, $sortOptions);
 
 		// order情報を整理
-		$order = array_merge($sort['order'], $defaultOrder);
+		$order = array_merge($sort['order'], $afterOrder);
 
 		$taskContents = $this->TaskContent->getList($params, $order, $userParam);
 
@@ -539,11 +533,12 @@ class TaskContentsController extends TasksAppController {
 		if (isset($conditions['sort']) && isset($conditions['direction'])) {
 			$sortPram = $conditions['sort'] . '.' . $conditions['direction'];
 		}
-		if (isset($sortOptions[$sortPram])) {
+		if (isset($sortOptions[$sortPram]) && $conditions['sort'] !== 'TaskContent.task_end_date') {
 			$order = array($conditions['sort'] => $conditions['direction']);
 			$currentSort = $conditions['sort'] . '.' . $conditions['direction'];
 		} else {
-			$order = array('TaskContent.task_end_date' => 'asc');
+			// 期限の近い順が選択された時のみ期限設定フラグを並べ替えソートに含める
+			$order = array('TaskContent.is_date_set' => 'desc', 'TaskContent.task_end_date' => 'asc');
 		}
 
 		$sort = array(

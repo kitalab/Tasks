@@ -28,4 +28,26 @@ class TasksAppModel extends AppModel {
 		}
 		return false;
 	}
+
+/**
+ * Validate datetime from to.
+ *
+ * @param array $check check fields.
+ * @param array $params parameters.
+ * @return bool
+ */
+	public function validateValueCheck($check, $params) {
+		$checkValue = array_values($check)[0];
+		$this->log($checkValue);
+		$this->log($params);
+		for ($i = 0; $i <= TaskContent::TASK_COMPLETION_PROGRESS_RATE;) {
+			$options[$i] = $i . '%';
+			$i += TaskContent::TASK_PROGRESS_RATE_INCREMENTS;
+		}
+
+		if (isset($options[$checkValue])) {
+			return true;
+		}
+		return false;
+	}
 }

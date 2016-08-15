@@ -95,4 +95,28 @@ NetCommonsApp.controller('TaskIsDate',
       $scope.switchIsDate = function($event) {
         $scope.flag = $event.target.value;
       };
+
+
+      /**
+       * focus DateTimePicker
+       *
+       * @return {void}
+       */
+      $scope.setStartToDate = function(ev, start, end) {
+        var curEl = ev.currentTarget;
+        var elId = curEl.id;
+
+        // minの制限は
+        var startDate = $('#task_start_date').val();
+        // maxの制限は
+        var endDate = $('#task_end_date').val();
+
+        if (elId == 'task_start_date') {
+          $('#task_start_date').data('DateTimePicker').maxDate(endDate);
+        } else {
+          $('#task_end_date').data('DateTimePicker').minDate(startDate);
+        }
+      };
+
+
     }]);
