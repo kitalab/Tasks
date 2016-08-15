@@ -242,6 +242,7 @@ class TaskContentsController extends TasksAppController {
 			));
 
 		$mailSetting = $this->__getMailSetting();
+		$this->set('taskContent', $taskContent);
 		$this->set('mailSetting', $mailSetting);
 		$this->set('isDeletable', $this->TaskContent->canDeleteWorkflowContent($taskContent));
 

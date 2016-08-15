@@ -47,6 +47,11 @@ if (! isset($mailSetting['MailSetting']['is_mail_send'])
 			);
 			?>
 			<?php echo $this->NetCommonsForm->input('key', array('type' => 'hidden')); ?>
+			<?php
+			if(isset($taskContent['TaskContent']['id'])):
+			echo $this->NetCommonsForm->hidden('TaskContent.id', array('value' => $taskContent['TaskContent']['id']));
+			endif;
+			?>
 			<?php echo $this->NetCommonsForm->hidden('Frame.id', array('value' => Current::read('Frame.id'))); ?>
 			<?php echo $this->NetCommonsForm->hidden('Block.id', array('value' => Current::read('Block.id'))); ?>
 
