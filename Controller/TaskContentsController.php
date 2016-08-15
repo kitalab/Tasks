@@ -29,7 +29,6 @@ class TaskContentsController extends TasksAppController {
 	public $uses = array(
 		'Tasks.TaskContent',
 		'Tasks.TaskCharge',
-		'User' => 'Users.User',
 		'Mails.MailSetting',
 	);
 
@@ -284,6 +283,7 @@ class TaskContentsController extends TasksAppController {
 			$selectUsers = Hash::extract($taskContent['TaskCharge'], '{n}.user_id');
 
 			$this->request->data['selectUsers'] = array();
+			$this->loadModel('Users.User');
 			foreach ($selectUsers as $userId) {
 				$this->request->data['selectUsers'][] = $this->User->getUser($userId);
 			}
