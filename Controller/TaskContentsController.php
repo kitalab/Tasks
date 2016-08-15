@@ -169,7 +169,7 @@ class TaskContentsController extends TasksAppController {
 		$mailSetting = $this->getMailSetting();
 		$this->set('mailSetting', $mailSetting);
 
-		$this->render('edit');
+		$this->view = 'edit';
 	}
 
 /**

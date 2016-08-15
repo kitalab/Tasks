@@ -21,7 +21,7 @@ echo $this->Html->css(
 	)
 );
 ?>
-<div class="taskContents form" xmlns="http://www.w3.org/1999/html">
+<div class="taskContents form">
 	<div class="ng-scope">
 
 		<header class="clearfix">
@@ -159,20 +159,20 @@ echo $this->Html->css(
 						<div class="task-view-table-cell-2 task-view-user-top">
 							<?php echo h(__d('tasks', 'Person in charge')); ?>
 						</div>
-						<div class="">
-					<span class="nc-groups-avatar-list text-left">
-						<?php if (! $this->request->data['selectUsers']) : ?>
-							<?php echo h(__d('tasks', 'Not selected')); ?>
-						<?php else : ?>
-							<?php foreach ($this->request->data['selectUsers'] as $selectUsers): ?>
-								<?php
-								echo $this->DisplayUser->handlelink(
-									$selectUsers, array('avatar' => true), array(), 'User'
-								);
-								?>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</span>
+						<div>
+							<span class="nc-groups-avatar-list text-left">
+								<?php if (! $this->request->data['selectUsers']) : ?>
+									<?php echo h(__d('tasks', 'Not selected')); ?>
+								<?php else : ?>
+									<?php foreach ($this->request->data['selectUsers'] as $selectUsers): ?>
+										<?php
+										echo $this->DisplayUser->handlelink(
+											$selectUsers, array('avatar' => true), array(), 'User'
+										);
+										?>
+									<?php endforeach; ?>
+								<?php endif; ?>
+							</span>
 						</div>
 					</div>
 				</div>
