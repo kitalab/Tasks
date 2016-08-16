@@ -604,9 +604,20 @@ class TaskContent extends TasksAppModel {
 			if (! $this->TaskCharge->setCharges($data)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
+
+			// リマインダーメール設定
+			if ($data['TaskContent']['is_enable_mail'] && $data['TaskContent']['task_end_date']) {
+				// 実施終了日の日時を0持00分に変更する
+				$taskEndDate = date('Y-m-d H:i:s',
+						strtotime($data['TaskContent']['task_end_date'] . ' -1day +1 second'));
+				$sendTimes = array(
+					date('Y-m-d H:i:s', strtotime(
+						$taskEndDate . ' -' . $data['TaskContent']['email_send_timing']. 'day'
+					))
+				);
+				$this->setSendTimeReminder($sendTimes);
+			}
 			// メール処理
-			$sendTimes = array($data['TaskContent']['modified']);
-			$this->setSendTimeReminder($sendTimes);
 			$mailSendUserIdArr =
 				Hash::extract($data, 'TaskCharges.{n}.TaskCharge.user_id');
 			$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_USER_IDS, $mailSendUserIdArr);
