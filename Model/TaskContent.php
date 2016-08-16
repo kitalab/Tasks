@@ -89,20 +89,6 @@ class TaskContent extends TasksAppModel {
 	const TASK_COMPLETION_PROGRESS_RATE = 100;
 
 /**
- * カテゴリのプログレスバーの長さ
- *
- * @var const
- */
-	const TASK_CATEGORY_PROGRESS_WIDTH = 250;
-
-/**
- * TODOのプログレスバーの長さ
- *
- * @var const
- */
-	const TASK_TODO_PROGRESS_WIDTH = 300;
-
-/**
  * @var int recursiveはデフォルトアソシエーションなしに
  */
 	public $recursive = -1;
@@ -612,7 +598,7 @@ class TaskContent extends TasksAppModel {
 						strtotime($data['TaskContent']['task_end_date'] . ' -1day +1 second'));
 				$sendTimes = array(
 					date('Y-m-d H:i:s', strtotime(
-						$taskEndDate . ' -' . $data['TaskContent']['email_send_timing']. 'day'
+						$taskEndDate . ' -' . $data['TaskContent']['email_send_timing'] . 'day'
 					))
 				);
 				$this->setSendTimeReminder($sendTimes);

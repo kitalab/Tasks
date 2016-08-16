@@ -77,3 +77,20 @@
 .task-width-auto {
     width: auto;
 }
+
+.task-progress-width-index {
+    width: 250px;
+}
+.task-progress-width-view {
+    width: 300px;
+}
+
+@media screen and (max-width: 768px) {
+    /* 表示領域が1200px以下の場合に適用するスタイル */
+    .task-progress-width-index {
+        width: 150px;
+    }
+    .task-progress-width-view {
+        width: 150px;
+    }
+}
