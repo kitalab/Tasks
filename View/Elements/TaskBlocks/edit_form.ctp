@@ -15,9 +15,8 @@
 <?php echo $this->Form->hidden('Task.id'); ?>
 <?php echo $this->Form->hidden('Task.key'); ?>
 <?php echo $this->Form->hidden('TaskSetting.id'); ?>
-<?php echo $this->Form->hidden('TaskFrameSetting.id'); ?>
-<?php echo $this->Form->hidden('TaskFrameSetting.frame_key'); ?>
-<?php echo $this->Form->hidden('TaskFrameSetting.articles_per_page'); ?>
+<?php echo $this->Form->hidden('TaskSetting.use_workflow'); ?>
+<?php echo $this->Form->hidden('TaskSetting.use_comment_approval'); ?>
 
 <?php echo $this->NetCommonsForm->input('Task.name', array(
 		'type' => 'text',

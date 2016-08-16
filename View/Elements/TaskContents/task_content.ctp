@@ -44,9 +44,11 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					'TaskProgressRate', array('type' => 'post', 'url' => $url)
 				);
 				$disabled = 'disabled';
-				if (Hash::extract($content, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']')
-						|| $this->Workflow->canEdit('Tasks.TaskContent', $content)
-				):
+				$charge = '';
+				if (Current::read('User.id')):
+					$charge = Hash::extract($content, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']');
+				endif;
+				if ($charge || $this->Workflow->canEdit('Tasks.TaskContent', $content)):
 					$disabled = '';
 				endif;
 				?>
