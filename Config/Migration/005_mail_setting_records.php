@@ -14,7 +14,7 @@ App::uses('MailsMigration', 'Mails.Config/Migration');
  *
  * @package NetCommons\Mails\Config\Migration
  */
-class MailSettingRecords extends MailsMigration {
+class TaskMailSettingRecords extends MailsMigration {
 
 /**
  * プラグインキー
@@ -73,7 +73,7 @@ class MailSettingRecords extends MailsMigration {
 				'block_key' => null,
 				'type_key' => 'contents',
 				'mail_fixed_phrase_subject' => '[{X-SITE_NAME}-{X-PLUGIN_NAME}]{X-SUBJECT}({X-ROOM})',
-				'mail_fixed_phrase_body' => '{X-PLUGIN_NAME}にToDoが作成されたのでお知らせします。
+				'mail_fixed_phrase_body' => '{X-PLUGIN_NAME}に投稿されたのでお知らせします。
 ルーム名:{X-ROOM}
 ToDoタイトル:{X-SUBJECT}
 投稿者:{X-USER}

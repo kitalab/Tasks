@@ -112,9 +112,9 @@ if (! isset($mailSetting['MailSetting']['is_mail_send'])
 
 						<?php
 						$options = array(
-							'1440' => __d('tasks', 'One day before the task period'),
-							'2880' => __d('tasks', 'Two days before the task period'),
-							'8540' => __d('tasks', 'One week before the task period'),
+							'1' => __d('tasks', 'One day before the task period'),
+							'2' => __d('tasks', 'Two days before the task period'),
+							'7' => __d('tasks', 'One week before the task period'),
 						);
 
 						echo $this->NetCommonsForm->select('TaskContent.email_send_timing', $options, array(

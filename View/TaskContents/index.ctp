@@ -96,8 +96,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					<div class="pull-right">
 						<div class="clearfix">
 							<div class="pull-left progress-min-scale-xs">
-								<div class="progress progress-min-width-xs task-index-progress"
-									 style="width: <?php echo TaskContent::TASK_CATEGORY_PROGRESS_WIDTH?>px;">
+								<div class="progress progress-min-width-xs task-index-progress task-progress-width-index">
 									<div class="progress-bar progress-bar-info"
 										 style="width: <?php echo $taskContent['Category']['category_priority']; ?>%;">
 										<?php echo $taskContent['Category']['category_priority']; ?>%

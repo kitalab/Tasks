@@ -137,8 +137,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					</div>
 					<div class="pull-left">
 						<div class="progress-min-scale-xs task-view-table-cell">
-							<div class="progress progress-min-width-xs task-view-progress"
-								 style="width: <?php echo TaskContent::TASK_TODO_PROGRESS_WIDTH?>px;">
+							<div class="progress progress-min-width-xs task-view-progress task-progress-width-view">
 								<div class="progress-bar progress-bar-success"
 									 style="width: <?php echo $taskContent['TaskContent']['progress_rate']; ?>%;">
 								</div>

@@ -151,6 +151,7 @@ class Task extends TasksAppModel {
 				),
 			)
 		);
+
 		$task = Hash::merge($task, $this->TaskSetting->createBlockSetting());
 
 		return $task;
