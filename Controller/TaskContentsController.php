@@ -92,7 +92,7 @@ class TaskContentsController extends TasksAppController {
  * @return void
  */
 	public function index() {
-		if (! Current::read('Block.id') || ! Current::read('User.id')) {
+		if (! Current::read('Block.id')) {
 			$this->autoRender = false;
 			return;
 		}
@@ -357,8 +357,8 @@ class TaskContentsController extends TasksAppController {
 			'TaskContent.priority' => 'desc',
 			'TaskContent.modified' => 'desc'
 		);
-		$userParam = array();
 
+		$userParam = array();
 		// カテゴリ絞り込み
 		if (isset($conditions['category_id'])) {
 			$params[] = array('TaskContent.category_id' => $conditions['category_id']);
@@ -374,10 +374,12 @@ class TaskContentsController extends TasksAppController {
 				);
 			}
 			$currentUserId = $conditions['user_id'];
-		} else {
+		} elseif (Current::read('User.id')) {
 			$userParam = array(
 				'TaskCharge.user_id' => Current::read('User.id')
 			);
+		} else {
+			$currentUserId = 'all';
 		}
 
 		// 完了未完了option取得
@@ -416,23 +418,13 @@ class TaskContentsController extends TasksAppController {
 		// 通常のToDo一覧
 		$this->set('taskContents', $taskContents);
 
-		// 自身のユーザーデータを取得
-		$myUser = array(Current::read('User'));
-		// 担当者絞り込みデフォルト値
-		$options = array(
-			'TaskContents.charge_user_id_all' => array(
-				'label' => __d('tasks', 'No person in charge'),
-				'user_id' => 'all',
-			),
-			'TaskContents.charge_user_id_' . $myUser[0]['id'] => array(
-				'label' => $myUser[0]['handlename'],
-				'user_id' => $myUser[0]['id'],
-			),
-		);
+		// デフォルトの担当者選択肢を取得
+		$defaultOptions = $this->__getSelectOptions('default');
+
 		$selectChargeUsers = $this->TaskCharge->getSelectChargeUsers($taskContents);
 
 		// 担当者絞り込み条件をマージする
-		$userOptions = array_merge($options, $selectChargeUsers);
+		$userOptions = array_merge($defaultOptions, $selectChargeUsers);
 		$this->set('currentUserId', $currentUserId);
 		$this->set('userOptions', $userOptions);
 		$this->set('currentIsCompletion', $currentIsCompletion);
@@ -470,6 +462,28 @@ class TaskContentsController extends TasksAppController {
  */
 	private function __getSelectOptions($selectTarget = '') {
 		$selectOptions = array();
+
+		if ($selectTarget === 'default') {
+			// 自身のユーザーデータを取得
+			// 担当者絞り込みデフォルト値
+			$defaultOptions = array(
+				'TaskContents.charge_user_id_all' => array(
+					'label' => __d('tasks', 'No person in charge'),
+					'user_id' => 'all',
+				),
+			);
+			$myUserOptions = array();
+			$myUser = array(Current::read('User'));
+			if ($myUser[0]) {
+				$myUserOptions = array(
+					'TaskContents.charge_user_id_' . $myUser[0]['id'] => array(
+						'label' => $myUser[0]['handlename'],
+						'user_id' => $myUser[0]['id'],
+					),
+				);
+			}
+			$selectOptions = array_merge($defaultOptions, $myUserOptions);
+		}
 
 		if ($selectTarget === 'is_completion') {
 			$selectOptions = array(

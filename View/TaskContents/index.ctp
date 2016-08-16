@@ -60,7 +60,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 			)); ?>
 		</div>
 	</div>
-	<?php if (empty(count($taskContents))): ?>
+	<?php if (! $taskContents): ?>
 		<div>
 			<?php echo h(__d('tasks', 'Not task')); ?>
 		</div>
