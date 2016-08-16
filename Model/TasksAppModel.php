@@ -38,8 +38,6 @@ class TasksAppModel extends AppModel {
  */
 	public function validateValueCheck($check, $params) {
 		$checkValue = array_values($check)[0];
-		$this->log($checkValue);
-		$this->log($params);
 		for ($i = 0; $i <= TaskContent::TASK_COMPLETION_PROGRESS_RATE;) {
 			$options[$i] = $i . '%';
 			$i += TaskContent::TASK_PROGRESS_RATE_INCREMENTS;
