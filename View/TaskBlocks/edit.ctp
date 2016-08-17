@@ -25,7 +25,8 @@
 		<?php if ($this->request->params['action'] === 'edit') : ?>
 			<?php echo $this->element('Blocks.delete_form', array(
 				'model' => 'TaskBlock',
-				'action' => NetCommonsUrl::actionUrl(array(
+				'action' => NetCommonsUrl::actionUrlAsArray(array(
+					'plugin' => 'tasks',
 					'controller' => $this->params['controller'],
 					'action' => 'delete',
 					'block_id' => Current::read('Block.id'),
