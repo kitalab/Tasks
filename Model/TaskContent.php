@@ -115,6 +115,7 @@ class TaskContent extends TasksAppModel {
 			'embedTags' => array(
 				'X-SUBJECT' => 'TaskContent.title',
 				'X-BODY' => 'TaskContent.content',
+				'X-URL' => array('controller' => 'task_contents'),
 			),
 		),
 		'Tasks.TaskCharge',
