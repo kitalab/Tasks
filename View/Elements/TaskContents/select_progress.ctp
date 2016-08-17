@@ -11,11 +11,10 @@
 
 <?php
 
-$url = $this->NetCommonsHtml->url(array(
+$url = array(
 		'controller' => 'task_progress_rate',
 		'action' => 'edit',
 		'key' => $taskContent['TaskContent']['key']
-	)
 );
 echo $this->NetCommonsForm->create(
 	'TaskProgressRate', array('type' => 'post', 'url' => $url)

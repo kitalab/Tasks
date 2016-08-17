@@ -19,11 +19,11 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 
 		<div class="pull-right">
 			<?php
-			$addUrl = $this->NetCommonsHtml->url(array(
+			$addUrl = array(
 				'controller' => 'task_contents',
 				'action' => 'add',
 				'frame_id' => Current::read('Frame.id')
-			));
+			);
 			echo $this->Button->addLink('',
 				$addUrl,
 				array('tooltip' => __d('tasks', 'ToDo Add'))
@@ -35,8 +35,8 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 	<div class="clearfix task-content-margin-1">
 		<div class="pull-left">
 			<?php echo $this->element('TaskContents/select_is_completion', array(
-					'options' => $isCompletionOptions,
-					'currentIsCompletion' => $currentIsCompletion,
+				'options' => $isCompletionOptions,
+				'currentIsCompletion' => $currentIsCompletion,
 			)); ?>
 			<?php echo $this->Category->dropDownToggle(array(
 					'empty' => h(__d('tasks', 'No category assignment')),
@@ -51,69 +51,70 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				)
 			); ?>
 			<?php echo $this->element('TaskContents/select_user', array(
-					'options' => $userOptions,
-					'currentUserId' => $currentUserId
+				'options' => $userOptions,
+				'currentUserId' => $currentUserId
 			)); ?>
 			<?php echo $this->element('TaskContents/select_sort', array(
-					'options' => $sortOptions,
-					'currentSort' => $currentSort,
+				'options' => $sortOptions,
+				'currentSort' => $currentSort,
 			)); ?>
 		</div>
 	</div>
-	<?php if (! $taskContents): ?>
-		<div>
-			<?php echo h(__d('tasks', 'Not task')); ?>
-		</div>
-	<?php else: ?>
-
-		<?php $isNotShow = false; ?>
-		<?php if (isset($params['user_id']) && $params['user_id'] !== Current::read('User.id')): ?>
-			<?php $isNotShow = true; ?>
-		<?php endif; ?>
-		<?php $params = $this->params['named']; ?>
-
-		<?php if ($deadLineTasks && empty($params['category_id']) && $isNotShow === false): ?>
-			<div class="clearfix">
-				<div class="pull-left">
-					<?php echo __d('tasks', 'Deadline close Expiration'); ?>
-				</div>
+	<div class="nc-content-list">
+		<?php if (!$taskContents): ?>
+			<div>
+				<?php echo h(__d('tasks', 'Not task')); ?>
 			</div>
+		<?php else: ?>
 
-			<?php echo $this->element('TaskContents/task_content', array(
-					'taskContents' => $deadLineTasks,
-				)
-			); ?>
-		<?php endif; ?>
+			<?php $isNotShow = false; ?>
+			<?php if (isset($params['user_id']) && $params['user_id'] !== Current::read('User.id')): ?>
+				<?php $isNotShow = true; ?>
+			<?php endif; ?>
+			<?php $params = $this->params['named']; ?>
 
-		<?php foreach ($taskContents as $taskContent): ?>
-
-			<div class="clearfix">
-				<div class="pull-left task-category-name-margin">
-					<?php echo $taskContent['Category']['name']; ?>
+			<?php if ($deadLineTasks && empty($params['category_id']) && $isNotShow === false): ?>
+				<div class="clearfix">
+					<div class="pull-left">
+						<?php echo __d('tasks', 'Deadline close Expiration'); ?>
+					</div>
 				</div>
 
-				<?php if ($taskContent['Category']['name'] !== __d('tasks', 'No category')): ?>
-					<div class="pull-right">
-						<div class="clearfix">
-							<div class="pull-left progress-min-scale-xs">
-								<div class="progress progress-min-width-xs task-index-progress task-progress-width-index">
-									<div class="progress-bar progress-bar-info"
-										 style="width: <?php echo $taskContent['Category']['category_priority']; ?>%;">
-										<?php echo $taskContent['Category']['category_priority']; ?>%
+				<?php echo $this->element('TaskContents/task_content', array(
+						'taskContents' => $deadLineTasks,
+					)
+				); ?>
+			<?php endif; ?>
+
+			<?php foreach ($taskContents as $taskContent): ?>
+
+				<div class="clearfix">
+					<div class="pull-left task-category-name-margin">
+						<?php echo $taskContent['Category']['name']; ?>
+					</div>
+
+					<?php if ($taskContent['Category']['name'] !== __d('tasks', 'No category')): ?>
+						<div class="pull-right">
+							<div class="clearfix">
+								<div class="pull-left progress-min-scale-xs">
+									<div class="progress progress-min-width-xs task-index-progress task-progress-width-index">
+										<div class="progress-bar progress-bar-info"
+											 style="width: <?php echo $taskContent['Category']['category_priority']; ?>%;">
+											<?php echo $taskContent['Category']['category_priority']; ?>%
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				<?php endif; ?>
+					<?php endif; ?>
 
-			</div>
+				</div>
 
-			<?php echo $this->element('TaskContents/task_content', array(
-				'taskContents' => $taskContent['TaskContents'],
-			)); ?>
+				<?php echo $this->element('TaskContents/task_content', array(
+					'taskContents' => $taskContent['TaskContents'],
+				)); ?>
 
-		<?php endforeach; ?>
-
-	<?php endif; ?>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</div>
 </article>
