@@ -114,7 +114,8 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
 		parent::testIndex($urlOptions, $assert, $exception, $return);
 
 		//チェック
-		debug($this->view);
+		// ゲストなら追加ボタンはでない
+		$this->assertTextNotContains(__d('tasks', 'ToDo Add'), $this->view);
 	}
 
 /**
@@ -147,7 +148,7 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
 		parent::testIndexByCreatable($urlOptions, $assert, $exception, $return);
 
 		//チェック
-		debug($this->view);
+		$this->assertTextContains(__d('tasks', 'ToDo Add'), $this->view);
 	}
 
 /**
@@ -180,7 +181,7 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
 		parent::testIndexByEditable($urlOptions, $assert, $exception, $return);
 
 		//チェック
-		debug($this->view);
+		$this->assertTextContains(__d('tasks', 'ToDo Add'), $this->view);
 	}
 
 }
