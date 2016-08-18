@@ -17,7 +17,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 
 	<?php if (Current::permission('content_creatable')) : ?>
 
-		<div class="pull-right">
+		<div class="pull-right task-index-space">
 			<?php
 			$addUrl = array(
 				'controller' => 'task_contents',
@@ -38,18 +38,20 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				'options' => $isCompletionOptions,
 				'currentIsCompletion' => $currentIsCompletion,
 			)); ?>
-			<?php echo $this->Category->dropDownToggle(array(
-					'empty' => h(__d('tasks', 'No category assignment')),
-					'displayMenu' => true,
-					'url' => NetCommonsUrl::actionUrlAsArray(Hash::merge(array(
-						'plugin' => 'tasks',
-						'controller' => 'task_contents',
-						'action' => 'index',
-						'block_id' => Current::read('Block.id'),
-						'frame_id' => Current::read('Frame.id')
-					), $this->params['named']))
-				)
-			); ?>
+			<span class="btn-group task-index-space">
+				<?php echo $this->Category->dropDownToggle(array(
+						'empty' => h(__d('tasks', 'No category assignment')),
+						'displayMenu' => true,
+						'url' => NetCommonsUrl::actionUrlAsArray(Hash::merge(array(
+							'plugin' => 'tasks',
+							'controller' => 'task_contents',
+							'action' => 'index',
+							'block_id' => Current::read('Block.id'),
+							'frame_id' => Current::read('Frame.id')
+						), $this->params['named']))
+					)
+				); ?>
+			</span>
 			<?php echo $this->element('TaskContents/select_user', array(
 				'options' => $userOptions,
 				'currentUserId' => $currentUserId
