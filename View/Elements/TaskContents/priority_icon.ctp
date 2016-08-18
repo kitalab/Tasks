@@ -27,8 +27,6 @@ switch ($priority) {
 		break;
 }
 ?>
-
-<img src="<?php echo $iconPath; ?>"
-	 ng-src="<?php echo $iconPath; ?>"
-	 class="nc-title-icon <?php echo $class ?>"
->
+<span class="<?php echo $class ?>">
+	<?php echo $this->TitleIcon->titleIcon($iconPath); ?>
+</span>

@@ -664,9 +664,9 @@ class TaskContent extends TasksAppModel {
 	}
 
 /**
- * 進捗率を更新
+ * 担当者に設定したユーザーの存在確認
  *
- * @param int $userId ToDo進捗率
+ * @param int $userId ユーザーID
  * @return bool
  * @throws InternalErrorException
  */
