@@ -1,6 +1,6 @@
 <?php
 /**
- * Task::createTask()のテスト
+ * TaskContent::searchChargeUser()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
@@ -12,12 +12,12 @@
 App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
 
 /**
- * Task::createTask()のテスト
+ * TaskContent::searchChargeUser()のテスト
  *
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
- * @package NetCommons\Tasks\Test\Case\Model\Task
+ * @package NetCommons\Tasks\Test\Case\Model\TaskContent
  */
-class TaskCreateTaskTest extends NetCommonsModelTestCase {
+class TaskContentSearchChargeUserTest extends NetCommonsModelTestCase {
 
 /**
  * Fixtures
@@ -32,6 +32,7 @@ class TaskCreateTaskTest extends NetCommonsModelTestCase {
 		'plugin.tasks.task_content',
 		'plugin.tasks.block_setting_for_task',
 		'plugin.workflow.workflow_comment',
+		'plugin.user_roles.user_role_setting',
 	);
 
 /**
@@ -46,31 +47,51 @@ class TaskCreateTaskTest extends NetCommonsModelTestCase {
  *
  * @var string
  */
-	protected $_modelName = 'Task';
+	protected $_modelName = 'TaskContent';
 
 /**
  * Method name
  *
  * @var string
  */
-	protected $_methodName = 'createTask';
+	protected $_methodName = 'searchChargeUser';
 
 /**
- * createTask()のテスト
+ * searchChargeUser()のテスト
  *
  * @return void
  */
-	public function testCreateTask() {
+	public function testSearchChargeUser() {
 		$model = $this->_modelName;
 		$methodName = $this->_methodName;
 
+		//データ生成
+		$userId = 1;
+
 		//テスト実施
-		$result = $this->$model->$methodName();
+		$result = $this->$model->$methodName($userId);
 
 		//チェック
-		$this->assertContains(__d('tasks', 'New task list', date('YmdHi')), $result['Task']['name']);
-		$this->assertEquals(null, $result['Block']['room_id']);
-		$this->assertEquals(2, $result['Block']['language_id']);
+		$this->assertTrue($result);
+	}
+
+/**
+ * searchChargeUser() Nullのテスト
+ *
+ * @return void
+ */
+	public function testSearchChargeUserNull() {
+		$model = $this->_modelName;
+		$methodName = $this->_methodName;
+
+		//データ生成
+		$userId = null;
+
+		//テスト実施
+		$result = $this->$model->$methodName($userId);
+
+		//チェック
+		$this->assertFalse($result);
 	}
 
 }

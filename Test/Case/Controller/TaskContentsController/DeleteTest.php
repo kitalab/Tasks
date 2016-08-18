@@ -113,8 +113,6 @@ class TaskContentsControllerDeleteTest extends WorkflowControllerDeleteTest {
 			'assert' => null, 'exception' => 'ForbiddenException'
 		);
 
-		// 権限あったとしてもgetリクエストはみとめてないので MethodNotAllowedException
-
 		// * 作成権限のみ(自分自身)
 		array_push($results, Hash::merge($results[0], array(
 			'role' => Role::ROOM_ROLE_KEY_GENERAL_USER,
@@ -123,16 +121,6 @@ class TaskContentsControllerDeleteTest extends WorkflowControllerDeleteTest {
 				'block_id' => $data['Block']['id'],
 				'key' => 'content_key_2',
 			),
-			'assert' => null, 'exception' => 'MethodNotAllowedException'
-		)));
-		// * 編集権限、公開権限なし
-		array_push($results, Hash::merge($results[0], array(
-			'role' => Role::ROOM_ROLE_KEY_EDITOR,
-			'assert' => null, 'exception' => 'MethodNotAllowedException'
-		)));
-		// * 公開権限あり
-		array_push($results, Hash::merge($results[0], array(
-			'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
 			'assert' => null, 'exception' => 'MethodNotAllowedException'
 		)));
 
@@ -188,54 +176,6 @@ class TaskContentsControllerDeleteTest extends WorkflowControllerDeleteTest {
 			'role' => Role::ROOM_ROLE_KEY_GENERAL_USER,
 			'urlOptions' => array(
 				'frame_id' => $data['Frame']['id'],
-				'block_id' => $data['Block']['id'],
-				'key' => $contentKey
-			),
-		));
-		// ** 自分の記事＆一度公開している
-		$contentKey = 'content_key_4';
-		array_push($results, array(
-			'data' => $this->__data($contentKey),
-			'role' => Role::ROOM_ROLE_KEY_GENERAL_USER,
-			'urlOptions' => array(
-				'frame_id' => $data['Frame']['id'],
-				'block_id' => $data['Block']['id'],
-				'key' => $contentKey
-			),
-			'exception' => 'BadRequestException'
-		));
-		// * 編集権限あり
-		// ** 公開していない
-		$contentKey = 'content_key_2';
-		array_push($results, array(
-			'data' => $this->__data($contentKey),
-			'role' => Role::ROOM_ROLE_KEY_EDITOR,
-			'urlOptions' => array(
-				'frame_id' => $data['Frame']['id'],
-				'block_id' => $data['Block']['id'],
-				'key' => $contentKey
-			),
-		));
-		// ** 公開している
-		$contentKey = 'content_key_4';
-		array_push($results, array(
-			'data' => $this->__data($contentKey),
-			'role' => Role::ROOM_ROLE_KEY_EDITOR,
-			'urlOptions' => array(
-				'frame_id' => $data['Frame']['id'],
-				'block_id' => $data['Block']['id'],
-				'key' => $contentKey
-			),
-			'exception' => 'BadRequestException'
-		));
-		// * 公開権限あり
-		// ** フレームID指定なしテスト
-		$contentKey = 'content_key_1';
-		array_push($results, array(
-			'data' => $this->__data($contentKey),
-			'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
-			'urlOptions' => array(
-				'frame_id' => null,
 				'block_id' => $data['Block']['id'],
 				'key' => $contentKey
 			),

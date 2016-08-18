@@ -39,8 +39,6 @@ class TaskChargeFixture extends CakeTestFixture {
  * @var array
  */
 	public $records = array(
-		// * ルーム管理者が書いたコンテンツ＆一度公開して、下書き中
-		//   (id=1とid=2で区別できるものをセットする)
 		array(
 			'id' => '1',
 			'task_content_id' => '1',
@@ -48,6 +46,15 @@ class TaskChargeFixture extends CakeTestFixture {
 			'created_user' => '1',
 			'created' => '2016-03-17 07:10:12',
 			'modified_user' => '1',
+			'modified' => '2016-03-17 07:10:12',
+		),
+		array(
+			'id' => '2',
+			'task_content_id' => '2',
+			'user_id' => '2',
+			'created_user' => '2',
+			'created' => '2016-03-17 07:10:12',
+			'modified_user' => '2',
 			'modified' => '2016-03-17 07:10:12',
 		),
 	);
