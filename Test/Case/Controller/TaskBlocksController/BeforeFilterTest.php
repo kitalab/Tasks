@@ -82,7 +82,7 @@ class TaskBlocksControllerBeforeFilterTest extends NetCommonsControllerTestCase 
 		$this->_testGetAction(array('action' => 'index', 'block_id' => '2', 'frame_id' => '6'), array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
-		debug($this->view);
+		$this->assertNotEmpty($this->view);
 	}
 
 }

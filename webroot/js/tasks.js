@@ -67,7 +67,7 @@ NetCommonsApp.controller('TaskCharge',
 
 
 /**
- * CircularNotices.deadline Javascript
+ * TaskContent.deadline Javascript
  *
  * @param {string} Controller name
  * @param {function($scope, NetCommonsWysiwyg)} Controller
@@ -85,7 +85,7 @@ NetCommonsApp.controller('TaskIsDate',
       /**
        * Initialize
        *
-       * @param {object} CircularNoticeContents data
+       * @param {object} TaskContent data
        * @return {void}
        */
       $scope.initialize = function(value) {

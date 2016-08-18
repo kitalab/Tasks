@@ -88,7 +88,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 
 			<?php foreach ($taskContents as $taskContent): ?>
 
-				<div class="clearfix">
+				<div class="clearfix task-content">
 					<div class="pull-left task-category-name-margin">
 						<?php echo $taskContent['Category']['name']; ?>
 					</div>

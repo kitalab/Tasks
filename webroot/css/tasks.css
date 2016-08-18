@@ -1,3 +1,7 @@
+.task-content {
+    padding-top: 16px;
+}
+
 .task-view-table-cell-1 {
     width: 135px;
     display: table-cell;
@@ -86,7 +90,6 @@
 }
 
 @media screen and (max-width: 768px) {
-    /* 表示領域が1200px以下の場合に適用するスタイル */
     .task-progress-width-index {
         width: 150px;
     }

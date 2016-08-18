@@ -199,8 +199,9 @@ class TaskBlocksControllerEditTest extends BlocksControllerEditTest {
 		$this->_mockForReturnFalse('Tasks.Task', 'getTask', 1);
 
 		//テスト実行
-		$this->_testGetAction(array('action' => 'edit', 'block_id' => '2', 'frame_id' => '6'),
+		$result = $this->_testGetAction(array('action' => 'edit', 'block_id' => '2', 'frame_id' => '6'),
 			false, 'BadRequestException', 'view');
+		$this->assertFalse($result);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);

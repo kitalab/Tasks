@@ -33,12 +33,11 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					</td>
 				<?php else: ?>
 					<?php
-					$url = $this->NetCommonsHtml->url(array(
+					$url = array(
 							'controller' => 'task_progress_rate',
 							'action' => 'edit',
-							'key' => $content['TaskContent']['key'],
+							'content_key' => $content['TaskContent']['key'],
 							'TaskContent' => array('progress_rate' => TaskContent::TASK_COMPLETION_PROGRESS_RATE),
-						)
 					);
 					echo $this->NetCommonsForm->create(
 						'TaskProgressRate', array('type' => 'post', 'url' => $url)

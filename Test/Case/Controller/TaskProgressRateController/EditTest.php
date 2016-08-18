@@ -131,6 +131,7 @@ class TaskProgressRateControllerEditTest extends NetCommonsControllerTestCase {
 			'plugin' => $this->plugin,
 			'controller' => $this->_controller,
 			'action' => 'edit',
+			'content_key' => 'task_content_key',
 			'block_id' => $blockId
 		));
 		$params = array(
@@ -161,7 +162,8 @@ class TaskProgressRateControllerEditTest extends NetCommonsControllerTestCase {
 			'controller' => $this->_controller,
 			'action' => 'edit',
 			'block_id' => $blockId,
-			'TaskContent' => array('progress_rate' => TaskContent::TASK_COMPLETION_PROGRESS_RATE)
+			'content_key' => 'task_content_key',
+			'TaskContent' => array('progress_rate' => 100)
 		));
 		$params = array();
 		$this->testAction($url, $params);
@@ -184,7 +186,7 @@ class TaskProgressRateControllerEditTest extends NetCommonsControllerTestCase {
 
 		//テスト実行
 		$result = $this->_testPostAction('post', $this->__data(),
-			array('action' => 'edit'), 'BadRequestException', 'json');
+			array('action' => 'edit', 'content_key' => 'task_content_key'), 'BadRequestException', 'json');
 
 		$expected = array(
 			'name' => '不正なリクエストの可能性があります。',

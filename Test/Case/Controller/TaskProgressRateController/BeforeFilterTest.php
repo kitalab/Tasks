@@ -91,7 +91,8 @@ class TaskProgressRateControllerBeforeFilterTest extends NetCommonsControllerTes
 			'plugin' => $this->plugin,
 			'controller' => $this->_controller,
 			'action' => 'edit',
-			'block_id' => $blockId
+			'block_id' => $blockId,
+			'content_key' => 'task_content_key'
 		));
 		$params = array(
 			'data' => $data,
