@@ -72,6 +72,7 @@ class TaskContentsController extends TasksAppController {
 	public $helpers = array(
 		'Workflow.Workflow',
 		'NetCommons.NetCommonsForm',
+		'NetCommons.TitleIcon',
 		'ContentComments.ContentComment' => array(
 			'viewVarsKey' => array(
 				'contentKey' => 'taskContent.TaskContent.key',
