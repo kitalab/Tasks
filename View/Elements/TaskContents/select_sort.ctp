@@ -20,11 +20,18 @@ if (! $currentSort) :
 endif;
 ?>
 
-<span class="btn-group">
-	<button type="button" class="btn btn-default dropdown-toggle"
+<span class="btn-group task-index-space">
+	<button type="button"
+			class="btn btn-default category-dropdown-toggle dropdown-toggle" 
 			data-toggle="dropdown" aria-expanded="false">
-		<?php echo h($options[$currentSort]['label']); ?>
-		<span class="caret"></span>
+		<div class="clearfix">
+			<div class="pull-left">
+				<?php echo h($options[$currentSort]['label']); ?>
+			</div>
+			<div class="pull-right">
+				<span class="caret"></span>
+			</div>
+		</div>
 	</button>
 	<ul class="dropdown-menu" role="menu">
 		<?php foreach ($options as $key => $sort) : ?>
