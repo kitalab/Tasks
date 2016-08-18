@@ -94,6 +94,11 @@ class TaskContent extends TasksAppModel {
 	public $recursive = -1;
 
 /**
+ * @var int recursiveはデフォルトアソシエーションなしに
+ */
+	protected $_progressRates = array();
+
+/**
  * use behaviors
  *
  * @var array
@@ -177,11 +182,34 @@ class TaskContent extends TasksAppModel {
  * @return bool
  */
 	public function beforeValidate($options = array()) {
+		if ($options['only_progress']) {
+			$getValidate = $this->_getValidateOnlyProgress();
+		} else {
+			$getValidate = $this->_getValidateSpecification();
+		}
+
 		$this->validate = Hash::merge(
-			$this->validate,
-			$this->_getValidateSpecification()
+			$this->validate, $getValidate
 		);
 		return parent::beforeValidate($options);
+	}
+
+/**
+ * コンストラクタ
+ * 
+ * @param bool|int|string|array $id Set this ID for this model on startup,
+ * can also be an array of options, see above.
+ * @param string $table Name of database table to use.
+ * @param string $ds DataSource connection name.
+ * @see Model::__construct()
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
+	public function __construct($id = false, $table = null, $ds = null) {
+		parent::__construct($id, $table, $ds);
+		for ($i = 0; $i <= TaskContent::TASK_COMPLETION_PROGRESS_RATE;) {
+			$this->_progressRates[$i] = $i;
+			$i += TaskContent::TASK_PROGRESS_RATE_INCREMENTS;
+		}
 	}
 
 /**
@@ -269,10 +297,28 @@ class TaskContent extends TasksAppModel {
 			),
 			'progress_rate' => array(
 					'numeric' => array(
-							'rule' => array('numeric'),
+							'rule' => array('inList', $this->_progressRates),
 							'allowEmpty' => true,
 					'message' => __d('net_commons', 'Invalid request.')
 					),
+			),
+		);
+		return $validate;
+	}
+
+/**
+ * 進捗率のみ更新時のバリデーションルールを返す
+ *
+ * @return array
+ */
+	protected function _getValidateOnlyProgress() {
+		$validate = array(
+			'progress_rate' => array(
+				'numeric' => array(
+					'rule' => array('inList', $this->_progressRates),
+					'allowEmpty' => true,
+					'message' => __d('net_commons', 'Invalid request.')
+				),
 			),
 		);
 		return $validate;
@@ -577,7 +623,7 @@ class TaskContent extends TasksAppModel {
 			$this->create(); // 常に新規登録
 			// 先にvalidate 失敗したらfalse返す
 			$this->set($data);
-			if (! $this->validates()) {
+			if (! $this->validates(array('only_progress' => false))) {
 				$this->rollback();
 				return false;
 			}
@@ -652,9 +698,16 @@ class TaskContent extends TasksAppModel {
 			}
 
 			$data = array(
-				'TaskContent.progress_rate' => $progressRate,
+				'progress_rate' => $progressRate,
+				'status' => 1,
 				'is_completion' => $isCompletion,
 			);
+
+			$this->set($data);
+			if (! $this->validates(array('only_progress' => true))) {
+				return false;
+			}
+
 			$conditions = array(
 				'TaskContent.key' => $key,
 			);
