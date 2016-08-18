@@ -75,13 +75,6 @@ class TaskContent extends TasksAppModel {
 	const LIST_DISPLAY_NUM = 5;
 
 /**
- * 重要度
- *
- * @var const
- */
-//	const LIST_DISPLAY_NUM = 5;
-
-/**
  * ToDoの進捗率の刻み数
  *
  * @var const
