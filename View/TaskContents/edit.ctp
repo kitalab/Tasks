@@ -59,6 +59,7 @@ if (! isset($mailSetting['MailSetting']['is_mail_send'])
 
 				<fieldset>
 
+					<?php echo $this->Form->hidden('TaskContent.progress_rate'); ?>
 					<?php echo $this->NetCommonsForm->input(
 						'TaskContent.title', array(
 							'type' => 'text',

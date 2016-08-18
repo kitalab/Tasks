@@ -133,14 +133,13 @@ class TaskContentsController extends TasksAppController {
 			}
 
 			if (($result = $this->TaskContent->saveContent($data))) {
-				$url = NetCommonsUrl::actionUrl(
-					array(
-						'controller' => 'task_contents',
-						'action' => 'view',
-						'frame_id' => Current::read('Frame.id'),
-						'block_id' => Current::read('Block.id'),
-						'key' => $result['TaskContent']['key'])
-				);
+				$url = NetCommonsUrl::actionUrl(array(
+					'controller' => 'task_contents',
+					'action' => 'view',
+					'frame_id' => Current::read('Frame.id'),
+					'block_id' => Current::read('Block.id'),
+					'key' => $result['TaskContent']['key']
+				));
 
 				return $this->redirect($url);
 			} else {

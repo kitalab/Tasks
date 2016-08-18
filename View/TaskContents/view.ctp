@@ -47,7 +47,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						<?php echo h(__d('tasks', 'Implementation period') . __d('tasks', 'Colon')); ?>
 					</div>
 					<div class="task-view-table-cell">
-						<?php if (empty($taskContent['TaskContent']['is_date_set'])): ?>
+						<?php if (empty($taskContent['TaskContent']['is_date_set'])) : ?>
 							<?php echo __d('tasks', 'Not Date Set'); ?>
 						<?php else: ?>
 							<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_start_date']); ?>
@@ -55,7 +55,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 	
 						<?php echo h(__d('tasks', 'Till')); ?>
 	
-						<?php if (empty($taskContent['TaskContent']['is_date_set'])): ?>
+						<?php if (empty($taskContent['TaskContent']['is_date_set'])) : ?>
 							<?php echo __d('tasks', 'Not Date Set'); ?>
 						<?php else: ?>
 							<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_end_date']); ?>

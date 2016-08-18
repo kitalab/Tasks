@@ -75,6 +75,13 @@ class TaskContent extends TasksAppModel {
 	const LIST_DISPLAY_NUM = 5;
 
 /**
+ * 重要度
+ *
+ * @var const
+ */
+//	const LIST_DISPLAY_NUM = 5;
+
+/**
  * ToDoの進捗率の刻み数
  *
  * @var const
@@ -577,7 +584,7 @@ class TaskContent extends TasksAppModel {
 			$this->create(); // 常に新規登録
 			// 先にvalidate 失敗したらfalse返す
 			$this->set($data);
-			if (! $this->validates($data)) {
+			if (! $this->validates()) {
 				$this->rollback();
 				return false;
 			}
