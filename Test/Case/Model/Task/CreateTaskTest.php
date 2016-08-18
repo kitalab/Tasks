@@ -68,7 +68,7 @@ class TaskCreateTaskTest extends NetCommonsModelTestCase {
 		$result = $this->$model->$methodName();
 
 		//チェック
-		$this->assertContains(__d('tasks', 'New task list', date('YmdHis')), $result['Task']['name']);
+		$this->assertContains(__d('tasks', 'New task list', date('YmdHi')), $result['Task']['name']);
 		$this->assertEquals(null, $result['Block']['room_id']);
 		$this->assertEquals(2, $result['Block']['language_id']);
 	}
