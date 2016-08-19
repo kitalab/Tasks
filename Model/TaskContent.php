@@ -142,6 +142,13 @@ class TaskContent extends TasksAppModel {
 			'fields' => '',
 			'order' => ''
 		),
+		'CategoryOrder' => array(
+				'className' => 'Categories.CategoryOrder',
+				'foreignKey' => false,
+				'conditions' => 'CategoryOrder.category_key=Category.key',
+				'fields' => '',
+				'order' => ''
+		),
 		'Block' => array(
 			'className' => 'Blocks.Block',
 			'foreignKey' => 'block_id',
@@ -373,6 +380,21 @@ class TaskContent extends TasksAppModel {
 	public function getCategory($contentLists) {
 		// 取得したデータに存在するカテゴリ配列を取得
 		$categoryArr = Hash::combine($contentLists, '{n}.Category.id', '{n}.Category');
+		$categoryOderArr = Hash::combine(
+			$contentLists,
+			'{n}.CategoryOrder.id',
+			'{n}.CategoryOrder.weight'
+		);
+
+		$categoryWeightArr = array();
+		foreach ($categoryArr as $category) {
+			$id = $category['id'];
+			if (isset($categoryOderArr[$id])) {
+				$category['weight'] = $categoryOderArr[$id];
+			}
+			$categoryWeightArr[$id] = $category;
+		}
+		$categoryArr = $categoryWeightArr;
 
 		// カテゴリが未指定のときのカテゴリ情報を作成
 		$notCategory = array();
@@ -384,7 +406,7 @@ class TaskContent extends TasksAppModel {
 			unset($categoryArr['']);
 		}
 		// カテゴリをidの降順で表示
-		$categoryArr = Set::sort($categoryArr, '{n}.id', 'DESC');
+		$categoryArr = Set::sort($categoryArr, '{n}.weight', 'ASC');
 
 		// カテゴリなしを配列の先頭へ配置するためのマージ
 		$categoryArr = array_merge($notCategory, $categoryArr);
@@ -613,17 +635,15 @@ class TaskContent extends TasksAppModel {
 			}
 
 			// リマインダーメール設定
-			if ($data['TaskContent']['email_send_timing']) {
-				// 実施終了日の日時を0持00分に変更する
-				$taskEndDate = date('Y-m-d H:i:s',
-						strtotime($data['TaskContent']['task_end_date'] . ' -1day +1 second'));
-				$sendTimes = array(
-					date('Y-m-d H:i:s', strtotime(
-						$taskEndDate . ' -' . $data['TaskContent']['email_send_timing'] . 'day'
-					))
-				);
-				$this->setSendTimeReminder($sendTimes);
-			}
+			// 実施終了日の日時を0持00分に変更する
+			$taskEndDate = date('Y-m-d H:i:s',
+					strtotime($data['TaskContent']['task_end_date'] . ' -1day +1 second'));
+			$sendTimes = array(
+				date('Y-m-d H:i:s', strtotime(
+					$taskEndDate . ' -' . $data['TaskContent']['email_send_timing'] . 'day'
+				))
+			);
+			$this->setSendTimeReminder($sendTimes);
 			// メール処理
 			$mailSendUserIdArr =
 				Hash::extract($data, 'TaskCharges.{n}.TaskCharge.user_id');
