@@ -368,7 +368,7 @@ class TaskContentsController extends TasksAppController {
 		// 担当者絞り込み
 		if (isset($conditions['user_id'])) {
 			if (! empty($conditions['user_id'])
-					&& $this->TaskContent->searchChargeUser($conditions['user_id'])) {
+					&& $this->TaskCharge->searchChargeUser($conditions['user_id'])) {
 				$userParam = array(
 					'TaskCharge.user_id' => $conditions['user_id']
 				);
@@ -409,7 +409,9 @@ class TaskContentsController extends TasksAppController {
 		// order情報を整理
 		$order = array_merge($sort['order'], $afterOrder);
 
-		$taskContents = $this->TaskContent->getList($params, $order, $userParam);
+		$this->__setTaskChargeContents($params, $userParam);
+
+		$taskContents = $this->TaskContent->getList($params, $order);
 
 		// 期限間近のToDo一覧を分けて取得
 		$deadLineTasks = Hash::extract($taskContents, '{n}.TaskContents.{n}[isDeadLine=' . true . ']');
@@ -577,5 +579,29 @@ class TaskContentsController extends TasksAppController {
 			'Y-m-d H:i:s', strtotime($endDate . '+1 days -1 second')
 		);
 		return $data;
+	}
+
+/**
+ * Get Task Charge Content
+ *
+ * 絞り込み条件に担当者IDをセットする
+ *
+ * @param array $params 絞り込み条件
+ * @param array $userParam 担当者絞り込み条件
+ * @return array
+ */
+	private function __setTaskChargeContents($params, $userParam) {
+		if ($userParam) {
+			// 絞り込み条件に指定した担当者データを全て取得
+			$taskChargeContents = $this->TaskCharge->find('threaded',
+					array('recursive' => 1, 'conditions' => $userParam));
+			// 担当者として設定されているToDoのcontent_idのみ取得
+			$taskContentIds = Hash::extract($taskChargeContents, '{n}.TaskCharge.task_content_id');
+
+			// 絞り込み条件に加える
+			$params[] = array('TaskContent.id' => $taskContentIds);
+		}
+
+		return $params;
 	}
 }

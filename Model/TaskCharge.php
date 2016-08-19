@@ -35,6 +35,24 @@ class TaskCharge extends TasksAppModel {
 	}
 
 /**
+ * 担当者に設定したユーザーの存在確認
+ *
+ * @param int $userId ユーザーID
+ * @return bool
+ * @throws InternalErrorException
+ */
+	public function searchChargeUser($userId) {
+		// 必要なモデル読み込み
+		$this->loadModels([
+			'User' => 'Users.User',
+		]);
+		if (! $this->User->findById($userId)) {
+			return false;
+		}
+		return true;
+	}
+
+/**
  * ToDoの担当者を登録
  *
  * @param array $data 登録データ

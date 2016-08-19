@@ -329,14 +329,9 @@ class TaskContent extends TasksAppModel {
  *
  * @param array $params 絞り込み条件
  * @param array $order 並べ替え条件
- * @param array $userParam 担当者絞り込み条件
  * @return array
  */
-	public function getList($params = array(), $order = array(), $userParam = array()) {
-		if ($userParam) {
-			$params = $this->getUserCondition($params, $userParam);
-		}
-
+	public function getList($params = array(), $order = array()) {
 		$conditions = $this->getConditions(Current::read('Block.id'), $params);
 
 		$lists = $this->find('threaded',
@@ -366,27 +361,6 @@ class TaskContent extends TasksAppModel {
 		$taskContentList = $this->getCategoryContentList($categoryArr, $lists);
 
 		return $taskContentList;
-	}
-
-/**
- * 担当者絞り込みを含めた条件を返す
- *
- * @param array $params 担当者絞り込み条件
- * @param array $userParam 絞り込み条件
- *
- * @return array
- */
-	public function getUserCondition($params, $userParam) {
-		// 絞り込み条件に指定した担当者データを全て取得
-		$taskChargeContents = $this->TaskCharge->find('threaded',
-			array('recursive' => 1, 'conditions' => $userParam));
-		// 担当者として設定されているToDoのcontent_idのみ取得
-		$taskContentIds = Hash::extract($taskChargeContents, '{n}.TaskCharge.task_content_id');
-
-		// 絞り込み条件に加える
-		$params[] = array('TaskContent.id' => $taskContentIds);
-
-		return $params;
 	}
 
 /**
@@ -639,7 +613,7 @@ class TaskContent extends TasksAppModel {
 			}
 
 			// リマインダーメール設定
-			if ($data['TaskContent']['is_enable_mail'] && $data['TaskContent']['task_end_date']) {
+			if ($data['TaskContent']['email_send_timing']) {
 				// 実施終了日の日時を0持00分に変更する
 				$taskEndDate = date('Y-m-d H:i:s',
 						strtotime($data['TaskContent']['task_end_date'] . ' -1day +1 second'));
@@ -661,24 +635,6 @@ class TaskContent extends TasksAppModel {
 			$this->rollback($e);
 		}
 		return $savedData;
-	}
-
-/**
- * 担当者に設定したユーザーの存在確認
- *
- * @param int $userId ユーザーID
- * @return bool
- * @throws InternalErrorException
- */
-	public function searchChargeUser($userId) {
-		// 必要なモデル読み込み
-		$this->loadModels([
-			'User' => 'Users.User',
-		]);
-		if (! $this->User->findById($userId)) {
-			return false;
-		}
-		return true;
 	}
 
 /**
@@ -715,37 +671,6 @@ class TaskContent extends TasksAppModel {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
-			$this->commit();
-
-		} catch (Exception $e) {
-			$this->rollback($e);
-		}
-
-		return true;
-	}
-
-/**
- * カテゴリ削除時、TODOに紐づいた削除されたカテゴリIDを0に更新する
- *
- * @param array $categoryId カテゴリID配列
- * @return bool
- * @throws InternalErrorException
- */
-	public function updateCategoryId($categoryId) {
-		$this->begin();
-		try {
-			$data = array(
-				'category_id' => 0,
-				'status' => 1
-			);
-
-			$this->set($data);
-			$conditions = array(
-				'TaskContent.category_id' => $categoryId,
-			);
-			if (! $this->updateAll($data, $conditions)) {
-				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-			}
 			$this->commit();
 
 		} catch (Exception $e) {

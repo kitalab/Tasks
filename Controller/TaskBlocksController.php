@@ -151,7 +151,7 @@ class TaskBlocksController extends TasksAppController {
 
 			//カテゴリID更新処理
 			if ($updateCategoryIds) {
-				$this->TaskContent->updateCategoryId($updateCategoryIds);
+				$this->Task->updateCategoryId($updateCategoryIds);
 			}
 			//登録処理
 			if ($this->Task->saveTask($this->data)) {
