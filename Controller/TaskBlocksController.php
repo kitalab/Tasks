@@ -17,6 +17,7 @@ App::uses('TasksAppController', 'Tasks.Controller');
  * @author Yuto Kitatsuji <kitatsuji.yuto@wihtone.co.jp>
  * @package NetCommons\Tasks\Controller
  * @property Task $Task
+ * @property TaskContent $TaskContent
  */
 class TaskBlocksController extends TasksAppController {
 
@@ -135,6 +136,23 @@ class TaskBlocksController extends TasksAppController {
  */
 	public function edit() {
 		if ($this->request->is('put')) {
+			$oldData = $this->request->data('old');
+			$updateCategoryIds = array();
+			if (isset($oldData['Categories']) && $oldData['Categories'] !== []) {
+				// 変更後のカテゴリデータ
+				$newCategories = $this->request->data('Categories');
+				$newCategories = Hash::combine($newCategories, '{n}.Category.id', '{n}.Category.id' );
+				// 変更前のカテゴリデータ
+				$oldCategories = json_decode($oldData['Categories'], true);
+				$oldCategories = Hash::combine($oldCategories, '{n}.Category.id', '{n}.Category.id' );
+				// 更新対象カテゴリID
+				$updateCategoryIds = array_diff($oldCategories, $newCategories);
+			}
+
+			//カテゴリID更新処理
+			if ($updateCategoryIds) {
+				$this->TaskContent->updateCategoryId($updateCategoryIds);
+			}
 			//登録処理
 			if ($this->Task->saveTask($this->data)) {
 				$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
