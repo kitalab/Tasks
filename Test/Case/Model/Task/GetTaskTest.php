@@ -69,7 +69,7 @@ class TaskGetTaskTest extends NetCommonsGetTest {
 		$notExistData = array('Block.id' => '0', 'Room.id' => '0'); // データなし
 
 		return array(
-			array($existData, array('id' => '1', 'key' => 'content_block_1')), // 存在する
+			array($existData, array('id' => '2', 'key' => 'content_block_1')), // 存在する
 			array($notExistData, array('id' => '0')), // 存在しない
 		);
 	}

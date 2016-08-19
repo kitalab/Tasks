@@ -270,4 +270,38 @@ class Task extends TasksAppModel {
 		return true;
 	}
 
+/**
+ * カテゴリ削除時、TODOに紐づいた削除されたカテゴリIDを0に更新する
+ *
+ * @param array $categoryId カテゴリID配列
+ * @return bool
+ * @throws InternalErrorException
+ */
+	public function updateCategoryId($categoryId) {
+		$this->loadModels([
+				'TaskContent' => 'Tasks.TaskContent',
+		]);
+
+		$this->begin();
+		try {
+			$data = array(
+					'category_id' => 0,
+					'status' => 1
+			);
+
+			$this->set($data);
+			$conditions = array(
+					'TaskContent.category_id' => $categoryId,
+			);
+			if (! $this->TaskContent->updateAll($data, $conditions)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+			$this->commit();
+
+		} catch (Exception $e) {
+			$this->rollback($e);
+		}
+
+		return true;
+	}
 }

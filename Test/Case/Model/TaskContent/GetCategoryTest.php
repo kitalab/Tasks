@@ -1,6 +1,6 @@
 <?php
 /**
- * TaskContent::getUserCondition()のテスト
+ * TaskContent::getCategory()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
@@ -12,12 +12,12 @@
 App::uses('WorkflowGetTest', 'Workflow.TestSuite');
 
 /**
- * TaskContent::getUserCondition()のテスト
+ * TaskContent::getCategory()のテスト
  *
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
  * @package NetCommons\Tasks\Test\Case\Model\TaskContent
  */
-class TaskContentGetUserConditionTest extends WorkflowGetTest {
+class TaskContentGetCategoryTest extends WorkflowGetTest {
 
 /**
  * Fixtures
@@ -53,26 +53,57 @@ class TaskContentGetUserConditionTest extends WorkflowGetTest {
  *
  * @var string
  */
-	protected $_methodName = 'getUserCondition';
+	protected $_methodName = 'getCategory';
 
 /**
- * getUserCondition()のテスト
+ * getCategory()のテスト
  *
  * @return void
  */
-	public function testGetUserCondition() {
+	public function testGetCategory() {
 		$model = $this->_modelName;
 		$methodName = $this->_methodName;
 
 		//データ生成
-		$params = null;
-		$userParam = null;
+		$contentLists = array(
+			0 => array(
+				'Category' => Array(
+					'id' => 2,
+				)
+			)
+		);
 
 		//テスト実施
-		$result = $this->$model->$methodName($params, $userParam);
+		$result = $this->$model->$methodName($contentLists);
 
 		//チェック
-		$this->assertNotNull($result);
+		$this->assertArrayNotHasKey('name', $result);
+	}
+
+/**
+ * getCategory() IDがNullの場合のテスト
+ *
+ * @return void
+ */
+	public function testGetCategoryIdNull() {
+		$model = $this->_modelName;
+		$methodName = $this->_methodName;
+
+		//データ生成
+		$contentLists = array(
+			0 => array(
+				'Category' => Array(
+					'id' => null,
+				)
+			)
+		);
+
+		//テスト実施
+		$result = $this->$model->$methodName($contentLists);
+
+		//チェック
+		$this->assertArrayHasKey('name', $result[0]);
+		$this->assertContains(__d('tasks', 'No category'), $result[0]['name']);
 	}
 
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Task::createTask()のテスト
+ * TaskContent::getList()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
@@ -9,15 +9,15 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
+App::uses('WorkflowGetTest', 'Workflow.TestSuite');
 
 /**
- * Task::createTask()のテスト
+ * TaskContent::getList()のテスト
  *
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
- * @package NetCommons\Tasks\Test\Case\Model\Task
+ * @package NetCommons\Tasks\Test\Case\Model\TaskContent
  */
-class TaskCreateTaskTest extends NetCommonsModelTestCase {
+class TaskContentGetListTest extends WorkflowGetTest {
 
 /**
  * Fixtures
@@ -46,31 +46,34 @@ class TaskCreateTaskTest extends NetCommonsModelTestCase {
  *
  * @var string
  */
-	protected $_modelName = 'Task';
+	protected $_modelName = 'TaskContent';
 
 /**
  * Method name
  *
  * @var string
  */
-	protected $_methodName = 'createTask';
+	protected $_methodName = 'getList';
 
 /**
- * createTask()のテスト
+ * getList()のテスト
  *
  * @return void
  */
-	public function testCreateTask() {
+	public function testGetList() {
 		$model = $this->_modelName;
 		$methodName = $this->_methodName;
 
+		//データ生成
+		$params = array();
+		$order = array();
+		$userParam = array();
+
 		//テスト実施
-		$result = $this->$model->$methodName();
+		$result = $this->$model->$methodName($params, $order, $userParam);
 
 		//チェック
-		$this->assertContains(__d('tasks', 'New task list', date('YmdHi')), $result['Task']['name']);
-		$this->assertEquals(null, $result['Block']['room_id']);
-		$this->assertEquals(2, $result['Block']['language_id']);
+		$this->assertNotEmpty($result);
 	}
 
 }
