@@ -127,7 +127,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 							<?php
 							$count++;
 							echo $this->DisplayUser->avatar($userInCharge, [], 'user_id');
-							if ($count > TaskContent::LIST_DISPLAY_NUM):
+							if ($count = TaskContent::LIST_DISPLAY_NUM):
 								echo '...';
 								break;
 							endif;
