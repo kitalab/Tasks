@@ -409,7 +409,7 @@ class TaskContentsController extends TasksAppController {
 		// order情報を整理
 		$order = array_merge($sort['order'], $afterOrder);
 
-		$this->__setTaskChargeContents($params, $userParam);
+		$params = $this->__setTaskChargeContents($params, $userParam);
 
 		$taskContents = $this->TaskContent->getList($params, $order);
 
