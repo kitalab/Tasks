@@ -76,14 +76,14 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					TaskContent::TASK_BEING_PERFORMED => ''
 				);
 				?>
-				<td class="col-xs-3 col-sm-2 col-md-2 col-lg-2 task-index-content-text-middle 
+				<td class="col-xs-4 col-sm-2 col-md-2 col-lg-2 task-index-content-text-middle task-word-break
 					<?php echo $color[$content['TaskContent']['date_color']]; ?>">
 					<?php if (empty($content['TaskContent']['priority'])): ?>
-						<div>
+						<div class="task-date-font">
 							<?php echo $this->TaskContent->displayDate($content['TaskContent']['task_end_date'], $content['TaskContent']['is_date_set']); ?>
 						</div>
 					<?php else: ?>
-						<div class="task-index-priority-1">
+						<div class="task-index-priority-1 task-word-break task-date-font">
 							<?php echo $this->TaskContent->displayDate($content['TaskContent']['task_end_date'], $content['TaskContent']['is_date_set']); ?>
 						</div>
 						<?php echo $this->element('TaskContents/priority_icon', array(
@@ -94,7 +94,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					<?php endif; ?>
 				</td>
 	
-				<td class="col-xs-8 col-sm-5 col-md-5 col-lg-5 task-index-content-text-middle">
+				<td class="col-xs-7 col-sm-5 col-md-5 col-lg-5 task-index-content-text-middle task-word-break">
 					<div>
 						<?php echo $this->Workflow->label($content['TaskContent']['status']); ?>
 					</div>

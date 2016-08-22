@@ -45,7 +45,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				</button>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 					<?php echo $this->Category->dropDownToggle(array(
-						'empty' => false,
+						'empty' => h(__d('tasks', 'No category assignment')),
 						'displayMenu' => false,
 						$this->NetCommonsHtml->url(array('action' => 'index')),
 					)); ?>
