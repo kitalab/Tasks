@@ -67,13 +67,41 @@ class TaskContentGetListTest extends WorkflowGetTest {
 		//データ生成
 		$params = array();
 		$order = array();
-		$userParam = array();
 
 		//テスト実施
-		$result = $this->$model->$methodName($params, $order, $userParam);
+		$result = $this->$model->$methodName($params, $order);
 
 		//チェック
 		$this->assertNotEmpty($result);
+	}
+
+/**
+ * getList()のテスト
+ *
+ * @return void
+ */
+	public function testGetListNull() {
+		$model = $this->_modelName;
+		$methodName = $this->_methodName;
+
+		//データ生成
+		$params = array(
+			0 => array(
+				'TaskContent.is_completion' => 0,
+			),
+		);
+		$order = array(
+			'TaskContent.progress_rate' => 'asc',
+			'TaskContent.task_end_date' => 'asc',
+			'TaskContent.priority' => 'desc',
+			'TaskContent.modified' => 'desc',
+		);
+
+		//テスト実施
+		$result = $this->$model->$methodName($params, $order);
+
+		//チェック
+		$this->assertEmpty($result);
 	}
 
 }

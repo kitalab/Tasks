@@ -87,6 +87,7 @@ class TaskContentsControllerEditTest extends WorkflowControllerEditTest {
 				'title' => 'Title 1',
 				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 				'is_date_set' => true,
+				'is_enable_mail' => false,
 				'task_start_date' => '2016-03-10 07:10:12',
 				'task_end_date' => '2016-03-17 07:10:12',
 			),
