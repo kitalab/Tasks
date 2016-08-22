@@ -9,7 +9,8 @@
 }
 
 .task-select-ellipsis {
-    width: 135px;
+    min-width: 5px;
+    max-width: 200px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -28,7 +29,7 @@
 
 .table>tbody>tr>td.task-index-content-text-middle {
     vertical-align: middle;
-    word-break: break-all;
+    /*word-break: break-all;*/
 }
 
 .task-index-priority-1 {
@@ -111,5 +112,11 @@
     }
     .task-progress-width-view {
         width: 150px;
+    }
+}
+
+@media (max-width: 400px) {
+    .task-date-font {
+        font-size: 10px;
     }
 }

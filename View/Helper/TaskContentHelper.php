@@ -32,10 +32,10 @@ class TaskContentHelper extends AppHelper {
  * 表示するTODO実施期間作成
  *
  * @param string $date 実施期間
- * @param string $isDateSet 実施期間使用フラグ
+ * @param bool $isDateSet 実施期間使用フラグ
  * @return string HTML
  */
-	public function displayDate($date, $isDateSet = false) {
+	public function displayDate($date, $isDateSet) {
 		if ($isDateSet) {
 			$format = '';
 			$now = $this->NetCommonsTime->getNowDatetime();

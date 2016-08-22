@@ -152,10 +152,9 @@ class TaskContentsController extends TasksAppController {
 				));
 
 				return $this->redirect($url);
-			} else {
-				// ToDo担当者ユーザー保持
-				$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
 			}
+			// ToDo担当者ユーザー保持
+			$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
 
 			$this->NetCommons->handleValidationError($this->TaskContent->validationErrors);
 
@@ -376,8 +375,7 @@ class TaskContentsController extends TasksAppController {
 		$currentUserId = '';
 		// 担当者絞り込み
 		if (isset($conditions['user_id'])) {
-			if (! empty($conditions['user_id'])
-					&& $this->TaskCharge->searchChargeUser($conditions['user_id'])) {
+			if ($this->TaskCharge->searchChargeUser($conditions['user_id'])) {
 				$userParam = array(
 					'TaskCharge.user_id' => $conditions['user_id']
 				);
@@ -556,15 +554,16 @@ class TaskContentsController extends TasksAppController {
 	private function __getSortParam($conditions = array(), $sortOptions = array()) {
 		$sortPram = '';
 		$currentSort = '';
+		$order = array();
+		$defaultOrder = array('TaskContent.is_date_set' => 'desc');
+		$afterOrder = array('TaskContent.task_end_date' => 'asc');
 		if (isset($conditions['sort']) && isset($conditions['direction'])) {
 			$sortPram = $conditions['sort'] . '.' . $conditions['direction'];
 		}
-		if (isset($sortOptions[$sortPram]) && $conditions['sort'] !== 'TaskContent.task_end_date') {
+		if (isset($sortOptions[$sortPram])) {
 			$order = array($conditions['sort'] => $conditions['direction']);
+			$order = array_merge($defaultOrder, $order, $afterOrder);
 			$currentSort = $conditions['sort'] . '.' . $conditions['direction'];
-		} else {
-			// 期限の近い順が選択された時のみ期限設定フラグを並べ替えソートに含める
-			$order = array('TaskContent.is_date_set' => 'desc', 'TaskContent.task_end_date' => 'asc');
 		}
 
 		$sort = array(

@@ -164,9 +164,10 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 			<div class="task-view-content-top task-word-break">
 				<?php echo $taskContent['TaskContent']['content']; ?>
 			</div>
-			
-			<?php echo $this->ContentComment->index($taskContent); ?>
 
+			<div class="task-word-break">
+				<?php echo $this->ContentComment->index($taskContent); ?>
+			</div>
 		</article>
 	</div>
 </div>
