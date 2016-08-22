@@ -79,20 +79,12 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				<td class="col-xs-3 col-sm-2 col-md-2 col-lg-2 task-index-content-text-middle 
 					<?php echo $color[$content['TaskContent']['date_color']]; ?>">
 					<?php if (empty($content['TaskContent']['priority'])): ?>
-						<?php if (empty($content['TaskContent']['is_date_set'])): ?>
-							<?php echo __d('tasks', 'Not Date Set'); ?>
-						<?php else: ?>
-							<div>
-								<?php echo $this->Date->dateFormat($content['TaskContent']['task_end_date']); ?>
-							</div>
-						<?php endif; ?>
+						<div>
+							<?php echo $this->TaskContent->displayDate($content['TaskContent']['task_end_date'], $content['TaskContent']['is_date_set']); ?>
+						</div>
 					<?php else: ?>
 						<div class="task-index-priority-1">
-							<?php if (empty($content['TaskContent']['is_date_set'])): ?>
-								<?php echo __d('tasks', 'Not Date Set'); ?>
-							<?php else: ?>
-								<?php echo $this->Date->dateFormat($content['TaskContent']['task_end_date']); ?>
-							<?php endif; ?>
+							<?php echo $this->TaskContent->displayDate($content['TaskContent']['task_end_date'], $content['TaskContent']['is_date_set']); ?>
 						</div>
 						<?php echo $this->element('TaskContents/priority_icon', array(
 								'priority' => $content['TaskContent']['priority'],
@@ -126,11 +118,12 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						<?php foreach ($content['TaskCharge'] as $userInCharge): ?>
 							<?php
 							$count++;
-							echo $this->DisplayUser->avatar($userInCharge, [], 'user_id');
-							if ($count = TaskContent::LIST_DISPLAY_NUM):
+							if ($count <= TaskContent::LIST_DISPLAY_NUM) {
+								echo $this->DisplayUser->avatar($userInCharge, [], 'user_id');
+							} else {
 								echo '...';
 								break;
-							endif;
+							}
 							?>
 						<?php endforeach; ?>
 					</span>

@@ -20,7 +20,7 @@ endif;
 
 <span class="btn-group task-index-space">
 	<button type="button"
-			class="btn btn-default category-dropdown-toggle dropdown-toggle"
+			class="btn btn-default dropdown-toggle"
 			data-toggle="dropdown" aria-expanded="false">
 		<div class="clearfix">
 			<div class="pull-left">

@@ -8,6 +8,13 @@
     padding-bottom: 5px;
 }
 
+.task-select-ellipsis {
+    width: 135px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .task-view-table-cell-2 {
     width: 60px;
     display: table-cell;
@@ -21,6 +28,7 @@
 
 .table>tbody>tr>td.task-index-content-text-middle {
     vertical-align: middle;
+    word-break: break-all;
 }
 
 .task-index-priority-1 {
@@ -91,6 +99,10 @@
 }
 .task-progress-width-view {
     width: 300px;
+}
+
+.task-word-break {
+    word-break: break-all;
 }
 
 @media screen and (max-width: 768px) {

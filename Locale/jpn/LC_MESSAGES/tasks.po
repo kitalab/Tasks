@@ -165,7 +165,7 @@ msgstr "ToDoリスト名"
 
 # 権限設定画面で使用
 msgid "Use comment"
-msgstr "コメント機能を使用する"
+msgstr "コメントを使用する"
 
 # 権限設定画面で使用
 msgid "Task creatable roles"
