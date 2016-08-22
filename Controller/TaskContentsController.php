@@ -100,8 +100,17 @@ class TaskContentsController extends TasksAppController {
 
 		$this->_prepare();
 		$this->set('listTitle', $this->_taskTitle);
+		$this->set('categoryLabel', h(__d('tasks', 'No category assignment')));
 
 		$conditions = $this->request->params['named'];
+
+		if (isset($conditions['category_id'])) {
+			$category = $this->Category->findById($conditions['category_id']);
+			if (! $category) {
+				return $this->throwBadRequest();
+			}
+			$this->set('categoryLabel', $category['Category']['name']);
+		}
 
 		$this->__list($conditions);
 	}
@@ -415,6 +424,7 @@ class TaskContentsController extends TasksAppController {
 
 		// 期限間近のToDo一覧を分けて取得
 		$deadLineTasks = Hash::extract($taskContents, '{n}.TaskContents.{n}[isDeadLine=' . true . ']');
+		$deadLineTasks = Set::sort($deadLineTasks, '{n}.TaskContent.task_end_date', 'ASC');
 		$this->set('deadLineTasks', $deadLineTasks);
 
 		// 通常のToDo一覧

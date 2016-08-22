@@ -37,7 +37,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 		</header>
 
 		<article>
-			<div class="clearfix">
+			<div class="clearfix task-word-break">
 				<?php echo $this->NetCommonsHtml->blockTitle($taskContent['TaskContent']['title']); ?>
 			</div>
 
@@ -47,19 +47,9 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						<?php echo h(__d('tasks', 'Implementation period') . __d('tasks', 'Colon')); ?>
 					</div>
 					<div class="task-view-table-cell">
-						<?php if (empty($taskContent['TaskContent']['is_date_set'])) : ?>
-							<?php echo __d('tasks', 'Not Date Set'); ?>
-						<?php else: ?>
-							<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_start_date']); ?>
-						<?php endif; ?>
-	
+						<?php echo $this->TaskContent->displayDate($taskContent['TaskContent']['task_start_date'], $taskContent['TaskContent']['is_date_set']); ?>
 						<?php echo h(__d('tasks', 'Till')); ?>
-	
-						<?php if (empty($taskContent['TaskContent']['is_date_set'])) : ?>
-							<?php echo __d('tasks', 'Not Date Set'); ?>
-						<?php else: ?>
-							<?php echo $this->Date->dateFormat($taskContent['TaskContent']['task_end_date']); ?>
-						<?php endif; ?>
+						<?php echo $this->TaskContent->displayDate($taskContent['TaskContent']['task_end_date'], $taskContent['TaskContent']['is_date_set']); ?>
 					</div>
 				</div>
 				<div class="task-view-table-cell pull-left task-content-margin-3">
@@ -73,7 +63,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						<?php echo h(__d('tasks', 'Undefined')); ?>
 					<?php endif; ?>
 				</div>
-				<div class="task-view-table-cell pull-left task-content-margin-3">
+				<div class="task-view-table-cell pull-left task-content-margin-3 task-word-break">
 					<?php echo h(__d('tasks', 'Category') . __d('tasks', 'Colon')); ?>
 					<?php if ($taskContent['Category']['name']): ?>
 						<?php
@@ -171,7 +161,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				</div>
 			</div>
 
-			<div class="task-view-content-top">
+			<div class="task-view-content-top task-word-break">
 				<?php echo $taskContent['TaskContent']['content']; ?>
 			</div>
 			

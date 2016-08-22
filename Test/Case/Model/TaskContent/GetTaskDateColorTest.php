@@ -116,7 +116,7 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 			'is_completion' => false,
 			'is_date_set' => true,
 			'task_start_date' => '2016-08-19 07:10:12',
-			'task_end_date' => '2016-08-19 07:10:12',
+			'task_end_date' => date('Ymd', strtotime(date('Y/m/d H:i:s'))),
 		);
 
 		//テスト実施

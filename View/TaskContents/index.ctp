@@ -39,18 +39,17 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				'currentIsCompletion' => $currentIsCompletion,
 			)); ?>
 			<span class="btn-group task-index-space">
-				<?php echo $this->Category->dropDownToggle(array(
-						'empty' => h(__d('tasks', 'No category assignment')),
-						'displayMenu' => true,
-						'url' => NetCommonsUrl::actionUrlAsArray(Hash::merge(array(
-							'plugin' => 'tasks',
-							'controller' => 'task_contents',
-							'action' => 'index',
-							'block_id' => Current::read('Block.id'),
-							'frame_id' => Current::read('Frame.id')
-						), $this->params['named']))
-					)
-				); ?>
+				<button class="btn btn-default dropdown-toggle task-select-ellipsis" type="button" data-toggle="dropdown" aria-expanded="true">
+					<?php echo $categoryLabel ?>
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+					<?php echo $this->Category->dropDownToggle(array(
+						'empty' => false,
+						'displayMenu' => false,
+						$this->NetCommonsHtml->url(array('action' => 'index')),
+					)); ?>
+				</ul>
 			</span>
 			<?php echo $this->element('TaskContents/select_user', array(
 				'options' => $userOptions,
@@ -77,7 +76,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 
 			<?php if ($deadLineTasks && empty($params['category_id']) && $isNotShow === false): ?>
 				<div class="clearfix">
-					<div class="pull-left">
+					<div class="pull-left task-word-break">
 						<?php echo __d('tasks', 'Deadline close Expiration'); ?>
 					</div>
 				</div>
@@ -91,7 +90,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 			<?php foreach ($taskContents as $taskContent): ?>
 
 				<div class="clearfix task-content">
-					<div class="pull-left task-category-name-margin">
+					<div class="pull-left task-category-name-margin task-word-break">
 						<?php echo $taskContent['Category']['name']; ?>
 					</div>
 
