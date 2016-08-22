@@ -70,7 +70,7 @@ class TaskContentGetCategoryTest extends WorkflowGetTest {
 				'Category' => Array(
 					'id' => 2,
 				),
-				'CategoryOrder' =>array(
+				'CategoryOrder' => array(
 					'id' => 2,
 					'weight' => 2,
 				),
