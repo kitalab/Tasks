@@ -98,7 +98,7 @@ class TaskBlocksControllerEditTest extends BlocksControllerEditTest {
 				'name' => 'Task name',
 			),
 			'old' => Array(
-				'Categories' => 
+				'Categories' =>
 					'[{
 						"Category":{
 							"id":"1",

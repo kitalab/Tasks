@@ -74,7 +74,7 @@ class TaskChargeSearchChargeUserTest extends NetCommonsModelTestCase {
 		//チェック
 		$this->assertTrue($result);
 	}
-	
+
 /**
  * searchChargeUser() Nullのテスト
  *
