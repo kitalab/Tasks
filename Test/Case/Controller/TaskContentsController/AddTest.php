@@ -70,7 +70,6 @@ class TaskContentsControllerAddTest extends WorkflowControllerAddTest {
 				'room_id' => '1',
 				'plugin_key' => $this->plugin,
 			),
-
 			'TaskContent' => array(
 				'id' => null,
 				'key' => null,
@@ -83,7 +82,11 @@ class TaskContentsControllerAddTest extends WorkflowControllerAddTest {
 				'task_start_date' => '2016-03-10 07:10:12',
 				'task_end_date' => '2016-03-17 07:10:12',
 			),
-
+			'TaskCharge' => array(
+				0 => array(
+					'user_id' => 2
+				),
+			),
 			'WorkflowComment' => array(
 				'comment' => 'WorkflowComment save test',
 			),
@@ -231,14 +234,16 @@ class TaskContentsControllerAddTest extends WorkflowControllerAddTest {
 		$results = array();
 		array_push($results, Hash::merge($result, array(
 			'data' => array(
-				'TaskContent' => array(
-					'title' => null
-				)
+				'TaskCharge' => array(
+					0 => array(
+						'user_id' => 200
+					),
+				),
 			),
 			'validationError' => array(
-				'field' => 'TaskContent.Title',
+				'field' => 'TaskCharge.0.user_id',
 				'value' => '',
-				'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Title')),
+				'message' => sprintf(__d('net_commons', 'Failed on validation errors. Please check the input data.')),
 			)
 		)));
 
