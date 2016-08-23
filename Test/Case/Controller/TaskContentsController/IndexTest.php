@@ -96,6 +96,25 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
 			'assert' => array('method' => 'assertNull'),
 		);
 
+		// カテゴリIDによる絞り込み
+		$data2 = $this->__data();
+		$data2['category_id'] = 1;
+
+		$results[2] = array(
+			'urlOptions' => $data2,
+			'assert' => array('method' => 'assertNotEmpty'),
+		);
+
+		// カテゴリIDがない場合
+		$data3 = $this->__data();
+		$data3['category_id'] = 100;
+
+		$results[3] = array(
+			'urlOptions' => $data3,
+			'assert' => array(),
+			'exception' => 'BadRequestException',
+		);
+
 		return $results;
 	}
 
