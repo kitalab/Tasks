@@ -69,7 +69,36 @@ class TaskContentGetCategoryTest extends WorkflowGetTest {
 			0 => array(
 				'Category' => Array(
 					'id' => 2,
-				)
+				),
+				'CategoryOrder' => array(
+					'id' => 2,
+					'weight' => 2,
+				),
+			)
+		);
+
+		//テスト実施
+		$result = $this->$model->$methodName($contentLists);
+
+		//チェック
+		$this->assertArrayNotHasKey('name', $result);
+	}
+
+/**
+ * getCategory() CategoryOrderがNullの場合のテスト
+ *
+ * @return void
+ */
+	public function testGetCategoryOrderNull() {
+		$model = $this->_modelName;
+		$methodName = $this->_methodName;
+
+		//データ生成
+		$contentLists = array(
+			0 => array(
+				'Category' => Array(
+					'id' => 2,
+				),
 			)
 		);
 

@@ -97,6 +97,31 @@ class TaskBlocksControllerEditTest extends BlocksControllerEditTest {
 				'block_id' => $blockId,
 				'name' => 'Task name',
 			),
+			'old' => Array(
+				'Categories' =>
+					'[{
+						"Category":{
+							"id":"1",
+							"block_id":"2",
+							"key":"category_1",
+							"language_id":"2",
+							"name":"Category 1",
+							"created_user":"1",
+							"created":"2015-01-28 04:56:56",
+							"modified_user":"1",
+							"modified":"2015-01-28 04:56:56"
+						},"CategoryOrder":{
+							"id":"1",
+							"category_key":"category_1",
+							"block_key":"block_1",
+							"weight":"1",
+							"created_user":"1",
+							"created":"2015-01-28 04:57:05",
+							"modified_user":"1",
+							"modified":"2015-01-28 04:57:05"
+						}
+					}]'
+			),
 		);
 
 		return $data;
@@ -156,6 +181,9 @@ class TaskBlocksControllerEditTest extends BlocksControllerEditTest {
 				'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Task name')),
 			)
 		);
+
+		$data['old'] = array();
+		$results[4] = array('method' => 'put', 'data' => $data, 'validationError' => false);
 
 		return $results;
 	}

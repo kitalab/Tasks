@@ -1,6 +1,6 @@
 <?php
 /**
- * TaskContentsController::edit()のテスト
+ * TaskContentEditController::edit()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
@@ -12,12 +12,12 @@
 App::uses('WorkflowControllerEditTest', 'Workflow.TestSuite');
 
 /**
- * TaskContentsController::edit()のテスト
+ * TaskContentEditController::edit()のテスト
  *
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
  * @package NetCommons\Tasks\Test\Case\Controller\TaskContentsController
  */
-class TaskContentsControllerEditTest extends WorkflowControllerEditTest {
+class TaskContentEditControllerEditTest extends WorkflowControllerEditTest {
 
 /**
  * Fixtures
@@ -46,7 +46,7 @@ class TaskContentsControllerEditTest extends WorkflowControllerEditTest {
  *
  * @var string
  */
-	protected $_controller = 'task_contents';
+	protected $_controller = 'task_content_edit';
 
 /**
  * テストDataの取得
@@ -87,6 +87,7 @@ class TaskContentsControllerEditTest extends WorkflowControllerEditTest {
 				'title' => 'Title 1',
 				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 				'is_date_set' => true,
+				'is_enable_mail' => false,
 				'task_start_date' => '2016-03-10 07:10:12',
 				'task_end_date' => '2016-03-17 07:10:12',
 			),

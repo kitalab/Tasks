@@ -24,7 +24,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					<div class="text-right">
 						<?php echo $this->Button->editLink('',
 							array(
-								'controller' => 'task_contents',
+								'controller' => 'task_content_edit',
 								'key' => $taskContent['TaskContent']['key']
 							),
 							array(
@@ -110,8 +110,9 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 							</div>
 							<?php
 							$disabled = 'disabled';
-							if (Hash::extract($taskContent, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']')
-									|| $this->Workflow->canEdit('Tasks.TaskContent', $taskContent)
+							if ((Hash::extract($taskContent, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']')
+									|| $this->Workflow->canEdit('Tasks.TaskContent', $taskContent))
+									&& $taskContent['TaskContent']['status'] === TaskContent::TASK_CONTENT_STATUS_PUBLISHED
 							):
 								$disabled = '';
 							endif;

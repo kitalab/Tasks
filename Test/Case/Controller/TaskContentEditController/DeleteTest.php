@@ -1,6 +1,6 @@
 <?php
 /**
- * TaskContentsController::delete()のテスト
+ * TaskContentEditController::delete()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
@@ -12,12 +12,12 @@
 App::uses('WorkflowControllerDeleteTest', 'Workflow.TestSuite');
 
 /**
- * TaskContentsController::delete()のテスト
+ * TaskContentEditController::delete()のテスト
  *
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
  * @package NetCommons\Tasks\Test\Case\Controller\TaskContentsController
  */
-class TaskContentsControllerDeleteTest extends WorkflowControllerDeleteTest {
+class TaskContentEditControllerDeleteTest extends WorkflowControllerDeleteTest {
 
 /**
  * Fixtures
@@ -47,7 +47,7 @@ class TaskContentsControllerDeleteTest extends WorkflowControllerDeleteTest {
  *
  * @var string
  */
-	protected $_controller = 'task_contents';
+	protected $_controller = 'task_content_edit';
 
 /**
  * テストDataの取得

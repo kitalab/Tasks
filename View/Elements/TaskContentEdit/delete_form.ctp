@@ -12,7 +12,7 @@
 
 <?php echo $this->NetCommonsForm->create('TaskContent', array(
 		'type' => 'delete',
-		'url' => NetCommonsUrl::blockUrl(array('controller' => 'task_contents', 'action' => 'delete', 'frame_id' => Current::read('Frame.id')))
+		'url' => NetCommonsUrl::blockUrl(array('controller' => 'task_content_edit', 'action' => 'delete', 'frame_id' => Current::read('Frame.id')))
 	)
 ); ?>
 <?php echo $this->NetCommonsForm->hidden('Frame.id'); ?>

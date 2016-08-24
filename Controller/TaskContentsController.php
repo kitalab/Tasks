@@ -116,149 +116,6 @@ class TaskContentsController extends TasksAppController {
 	}
 
 /**
- * index add
- *
- * @return void
- */
-	public function add() {
-		$this->_prepare();
-
-		if ($this->request->is('post')) {
-			$data = $this->request->data;
-
-			$data['TaskContent']['task_key'] = $this->_taskSetting['TaskSetting']['task_key'];
-
-			// set status
-			$status = $this->Workflow->parseStatus();
-			$data['TaskContent']['status'] = $status;
-
-			// set block_id
-			$data['TaskContent']['block_id'] = Current::read('Block.id');
-			// set language_id
-			$data['TaskContent']['language_id'] = Current::read('Language.id');
-
-			// set task_end_date
-			if ($data['TaskContent']['is_date_set']) {
-				$data = $this->__setTaskEndDateTime($data);
-			}
-
-			if (($result = $this->TaskContent->saveContent($data))) {
-				$url = NetCommonsUrl::actionUrl(array(
-					'controller' => 'task_contents',
-					'action' => 'view',
-					'frame_id' => Current::read('Frame.id'),
-					'block_id' => Current::read('Block.id'),
-					'key' => $result['TaskContent']['key']
-				));
-
-				return $this->redirect($url);
-			}
-			// ToDo担当者ユーザー保持
-			$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
-
-			$this->NetCommons->handleValidationError($this->TaskContent->validationErrors);
-
-		} else {
-			$this->request->data = Hash::merge($this->request->data, $this->TaskContent->create());
-		}
-		$this->request->data = $this->NetCommonsTime->toUserDatetimeArray(
-			$this->request->data,
-			array(
-				'TaskContent.task_start_date',
-				'TaskContent.task_end_date',
-			)
-		);
-
-		$mailSetting = $this->__getMailSetting();
-		$this->set('mailSetting', $mailSetting);
-
-		$this->view = 'edit';
-	}
-
-/**
- * index edit
- *
- * @return void
- * @throws BadRequestException
- */
-	public function edit() {
-		$key = $this->params['key'];
-		$taskContent = $this->TaskContent->getTask($key);
-
-		if (! $this->request->data) {
-			$this->request->data = $taskContent;
-		}
-
-		// ToDo担当者ユーザー保持
-		$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
-
-		if (empty($taskContent)) {
-			return $this->throwBadRequest();
-		}
-
-		if ($this->TaskContent->canEditWorkflowContent($taskContent) === false) {
-			return $this->throwBadRequest();
-		}
-		$this->_prepare();
-
-		if ($this->request->is('put')) {
-
-			$this->TaskContent->create();
-			$this->request->data['TaskContent']['task_key'] =
-				$this->_taskSetting['TaskSetting']['task_key'];
-			$this->request->data['TaskContent']['key'] = $key;
-
-			// set status
-			$status = $this->Workflow->parseStatus();
-			$this->request->data['TaskContent']['status'] = $status;
-			// set block_id
-			$this->request->data['TaskContent']['block_id'] = Current::read('Block.id');
-			// set language_id
-			$this->request->data['TaskContent']['language_id'] = Current::read('Language.id');
-
-			$data = $this->request->data;
-
-			// set task_end_date
-			if ($data['TaskContent']['is_date_set']) {
-				$data = $this->__setTaskEndDateTime($data);
-			}
-
-			unset($data['TaskContent']['id']); // 常に新規保存
-
-			if ($this->TaskContent->saveContent($data)) {
-				$url = NetCommonsUrl::actionUrl(
-					array(
-						'controller' => 'task_contents',
-						'action' => 'view',
-						'frame_id' => Current::read('Frame.id'),
-						'block_id' => Current::read('Block.id'),
-						'key' => $data['TaskContent']['key']
-					)
-				);
-
-				return $this->redirect($url);
-			}
-
-			$this->NetCommons->handleValidationError($this->TaskContent->validationErrors);
-		}
-
-		$this->request->data = $this->NetCommonsTime->toUserDatetimeArray(
-				$this->request->data,
-			array(
-				'TaskContent.task_start_date',
-				'TaskContent.task_end_date',
-			));
-
-		$mailSetting = $this->__getMailSetting();
-		$this->set('taskContent', $taskContent);
-		$this->set('mailSetting', $mailSetting);
-		$this->set('isDeletable', $this->TaskContent->canDeleteWorkflowContent($taskContent));
-
-		$comments = $this->TaskContent->getCommentsByContentKey($taskContent['TaskContent']['key']);
-		$this->set('comments', $comments);
-	}
-
-/**
  * index view
  *
  * @return void
@@ -305,29 +162,6 @@ class TaskContentsController extends TasksAppController {
 			// 表示できないToDoへのアクセスならBadRequest
 			return $this->throwBadRequest();
 		}
-	}
-
-/**
- * delete method
- *
- * @throws InternalErrorException
- * @return void
- */
-	public function delete() {
-		$this->request->allowMethod('post', 'delete');
-
-		$key = $this->request->data['TaskContent']['key'];
-		$taskContent = $this->TaskContent->findByKeyAndIsLatest($key, 1);
-
-		// 権限チェック
-		if ($this->TaskContent->canDeleteWorkflowContent($taskContent) === false) {
-			return $this->throwBadRequest();
-		}
-
-		if ($this->TaskContent->deleteContentByKey($key) === false) {
-			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
-		}
-		$this->redirect(NetCommonsUrl::backToPageUrl());
 	}
 
 /**
@@ -444,25 +278,6 @@ class TaskContentsController extends TasksAppController {
 	}
 
 /**
- * Get Mail Setting
- *
- * メール設定情報の取得
- *
- * @return array メール設定情報の配列
- */
-	private function __getMailSetting() {
-		$mailSetting = $this->MailSetting->find('first', array(
-				'conditions' => array(
-					$this->MailSetting->alias . '.plugin_key' => 'tasks',
-					$this->MailSetting->alias . '.block_key' => Current::read('Block.key'),
-				),
-				'recursive' => -1,
-			)
-		);
-		return $mailSetting;
-	}
-
-/**
  * Get Select Options
  *
  * 絞り込み及びソートのoption取得
@@ -572,22 +387,6 @@ class TaskContentsController extends TasksAppController {
 		);
 
 		return $sort;
-	}
-
-/**
- * Get Task End Date Time
- *
- * ToDoの実施日終了日の時刻を23:59:59に設定
- *
- * @param array $data POSTされたToDoデータ
- * @return array
- */
-	private function __setTaskEndDateTime($data) {
-		$endDate = $data['TaskContent']['task_end_date'];
-		$data['TaskContent']['task_end_date'] = date(
-			'Y-m-d H:i:s', strtotime($endDate . '+1 days -1 second')
-		);
-		return $data;
 	}
 
 /**
