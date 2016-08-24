@@ -19,6 +19,20 @@ App::uses('TasksAppModel', 'Tasks.Model');
 class TaskContent extends TasksAppModel {
 
 /**
+ * 公開中のTODO
+ *
+ * @var string
+ */
+	const TASK_CONTENT_STATUS_PUBLISHED = WorkflowComponent::STATUS_PUBLISHED;
+
+/**
+ * 一時保存中のTODO
+ *
+ * @var string
+ */
+	const TASK_CONTENT_STATUS_IN_DRAFT = WorkflowComponent::STATUS_IN_DRAFT;
+
+/**
  * メールを送信しない
  *
  * @var const
@@ -348,7 +362,24 @@ class TaskContent extends TasksAppModel {
 			return array();
 		}
 
-		$taskContentList = $this->getTaskContentList($lists);
+		// カテゴリなしは進捗率を表示しないので条件から省く
+		$categoryRateParam = array('Not' => array('TaskContent.category_id' => 0));
+		$conditions = array_merge($conditions, $categoryRateParam);
+		// バーチャルフィールドを追加
+		$this->virtualFields['cnt'] = 0;
+		$this->virtualFields['sum'] = 0;
+		// カテゴリ毎の全体のToDo数と進捗率を取得
+		$categoryData = $this->find('all', array(
+				'fields' => array(
+						'TaskContent.category_id', 'count(TaskContent.category_id) as TaskContent__cnt',
+						'TaskContent.progress_rate', 'sum(TaskContent.progress_rate) as TaskContent__sum'
+				),
+				'conditions' => $conditions,
+				'group' => array('TaskContent.category_id'),
+		));
+		$categoryData = Hash::combine($categoryData, '{n}.TaskContent.category_id', '{n}.TaskContent');
+
+		$taskContentList = $this->getTaskContentList($lists, $categoryData);
 
 		return $taskContentList;
 	}
@@ -357,15 +388,16 @@ class TaskContent extends TasksAppModel {
  * カテゴリデータとToDoデータを整理したLISTを返す
  *
  * @param array $lists 担当者絞り込み条件で取得したデータ
+ * @param array $categoryData カテゴリ毎の全体のToDo数と進捗率
  *
  * @return array
  */
-	public function getTaskContentList($lists) {
+	public function getTaskContentList($lists, $categoryData = array()) {
 		// カテゴリ情報を取得
 		$categoryArr = $this->getCategory($lists);
 
 		// ToDo一覧情報を取得
-		$taskContentList = $this->getCategoryContentList($categoryArr, $lists);
+		$taskContentList = $this->getCategoryContentList($categoryArr, $lists, $categoryData);
 
 		return $taskContentList;
 	}
@@ -419,27 +451,11 @@ class TaskContent extends TasksAppModel {
  *
  * @param array $categoryArr カテゴリデータ
  * @param array $contentLists ToDoリスト
+ * @param array $categoryData カテゴリ毎の全体のToDo数と進捗率
  *
  * @return array
  */
-	public function getCategoryContentList($categoryArr, $contentLists) {
-		// カテゴリなしは進捗率を表示しないので条件から省く
-		$categoryRateParam = array('Not' => array('TaskContent.category_id' => 0));
-		$categoryCondition = $this->getConditions(Current::read('Block.id'), $categoryRateParam);
-		// バーチャルフィールドを追加
-		$this->virtualFields['cnt'] = 0;
-		$this->virtualFields['sum'] = 0;
-		// カテゴリ毎の全体のToDo数と進捗率を取得
-		$categoryData = $this->find('all', array(
-			'fields' => array(
-				'TaskContent.category_id', 'count(TaskContent.category_id) as TaskContent__cnt',
-				'TaskContent.progress_rate', 'sum(TaskContent.progress_rate) as TaskContent__sum'
-			),
-			'conditions' => $categoryCondition,
-			'group' => array('TaskContent.category_id'),
-		));
-		$categoryData = Hash::combine($categoryData, '{n}.TaskContent.category_id', '{n}.TaskContent');
-
+	public function getCategoryContentList($categoryArr, $contentLists, $categoryData = array()) {
 		$taskContentList = array();
 
 		foreach ($categoryArr as $category) {
@@ -459,8 +475,17 @@ class TaskContent extends TasksAppModel {
 				$taskCharge = Hash::extract(
 					$contentLists, '{n}.TaskCharge.{n}[task_content_id=' . $content['id'] . ']'
 				);
+
+				// 現在実施中
+				$content['date_color'] = TaskContent::TASK_BEING_PERFORMED;
 				// ここでdate_colorをセット＆Controllerで期限間近判定用のフラグをセット
-				$content['date_color'] = $this->getTaskDateColor($content);
+				if ($content['is_completion'] === false && ! empty($content['is_date_set'])) {
+					$content['date_color'] = $this->getTaskDateColor(
+							$content['task_start_date'],
+							$content['task_end_date']
+					);
+				}
+
 				$isDeadLine = $this->isDeadLine($content['date_color']);
 				$results['TaskContents'][] = array(
 					'TaskContent' => $content,
@@ -479,44 +504,6 @@ class TaskContent extends TasksAppModel {
 			$taskContentList[] = $results;
 		}
 		return $taskContentList;
-	}
-
-/**
- * 登録されている実施日によりdate_colorを取得
- *
- * @param array $taskContent ToDoデータ
- *
- * @return array
- */
-	public function getTaskDateColor($taskContent) {
-		$now = date('Ymd', strtotime(date('Y/m/d H:i:s')));
-		$deadLine = date('Ymd', strtotime('+2 day'));
-
-		// 現在実施中
-		$dateColor = TaskContent::TASK_BEING_PERFORMED;
-		if ($taskContent['is_completion'] === true || empty($taskContent['is_date_set'])) {
-			return $dateColor;
-		}
-		// 現在の日付が開始日より前
-		if (! empty($taskContent['task_start_date'])
-			&& intval(date('Ymd', strtotime($taskContent['task_start_date']))) > $now
-		) {
-			$dateColor = TaskContent::TASK_START_DATE_BEFORE;
-		}
-		if (! empty($taskContent['task_end_date'])) {
-			// 終了期限間近
-			if (intval(date('Ymd', strtotime($taskContent['task_end_date']))) >= intval($now)
-				&& intval(date('Ymd', strtotime($taskContent['task_end_date']))) <= intval($deadLine)
-			) {
-				$dateColor = TaskContent::TASK_DEADLINE_CLOSE;
-				// 終了期限切れ
-			} elseif (intval(date('Ymd', strtotime($taskContent['task_end_date']))) < intval($now)
-			) {
-				$dateColor = TaskContent::TASK_BEYOND_THE_END_DATE;
-			}
-		}
-
-		return $dateColor;
 	}
 
 /**
@@ -673,20 +660,38 @@ class TaskContent extends TasksAppModel {
 				$isCompletion = true;
 			}
 
+			$conditions = array(
+				'TaskContent.key' => $key,
+				'TaskContent.status' => TaskContent::TASK_CONTENT_STATUS_PUBLISHED,
+			);
+
+			if (! Current::permission('content_publishable')) {
+				$test = $this->find('first',
+						array('recursive' => 1, 'conditions' => $conditions));
+				$chargeUser = Hash::extract($test, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']');
+
+				// 担当者でなくTODO作成者でもないのであればfalseを返す
+				if (! $chargeUser && $test['TaskContent']['created_user'] !== Current::read('User.id')) {
+					return false;
+				}
+			}
+
 			$data = array(
 				'progress_rate' => $progressRate,
-				'status' => 1,
 				'is_completion' => $isCompletion,
+				'modified_user' => Current::read('User.id'),
 			);
+
+			// statusを一時保存の状態として設定しバリデーション処理を行う
+			$data['status'] = TaskContent::TASK_CONTENT_STATUS_IN_DRAFT;
 
 			$this->set($data);
 			if (! $this->validates(array('only_progress' => true))) {
 				return false;
 			}
 
-			$conditions = array(
-				'TaskContent.key' => $key,
-			);
+			// statusは更新しないのでunsetする
+			unset($data['status']);
 			if (! $this->updateAll($data, $conditions)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}

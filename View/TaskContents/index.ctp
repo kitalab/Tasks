@@ -39,9 +39,15 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				'currentIsCompletion' => $currentIsCompletion,
 			)); ?>
 			<span class="btn-group task-index-space">
-				<button class="btn btn-default dropdown-toggle task-select-ellipsis" type="button" data-toggle="dropdown" aria-expanded="true">
-					<?php echo $categoryLabel ?>
-					<span class="caret"></span>
+				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+					<div class="clearfix">
+						<div class="pull-left task-select-ellipsis">
+							<?php echo $categoryLabel ?>
+						</div>
+						<div class="pull-right">
+							<span class="caret"></span>
+						</div>
+					</div>
 				</button>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 					<?php echo $this->Category->dropDownToggle(array(

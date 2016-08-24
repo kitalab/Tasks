@@ -56,51 +56,6 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 	protected $_methodName = 'getTaskDateColor';
 
 /**
- * getTaskDateColor() 現在実施中の場合のテスト1
- *
- * @return void
- */
-	public function testGetTaskDateColor() {
-		$model = $this->_modelName;
-		$methodName = $this->_methodName;
-
-		//データ生成
-		$taskContent = array(
-			'is_completion' => true,
-			'is_date_set' => true,
-		);
-
-		//テスト実施
-		$result = $this->$model->$methodName($taskContent);
-
-		//チェック
-		$this->assertNotEmpty($result);
-		$this->assertEquals(TaskContent::TASK_BEING_PERFORMED, $result);
-	}
-
-/**
- * getTaskDateColor() 現在実施中の場合のテスト2
- *
- * @return void
- */
-	public function testGetTaskDateColor1() {
-		$model = $this->_modelName;
-		$methodName = $this->_methodName;
-
-		//データ生成
-		$taskContent = array(
-			'is_completion' => false,
-		);
-
-		//テスト実施
-		$result = $this->$model->$methodName($taskContent);
-
-		//チェック
-		$this->assertNotEmpty($result);
-		$this->assertEquals(TaskContent::TASK_BEING_PERFORMED, $result);
-	}
-
-/**
  * getTaskDateColor() 終了期限間近の場合のテスト
  *
  * @return void
@@ -108,17 +63,14 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 	public function testGetTaskDateColor2() {
 		$model = $this->_modelName;
 		$methodName = $this->_methodName;
-
 		//データ生成
 		$taskContent = array(
-			'is_completion' => false,
-			'is_date_set' => true,
 			'task_start_date' => '2016-08-19 07:10:12',
 			'task_end_date' => date('Ymd', strtotime('+2 day')),
 		);
 
 		//テスト実施
-		$result = $this->$model->$methodName($taskContent);
+		$result = $this->$model->$methodName($taskContent['task_start_date'], $taskContent['task_end_date']);
 
 		//チェック
 		$this->assertNotEmpty($result);
@@ -136,14 +88,12 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 
 		//データ生成
 		$taskContent = array(
-			'is_completion' => false,
-			'is_date_set' => true,
 			'task_start_date' => '2016-08-15 07:10:12',
 			'task_end_date' => '2016-08-17 07:10:12',
 		);
 
 		//テスト実施
-		$result = $this->$model->$methodName($taskContent);
+		$result = $this->$model->$methodName($taskContent['task_start_date'], $taskContent['task_end_date']);
 
 		//チェック
 		$this->assertNotEmpty($result);
@@ -161,41 +111,16 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 
 		//データ生成
 		$taskContent = array(
-			'is_completion' => false,
-			'is_date_set' => true,
 			'task_start_date' => date('Ymd', strtotime('+1 day')),
 			'task_end_date' => date('Ymd', strtotime('+1 month')),
 		);
 
 		//テスト実施
-		$result = $this->$model->$methodName($taskContent);
+		$result = $this->$model->$methodName($taskContent['task_start_date'], $taskContent['task_end_date']);
 
 		//チェック
 		$this->assertNotEmpty($result);
 		$this->assertEquals(TaskContent::TASK_START_DATE_BEFORE, $result);
-	}
-
-/**
- * getTaskDateColor() Nullのテスト
- *
- * @return void
- */
-	public function testGetTaskDateColorNull() {
-		$model = $this->_modelName;
-		$methodName = $this->_methodName;
-
-		//データ生成
-		$taskContent = array(
-			'is_completion' => false,
-			'is_date_set' => true,
-		);
-
-		//テスト実施
-		$result = $this->$model->$methodName($taskContent);
-
-		//チェック
-		$this->assertNotEmpty($result);
-		$this->assertEquals(TaskContent::TASK_BEING_PERFORMED, $result);
 	}
 
 }

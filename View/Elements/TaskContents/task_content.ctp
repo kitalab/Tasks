@@ -44,12 +44,13 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					);
 					$disabled = 'disabled';
 					$charge = '';
-					if (Current::read('User.id')):
+					if (Current::read('User.id')) {
 						$charge = Hash::extract($content, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']');
-					endif;
-					if ($charge || $this->Workflow->canEdit('Tasks.TaskContent', $content)):
+					}
+					if (($charge || $this->Workflow->canEdit('Tasks.TaskContent', $content))
+							&& $content['TaskContent']['status'] === TaskContent::TASK_CONTENT_STATUS_PUBLISHED) {
 						$disabled = '';
-					endif;
+					}
 					?>
 					<td class="col-xs-1 col-sm-1 col-md-1 col-lg-1 task-index-content-text-middle">
 						<div data-toggle="buttons">
