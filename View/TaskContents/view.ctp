@@ -24,7 +24,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					<div class="text-right">
 						<?php echo $this->Button->editLink('',
 							array(
-								'controller' => 'task_contents',
+								'controller' => 'task_content_edit',
 								'key' => $taskContent['TaskContent']['key']
 							),
 							array(

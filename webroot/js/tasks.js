@@ -4,7 +4,7 @@
  * @param {string} Controller name
  * @param {function($scope, NetCommonsWysiwyg)} Controller
  */
-NetCommonsApp.controller('TaskContent',
+NetCommonsApp.controller('TaskContentEdit',
     function($scope, NetCommonsWysiwyg) {
       /**
        * tinymce

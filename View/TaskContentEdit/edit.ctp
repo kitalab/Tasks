@@ -24,8 +24,8 @@ if (! isset($mailSetting['MailSetting']['is_mail_send'])
 }
 ?>
 
-<div class="taskContents form"
-	 ng-controller="TaskContent"
+<div class="taskContentEdit form"
+	 ng-controller="TaskContentEdit"
 	 ng-init="initialize(<?php echo h(json_encode($this->request->data)); ?>)">
 	<article>
 
@@ -87,9 +87,9 @@ if (! isset($mailSetting['MailSetting']['is_mail_send'])
 						)
 					); ?>
 
-					<?php echo $this->element('TaskContents/task_period_edit_form'); ?>
+					<?php echo $this->element('TaskContentEdit/task_period_edit_form'); ?>
 
-					<?php echo $this->element('TaskContents/charge_edit_form'); ?>
+					<?php echo $this->element('TaskContentEdit/charge_edit_form'); ?>
 
 					<div class="form-group">
 						<?php echo $this->NetCommonsForm->wysiwyg('TaskContent.content', array(
@@ -126,16 +126,17 @@ if (! isset($mailSetting['MailSetting']['is_mail_send'])
 						<?php echo $this->NetCommonsForm->error('TaskContent.email_send_timing'); ?>
 					</div>
 
-					<?php
-					echo $this->NetCommonsForm->checkbox('TaskContent.use_calendar', array(
-						'class' => 'text-left pull-left',
-					));
-					?>
-					<?php echo $this->NetCommonsForm->label(
-						'TaskContent.use_calendar',
-						__d('tasks', 'Use calendar')
-					); ?>
-					<?php echo $this->NetCommonsForm->error('TaskContent.use_calendar'); ?>
+<!--	カレンダー連携登録チェックボックス				-->
+<!--					--><?php
+//					echo $this->NetCommonsForm->checkbox('TaskContent.use_calendar', array(
+//						'class' => 'text-left pull-left',
+//					));
+//					?>
+<!--					--><?php //echo $this->NetCommonsForm->label(
+//						'TaskContent.use_calendar',
+//						__d('tasks', 'Use calendar')
+//					); ?>
+<!--					--><?php //echo $this->NetCommonsForm->error('TaskContent.use_calendar'); ?>
 				</fieldset>
 
 				<hr/>
@@ -151,7 +152,7 @@ if (! isset($mailSetting['MailSetting']['is_mail_send'])
 
 			<?php if ($this->request->params['action'] === 'edit') : ?>
 				<div class="panel-footer text-right">
-					<?php echo $this->element('TaskContents/delete_form'); ?>
+					<?php echo $this->element('TaskContentEdit/delete_form'); ?>
 				</div>
 			<?php endif; ?>
 

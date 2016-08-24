@@ -29,7 +29,6 @@
 
 .table>tbody>tr>td.task-index-content-text-middle {
     vertical-align: middle;
-    /*word-break: break-all;*/
 }
 
 .task-index-priority-1 {
@@ -104,6 +103,7 @@
 
 .task-word-break {
     word-break: break-all;
+    word-wrap: break-word;
 }
 
 @media screen and (max-width: 768px) {

@@ -20,7 +20,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 		<div class="pull-right task-index-space">
 			<?php
 			$addUrl = array(
-				'controller' => 'task_contents',
+				'controller' => 'task_content_edit',
 				'action' => 'add',
 				'frame_id' => Current::read('Frame.id')
 			);
