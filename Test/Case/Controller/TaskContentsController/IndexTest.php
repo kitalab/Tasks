@@ -32,6 +32,7 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
 		'plugin.tasks.task_content',
 		'plugin.tasks.block_setting_for_task',
 		'plugin.workflow.workflow_comment',
+		'plugin.content_comments.content_comment'
 	);
 
 /**
@@ -115,6 +116,16 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
 			'exception' => 'BadRequestException',
 		);
 
+		// ソート
+		$data4 = $this->__data();
+		$data4['sort'] = 'TaskContent.task_end_date';
+		$data4['direction'] = 'asc';
+
+		$results[4] = array(
+			'urlOptions' => $data4,
+			'assert' => array('method' => 'assertNotEmpty'),
+		);
+
 		return $results;
 	}
 
@@ -182,7 +193,33 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
  * @return array
  */
 	public function dataProviderIndexByEditable() {
-		return array($this->dataProviderIndex()[0]);
+		$data0 = $this->__data();
+
+		//テストデータ
+		$results = array();
+		$results[0] = array(
+			'urlOptions' => $data0,
+			'assert' => array('method' => 'assertNotEmpty'),
+		);
+
+		// 担当者による絞り込み
+		$data1 = $this->__data();
+		$data1['user_id'] = 3;
+
+		$results[1] = array(
+			'urlOptions' => $data1,
+			'assert' => array('method' => 'assertNotEmpty'),
+		);
+
+		// 完了・未完了の絞り込み
+		$data2 = $this->__data();
+		$data2['is_completion'] = 1;
+
+		$results[2] = array(
+			'urlOptions' => $data2,
+			'assert' => array('method' => 'assertNotEmpty'),
+		);
+		return $results;
 	}
 
 /**
