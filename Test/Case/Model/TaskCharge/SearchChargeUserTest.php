@@ -1,6 +1,6 @@
 <?php
 /**
- * TaskContent::getList()のテスト
+ * TaskCharge::searchChargeUser()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
@@ -9,15 +9,15 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('WorkflowGetTest', 'Workflow.TestSuite');
+App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
 
 /**
- * TaskContent::getList()のテスト
+ * TaskCharge::searchChargeUser()のテスト
  *
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
- * @package NetCommons\Tasks\Test\Case\Model\TaskContent
+ * @package NetCommons\Tasks\Test\Case\Model\TaskCharge
  */
-class TaskContentGetListTest extends WorkflowGetTest {
+class TaskChargeSearchChargeUserTest extends NetCommonsModelTestCase {
 
 /**
  * Fixtures
@@ -32,6 +32,7 @@ class TaskContentGetListTest extends WorkflowGetTest {
 		'plugin.tasks.task_content',
 		'plugin.tasks.block_setting_for_task',
 		'plugin.workflow.workflow_comment',
+		'plugin.user_roles.user_role_setting',
 	);
 
 /**
@@ -46,62 +47,51 @@ class TaskContentGetListTest extends WorkflowGetTest {
  *
  * @var string
  */
-	protected $_modelName = 'TaskContent';
+	protected $_modelName = 'TaskCharge';
 
 /**
  * Method name
  *
  * @var string
  */
-	protected $_methodName = 'getList';
+	protected $_methodName = 'searchChargeUser';
 
 /**
- * getList()のテスト
+ * searchChargeUser()のテスト
  *
  * @return void
  */
-	public function testGetList() {
+	public function testSearchChargeUser() {
 		$model = $this->_modelName;
 		$methodName = $this->_methodName;
 
 		//データ生成
-		$params = array();
-		$order = array();
+		$userId = 1;
 
 		//テスト実施
-		$result = $this->$model->$methodName($params, $order);
+		$result = $this->$model->$methodName($userId);
 
 		//チェック
-		$this->assertNotEmpty($result);
+		$this->assertTrue($result);
 	}
 
 /**
- * getList()のテスト
+ * searchChargeUser() Nullのテスト
  *
  * @return void
  */
-	public function testGetListNull() {
+	public function testSearchChargeUserNull() {
 		$model = $this->_modelName;
 		$methodName = $this->_methodName;
 
 		//データ生成
-		$params = array(
-			0 => array(
-				'TaskContent.is_completion' => 0,
-			),
-		);
-		$order = array(
-			'TaskContent.progress_rate' => 'asc',
-			'TaskContent.task_end_date' => 'asc',
-			'TaskContent.priority' => 'desc',
-			'TaskContent.modified' => 'desc',
-		);
+		$userId = null;
 
 		//テスト実施
-		$result = $this->$model->$methodName($params, $order);
+		$result = $this->$model->$methodName($userId);
 
 		//チェック
-		$this->assertEmpty($result);
+		$this->assertFalse($result);
 	}
 
 }

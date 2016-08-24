@@ -68,8 +68,6 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 		$taskContent = array(
 			'is_completion' => true,
 			'is_date_set' => true,
-			'task_start_date' => '2016-03-17 07:10:12',
-			'task_end_date' => '2016-03-17 07:10:12',
 		);
 
 		//テスト実施
@@ -103,7 +101,7 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 	}
 
 /**
- * getTaskDateColor() 日付が開始日より後・終了期限間近の場合のテスト
+ * getTaskDateColor() 終了期限間近の場合のテスト
  *
  * @return void
  */
@@ -116,7 +114,7 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 			'is_completion' => false,
 			'is_date_set' => true,
 			'task_start_date' => '2016-08-19 07:10:12',
-			'task_end_date' => date('Ymd', strtotime(date('Y/m/d H:i:s'))),
+			'task_end_date' => date('Ymd', strtotime('+2 day')),
 		);
 
 		//テスト実施
@@ -128,7 +126,7 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 	}
 
 /**
- * getTaskDateColor() 日付が開始日より前・終了期限切れの場合のテスト
+ * getTaskDateColor() 終了期限切れの場合のテスト
  *
  * @return void
  */
@@ -140,7 +138,7 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 		$taskContent = array(
 			'is_completion' => false,
 			'is_date_set' => true,
-			'task_start_date' => '2016-08-17 07:10:12',
+			'task_start_date' => '2016-08-15 07:10:12',
 			'task_end_date' => '2016-08-17 07:10:12',
 		);
 
@@ -165,8 +163,8 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 		$taskContent = array(
 			'is_completion' => false,
 			'is_date_set' => true,
-			'task_start_date' => '2017-08-17 07:10:12',
-			'task_end_date' => '2017-08-17 07:10:12',
+			'task_start_date' => date('Ymd', strtotime('+1 day')),
+			'task_end_date' => date('Ymd', strtotime('+1 month')),
 		);
 
 		//テスト実施
