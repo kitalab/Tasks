@@ -1,6 +1,6 @@
 <?php
 /**
- * TaskContentsController::add()のテスト
+ * TaskContentEditController::add()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
@@ -12,12 +12,12 @@
 App::uses('WorkflowControllerAddTest', 'Workflow.TestSuite');
 
 /**
- * TaskContentsController::add()のテスト
+ * TaskContentEditController::add()のテスト
  *
  * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
  * @package NetCommons\Tasks\Test\Case\Controller\TaskContentsController
  */
-class TaskContentsControllerAddTest extends WorkflowControllerAddTest {
+class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 
 /**
  * Fixtures
@@ -46,7 +46,7 @@ class TaskContentsControllerAddTest extends WorkflowControllerAddTest {
  *
  * @var string
  */
-	protected $_controller = 'task_contents';
+	protected $_controller = 'task_content_edit';
 
 /**
  * テストDataの取得
