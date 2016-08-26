@@ -16,7 +16,7 @@ msgstr ""
 "Language: ja\n"
 
 # ToDo一覧表示設定画面で使用
-msgid "New task list"
+msgid "New task list %s"
 msgstr "新しいToDoリスト %s"
 
 # ToDo一覧表示設定画面で使用
@@ -26,6 +26,10 @@ msgstr "ToDoリスト名"
 # 一覧画面で使用
 msgid "Incomplete task"
 msgstr "未完了のToDo"
+
+# 一覧画面で使用
+msgid "Progress rate percent"
+msgstr "%"
 
 # 一覧画面で使用
 msgid "Completed task"

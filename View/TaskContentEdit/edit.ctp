@@ -1,6 +1,6 @@
 <?php
 /**
- * TaskContent edit template
+ * TaskContentEdit edit template
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>
@@ -16,13 +16,13 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 ?>
 
 <?php
-$checkMailClass = '';
-if (! isset($mailSetting['MailSetting']['is_mail_send'])
-		|| $mailSetting['MailSetting']['is_mail_send'] == TaskContent::TASK_CONTENT_NOT_IS_MAIL_SEND
-) {
-	$checkMailClass = 'hidden';
-}
-?>
+//$checkMailClass = '';
+//if (! isset($mailSetting['MailSetting']['is_mail_send'])
+//		|| $mailSetting['MailSetting']['is_mail_send'] == TaskContent::TASK_CONTENT_NOT_IS_MAIL_SEND
+//) {
+//	$checkMailClass = 'hidden';
+//}
+//?>
 
 <div class="taskContentEdit form"
 	 ng-controller="TaskContentEdit"
@@ -72,10 +72,10 @@ if (! isset($mailSetting['MailSetting']['is_mail_send'])
 
 					<?php
 					$priorityOptions = array(
-						__d('tasks', 'Undefined'),
-						__d('tasks', 'Low'),
-						__d('tasks', 'Medium'),
-						__d('tasks', 'High')
+						TaskContent::TASK_PRIORITY_UNDEFINED => __d('tasks', 'Undefined'),
+						TaskContent::TASK_PRIORITY_LOW => __d('tasks', 'Low'),
+						TaskContent::TASK_PRIORITY_MEDIUM => __d('tasks', 'Medium'),
+						TaskContent::TASK_PRIORITY_HIGH => __d('tasks', 'High')
 					);
 					?>
 					<?php echo $this->NetCommonsForm->input('TaskContent.priority',
@@ -99,32 +99,33 @@ if (! isset($mailSetting['MailSetting']['is_mail_send'])
 						); ?>
 					</div>
 
-					<div class="form-group <?php echo $checkMailClass; ?>" data-calendar-name="checkMail">
-						<?php
-						echo $this->NetCommonsForm->checkbox('TaskContent.is_enable_mail', array(
-							'class' => 'text-left pull-left'
-						));
-						?>
-						<?php echo $this->NetCommonsForm->error('TaskContent.is_enable_mail'); ?>
-						<?php echo $this->NetCommonsForm->label(
-							'TaskContent.email_send_timing',
-							__d('tasks', 'Inform in advance by mail')
-						); ?>
+<!--	リマインダーメール設定項目				-->
+<!--					<div class="form-group --><?php //echo $checkMailClass; ?><!--" data-calendar-name="checkMail">-->
+<!--						--><?php
+//						echo $this->NetCommonsForm->checkbox('TaskContent.is_enable_mail', array(
+//							'class' => 'text-left pull-left'
+//						));
+//						?>
+<!--						--><?php //echo $this->NetCommonsForm->error('TaskContent.is_enable_mail'); ?>
+<!--						--><?php //echo $this->NetCommonsForm->label(
+//							'TaskContent.email_send_timing',
+//							__d('tasks', 'Inform in advance by mail')
+//						); ?>
 
-						<?php
-						$options = array(
-							'1' => __d('tasks', 'One day before the task period'),
-							'2' => __d('tasks', 'Two days before the task period'),
-							'7' => __d('tasks', 'One week before the task period'),
-						);
-
-						echo $this->NetCommonsForm->select('TaskContent.email_send_timing', $options, array(
-								'class' => 'form-control pull-left task-content-margin-1',
-								'empty' => false,
-							)
-						); ?>
-						<?php echo $this->NetCommonsForm->error('TaskContent.email_send_timing'); ?>
-					</div>
+<!--						--><?php
+//						$options = array(
+//							'1' => __d('tasks', 'One day before the task period'),
+//							'2' => __d('tasks', 'Two days before the task period'),
+//							'7' => __d('tasks', 'One week before the task period'),
+//						);
+//
+//						echo $this->NetCommonsForm->select('TaskContent.email_send_timing', $options, array(
+//								'class' => 'form-control pull-left task-content-margin-1',
+//								'empty' => false,
+//							)
+//						); ?>
+<!--						--><?php //echo $this->NetCommonsForm->error('TaskContent.email_send_timing'); ?>
+<!--					</div>-->
 
 <!--	カレンダー連携登録チェックボックス				-->
 <!--					--><?php

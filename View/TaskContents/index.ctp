@@ -40,14 +40,12 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 			)); ?>
 			<span class="btn-group task-index-space">
 				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
-					<div class="clearfix">
-						<div class="pull-left task-select-ellipsis">
-							<?php echo $categoryLabel ?>
-						</div>
-						<div class="pull-right">
-							<span class="caret"></span>
-						</div>
-					</div>
+					<span class="pull-left nc-drop-down-ellipsis">
+						<?php echo $categoryLabel ?>
+					</span>
+					<span class="pull-right">
+						<span class="caret"></span>
+					</span>
 				</button>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 					<?php echo $this->Category->dropDownToggle(array(
