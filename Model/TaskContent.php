@@ -671,19 +671,20 @@ class TaskContent extends TasksAppModel {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
-			// リマインダーメール設定
-			if ($data['TaskContent']['is_enable_mail']) {
-				// 実施終了日の日時を0持00分に変更する
-				$taskEndDate = date('Y-m-d H:i:s',
-					strtotime($data['TaskContent']['task_end_date'] . ' -1day +1 second'));
-				$sendTimes = array(
-					date('Y-m-d H:i:s', strtotime(
-							$taskEndDate . ' -' . $data['TaskContent']['email_send_timing'] . 'day'
-					))
-				);
-				$this->setSendTimeReminder($sendTimes);
-			}
-
+//			$sendTimes = array(NetCommonsTime::getNowDatetime());
+//			// リマインダーメール設定
+//			if ($data['TaskContent']['is_enable_mail']) {
+//				// 実施終了日の日時を0持00分に変更する
+//				$taskEndDate = date('Y-m-d H:i:s',
+//					strtotime($data['TaskContent']['task_end_date'] . ' -1day +1 second'));
+//				$sendTimes = array(
+//					date('Y-m-d H:i:s', strtotime(
+//							$taskEndDate . ' -' . $data['TaskContent']['email_send_timing'] . 'day'
+//					))
+//				);
+//			}
+//
+//			$this->setSendTimeReminder($sendTimes);
 			// メール処理
 			$mailSendUserIdArr =
 				Hash::extract($data, 'TaskCharges.{n}.TaskCharge.user_id');

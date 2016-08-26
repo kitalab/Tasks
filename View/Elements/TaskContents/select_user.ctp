@@ -22,14 +22,12 @@ endif;
 	<button type="button"
 			class="btn btn-default dropdown-toggle"
 			data-toggle="dropdown" aria-expanded="false">
-		<div class="clearfix">
-			<div class="pull-left task-select-ellipsis nc-drop-down-ellipsis">
-				<?php echo h($options['TaskContents.charge_user_id_' . $currentUserId]['label']); ?>
-			</div>
-			<div class="pull-right">
-				<span class="caret"></span>
-			</div>
-		</div>
+		<span class="pull-left task-select-ellipsis nc-drop-down-ellipsis">
+			<?php echo h($options['TaskContents.charge_user_id_' . $currentUserId]['label']); ?>
+		</span>
+		<span class="pull-right">
+			<span class="caret"></span>
+		</span>
 	</button>
 	<ul class="dropdown-menu" role="menu">
 		<?php foreach ($options as $key => $currentUserId) : ?>
