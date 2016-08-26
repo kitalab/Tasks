@@ -143,7 +143,7 @@ class Task extends TasksAppModel {
 
 		$task = $this->createAll(array(
 				'Task' => array(
-					'name' => __d('tasks', 'New task list', date('YmdHis'))
+					'name' => __d('tasks', 'New task list %s', date('YmdHis'))
 				),
 				'Block' => array(
 					'room_id' => Current::read('Room.id'),

@@ -109,8 +109,8 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					); ?>
 				</td>
 	
-				<td class="col-xs-1 col-sm-1 col-md-1 col-lg-1 task-index-content-text-middle">
-					<?php echo $content['TaskContent']['progress_rate']; ?>%
+				<td class="col-xs-1 col-sm-1 col-md-1 col-lg-1 task-index-content-text-middle text-right">
+					<?php echo $content['TaskContent']['progress_rate'] . __d('tasks', 'Progress rate percent'); ?>
 				</td>
 	
 				<td class="hidden-xs col-md-sm4 col-md-3 col-lg-3 task-index-content-text-middle">

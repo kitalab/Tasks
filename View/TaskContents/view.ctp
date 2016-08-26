@@ -149,7 +149,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 							<?php echo h(__d('tasks', 'Not selected')); ?>
 						<?php else : ?>
 							<?php foreach ($this->request->data['selectUsers'] as $selectUsers): ?>
-								<div class="task-view-table-cell pull-left task-content-margin-2 task-content-margin-3">
+								<div class="task-view-table-cell pull-left task-content-margin-2 task-content-margin-3 task-word-break">
 									<?php
 									echo $this->DisplayUser->handlelink(
 										$selectUsers, array('avatar' => true), array(), 'User'

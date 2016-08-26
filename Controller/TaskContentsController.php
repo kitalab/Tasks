@@ -213,8 +213,10 @@ class TaskContentsController extends TasksAppController {
 				$userParam = array(
 					'TaskCharge.user_id' => $conditions['user_id']
 				);
+				$currentUserId = $conditions['user_id'];
+			} else {
+				$currentUserId = 'all';
 			}
-			$currentUserId = $conditions['user_id'];
 		} elseif (Current::read('User.id')) {
 			$userParam = array(
 				'TaskCharge.user_id' => Current::read('User.id')
@@ -228,14 +230,16 @@ class TaskContentsController extends TasksAppController {
 		// 完了未完了絞り込み
 		$currentIsCompletion = '';
 		if (isset($conditions['is_completion'])) {
-			if ($conditions['is_completion'] !== 'all'
-				&& isset($isCompletionOptions['TaskContents.is_completion.' . $conditions['is_completion']])
-			) {
+			if ($conditions['is_completion'] === 'all') {
+				$currentIsCompletion = $conditions['is_completion'];
+			} elseif (isset(
+					$isCompletionOptions['TaskContents.is_completion.' . $conditions['is_completion']]
+			)) {
 				$params[] = array(
-					'TaskContent.is_completion' => $conditions['is_completion']
+						'TaskContent.is_completion' => $conditions['is_completion']
 				);
+				$currentIsCompletion = $conditions['is_completion'];
 			}
-			$currentIsCompletion = $conditions['is_completion'];
 		} else {
 			$params[] = array(
 				'TaskContent.is_completion' => TaskContent::TASK_CONTENT_INCOMPLETE_TASK
@@ -256,7 +260,9 @@ class TaskContentsController extends TasksAppController {
 
 		// 期限間近のToDo一覧を分けて取得
 		$deadLineTasks = Hash::extract($taskContents, '{n}.TaskContents.{n}[isDeadLine=' . true . ']');
-		$deadLineTasks = Set::sort($deadLineTasks, '{n}.TaskContent.task_end_date', 'ASC');
+		$deadLineTasks = Set::sort(
+				$deadLineTasks, '{n}.' . $sort['deadLineSort'], $sort['deadLineDirection']
+		);
 		$this->set('deadLineTasks', $deadLineTasks);
 
 		// 通常のToDo一覧
@@ -368,22 +374,32 @@ class TaskContentsController extends TasksAppController {
  */
 	private function __getSortParam($conditions = array(), $sortOptions = array()) {
 		$sortPram = '';
-		$currentSort = '';
-		$order = array();
-		$defaultOrder = array('TaskContent.is_date_set' => 'desc');
-		$afterOrder = array('TaskContent.task_end_date' => 'asc');
+		$deadLineSort = '';
+		$deadLineDirection = '';
+		$afterOrder = array('TaskContent.is_date_set' => 'desc', 'TaskContent.task_end_date' => 'asc');
 		if (isset($conditions['sort']) && isset($conditions['direction'])) {
+			$deadLineSort = $conditions['sort'];
+			$deadLineDirection = $conditions['direction'];
 			$sortPram = $conditions['sort'] . '.' . $conditions['direction'];
 		}
-		if (isset($sortOptions[$sortPram])) {
+		if (isset($sortOptions[$sortPram])
+			&& $sortOptions[$sortPram] !== 'TaskContent.task_end_date.asc'
+		) {
 			$order = array($conditions['sort'] => $conditions['direction']);
-			$order = array_merge($defaultOrder, $order, $afterOrder);
+			$order = array_merge($order, $afterOrder);
 			$currentSort = $conditions['sort'] . '.' . $conditions['direction'];
+		} else {
+			$order = $afterOrder;
+			$currentSort = 'TaskContent.task_end_date.asc';
+			$deadLineSort = 'TaskContent.task_end_date';
+			$deadLineDirection = 'asc';
 		}
 
 		$sort = array(
 			'order' => $order,
-			'currentSort' => $currentSort
+			'currentSort' => $currentSort,
+			'deadLineSort' => $deadLineSort,
+			'deadLineDirection' => $deadLineDirection,
 		);
 
 		return $sort;

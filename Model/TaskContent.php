@@ -40,7 +40,7 @@ class TaskContent extends TasksAppModel {
 	const TASK_CONTENT_NOT_IS_MAIL_SEND = 0;
 
 /**
- * 完了したToDo
+ * 未完了のToDo
  *
  * @var const
  */
@@ -103,14 +103,47 @@ class TaskContent extends TasksAppModel {
 	const TASK_COMPLETION_PROGRESS_RATE = 100;
 
 /**
+ * 重要度未設定
+ *
+ * @var const
+ */
+	const TASK_PRIORITY_UNDEFINED = 0;
+
+/**
+ * 重要度低
+ *
+ * @var const
+ */
+	const TASK_PRIORITY_LOW = 1;
+
+/**
+ * 重要度中
+ *
+ * @var const
+ */
+	const TASK_PRIORITY_MEDIUM = 2;
+
+/**
+ * 重要度高
+ *
+ * @var const
+ */
+	const TASK_PRIORITY_HIGH = 3;
+
+/**
  * @var int recursiveはデフォルトアソシエーションなしに
  */
 	public $recursive = -1;
 
 /**
- * @var int recursiveはデフォルトアソシエーションなしに
+ * @var array 進捗率のバリデーションルールinList用配列
  */
 	protected $_progressRates = array();
+
+/**
+ * @var array カテゴリIDのバリデーションルールinList用配列
+ */
+	protected $_categoryIds = array();
 
 /**
  * use behaviors
@@ -231,6 +264,18 @@ class TaskContent extends TasksAppModel {
 			$this->_progressRates[$i] = $i;
 			$i += TaskContent::TASK_PROGRESS_RATE_INCREMENTS;
 		}
+
+		// 必要なモデル読み込み
+		$this->loadModels([
+				'Category' => 'Categories.Category',
+		]);
+		$conditions = array(
+			'Category.block_id' => Current::read('Block.id')
+		);
+		$categories = $this->Category->find('all', array('recursive' => -1, 'conditions' => $conditions));
+		$this->_categoryIds = Hash::combine($categories, '{n}.Category.id', '{n}.Category.id');
+		// カテゴリ未設定時の時にエラーとなるので0をinList条件に加える
+		$this->_categoryIds[0] = 0;
 	}
 
 /**
@@ -272,18 +317,23 @@ class TaskContent extends TasksAppModel {
 				)
 			),
 			'category_id' => array(
-					'numeric' => array(
-							'rule' => array('numeric'),
-							'allowEmpty' => true,
-					'message' => __d('net_commons', 'Invalid request.')
-					),
+				'numeric' => array(
+					'rule' => array('inList', $this->_categoryIds),
+					'allowEmpty' => true,
+				'message' => __d('net_commons', 'Invalid request.')
+				),
 			),
 			'priority' => array(
-					'numeric' => array(
-							'rule' => array('numeric'),
-							'allowEmpty' => true,
-					'message' => __d('net_commons', 'Invalid request.')
-					),
+				'numeric' => array(
+					'rule' => array('inList', array(
+						TaskContent::TASK_PRIORITY_UNDEFINED,
+						TaskContent::TASK_PRIORITY_LOW,
+						TaskContent::TASK_PRIORITY_MEDIUM,
+						TaskContent::TASK_PRIORITY_HIGH
+					)),
+					'allowEmpty' => true,
+				'message' => __d('net_commons', 'Invalid request.')
+				),
 			),
 			'status' => array(
 					'numeric' => array(
@@ -310,18 +360,18 @@ class TaskContent extends TasksAppModel {
 					),
 			),
 			'email_send_timing' => array(
-					'numeric' => array(
-							'rule' => array('numeric'),
-							'allowEmpty' => true,
-					'message' => __d('net_commons', 'Invalid request.')
-					),
+				'numeric' => array(
+					'rule' => array('numeric'),
+					'allowEmpty' => true,
+				'message' => __d('net_commons', 'Invalid request.')
+				),
 			),
 			'progress_rate' => array(
-					'numeric' => array(
-							'rule' => array('inList', $this->_progressRates),
-							'allowEmpty' => true,
-					'message' => __d('net_commons', 'Invalid request.')
-					),
+				'numeric' => array(
+					'rule' => array('inList', $this->_progressRates),
+					'allowEmpty' => true,
+				'message' => __d('net_commons', 'Invalid request.')
+				),
 			),
 		);
 		return $validate;
@@ -622,15 +672,18 @@ class TaskContent extends TasksAppModel {
 			}
 
 			// リマインダーメール設定
-			// 実施終了日の日時を0持00分に変更する
-			$taskEndDate = date('Y-m-d H:i:s',
+			if ($data['TaskContent']['is_enable_mail']) {
+				// 実施終了日の日時を0持00分に変更する
+				$taskEndDate = date('Y-m-d H:i:s',
 					strtotime($data['TaskContent']['task_end_date'] . ' -1day +1 second'));
-			$sendTimes = array(
-				date('Y-m-d H:i:s', strtotime(
-					$taskEndDate . ' -' . $data['TaskContent']['email_send_timing'] . 'day'
-				))
-			);
-			$this->setSendTimeReminder($sendTimes);
+				$sendTimes = array(
+					date('Y-m-d H:i:s', strtotime(
+							$taskEndDate . ' -' . $data['TaskContent']['email_send_timing'] . 'day'
+					))
+				);
+				$this->setSendTimeReminder($sendTimes);
+			}
+
 			// メール処理
 			$mailSendUserIdArr =
 				Hash::extract($data, 'TaskCharges.{n}.TaskCharge.user_id');

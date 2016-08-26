@@ -23,7 +23,7 @@ endif;
 			class="btn btn-default dropdown-toggle"
 			data-toggle="dropdown" aria-expanded="false">
 		<div class="clearfix">
-			<div class="pull-left task-select-ellipsis">
+			<div class="pull-left task-select-ellipsis nc-drop-down-ellipsis">
 				<?php echo h($options['TaskContents.charge_user_id_' . $currentUserId]['label']); ?>
 			</div>
 			<div class="pull-right">
