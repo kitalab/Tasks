@@ -16,9 +16,35 @@ class TasksAppModel extends AppModel {
  * @param array $params parameters.
  * @return bool
  */
+	public function validateIsDateCheck($check, $params) {
+		$valid = false;
+		$checkValue = array_values($check)[0];
+		if (! $checkValue) {
+			$valid = true;
+		}
+		if (isset($params['from']) && $params['from']) {
+			$valid = true;
+		}
+		if (isset($params['to']) && $params['to']) {
+			$valid = true;
+		}
+
+		return $valid;
+	}
+
+/**
+ * Validate datetime from to.
+ *
+ * @param array $check check fields.
+ * @param array $params parameters.
+ * @return bool
+ */
 	public function validateDatetimeFromTo($check, $params) {
 		$checkValue = array_values($check)[0];
 		$isCompareFrom = isset($params['from']);
+		if (! $isCompareFrom) {
+			return true;
+		}
 		$compareValue = $isCompareFrom ? $params['from'] : $params['to'];
 
 		if (($isCompareFrom && $checkValue >= $compareValue) ||
@@ -62,6 +88,22 @@ class TasksAppModel extends AppModel {
 		}
 
 		return $dateColor;
+	}
+
+/**
+ * date_colorにより期限間近か否か判定
+ *
+ * @param array $dateColor ToDoの実施期間判定色
+ *
+ * @return array
+ */
+	public function isDeadLine($dateColor) {
+		if ($dateColor == TaskContent::TASK_DEADLINE_CLOSE
+			|| $dateColor == TaskContent::TASK_BEYOND_THE_END_DATE
+		) {
+			return true;
+		}
+		return false;
 	}
 
 }

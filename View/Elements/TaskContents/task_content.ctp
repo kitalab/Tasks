@@ -100,7 +100,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						<?php echo $this->Workflow->label($content['TaskContent']['status']); ?>
 					</div>
 					<?php echo $this->NetCommonsHtml->link(
-						h($content['TaskContent']['title']),
+						$content['TaskContent']['title'],
 							array(
 								'controller' => 'task_contents',
 								'action' => 'view',

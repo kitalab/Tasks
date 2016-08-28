@@ -202,3 +202,7 @@ msgstr "カテゴリ"
 # 共通で使用
 msgid "Not Date Set"
 msgstr "--:--"
+
+# バリデーション文言
+msgid "Please set the start date or end date."
+msgstr "実施期間を設定する場合は、開始日または終了日を設定してください。"

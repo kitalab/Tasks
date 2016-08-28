@@ -129,29 +129,4 @@ class TasksAppModelValidateDatetimeFromToTest extends NetCommonsModelTestCase {
 		//チェック
 		$this->assertFalse($result);
 	}
-
-/**
- * validateDatetimeFromTo()のfalseテスト2
- *
- * @return void
- */
-	public function testValidateDatetimeFromToFalse2() {
-		$model = $this->_modelName;
-		$methodName = $this->_methodName;
-
-		//データ生成
-		$check = array(
-			'reply_deadline' => '2016-03-24 00:01'
-		);
-		$params = array(
-			//'from' => '2016-03-23 00:00',
-			'to' => '2016-03-24 00:00'
-		);
-
-		//テスト実施
-		$result = $this->$model->$methodName($check, $params);
-
-		//チェック
-		$this->assertFalse($result);
-	}
 }

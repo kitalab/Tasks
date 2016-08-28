@@ -13,7 +13,7 @@
 echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 ?>
 <article>
-	<h1 class="tasks_taskTitle"><?php echo $listTitle ?></h1>
+	<h1 class="tasks_taskTitle"><?php echo h($listTitle) ?></h1>
 
 	<?php if (Current::permission('content_creatable')) : ?>
 
@@ -41,7 +41,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 			<span class="btn-group task-index-space">
 				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
 					<span class="pull-left nc-drop-down-ellipsis">
-						<?php echo $categoryLabel ?>
+						<?php echo h($categoryLabel) ?>
 					</span>
 					<span class="pull-right">
 						<span class="caret"></span>
