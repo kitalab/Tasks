@@ -36,7 +36,7 @@ class TaskContentHelper extends AppHelper {
  * @return string HTML
  */
 	public function displayDate($date, $isDateSet) {
-		if ($isDateSet) {
+		if ($isDateSet && $date !== null) {
 			$format = '';
 			$now = $this->NetCommonsTime->getNowDatetime();
 			$nowUserDatetime = $this->NetCommonsTime->toUserDatetime($now);

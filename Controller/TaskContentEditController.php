@@ -94,8 +94,11 @@ class TaskContentEditController extends TasksAppController {
 			$data['TaskContent']['language_id'] = Current::read('Language.id');
 
 			// set task_end_date
-			if ($data['TaskContent']['is_date_set']) {
+			if ($data['TaskContent']['is_date_set'] && $data['TaskContent']['task_end_date']) {
 				$data = $this->__setTaskEndDateTime($data);
+			} elseif (! $data['TaskContent']['is_date_set']) {
+				$data['TaskContent']['task_start_date'] = null;
+				$data['TaskContent']['task_end_date'] = null;
 			}
 
 			if (($result = $this->TaskContent->saveContent($data))) {
@@ -175,8 +178,11 @@ class TaskContentEditController extends TasksAppController {
 			$data = $this->request->data;
 
 			// set task_end_date
-			if ($data['TaskContent']['is_date_set']) {
+			if ($data['TaskContent']['is_date_set'] && $data['TaskContent']['task_end_date']) {
 				$data = $this->__setTaskEndDateTime($data);
+			} elseif (! $data['TaskContent']['is_date_set']) {
+				$data['TaskContent']['task_start_date'] = null;
+				$data['TaskContent']['task_end_date'] = null;
 			}
 
 			unset($data['TaskContent']['id']); // 常に新規保存
@@ -285,9 +291,11 @@ class TaskContentEditController extends TasksAppController {
  */
 	private function __setTaskEndDateTime($data) {
 		$endDate = $data['TaskContent']['task_end_date'];
-		$data['TaskContent']['task_end_date'] = date(
-			'Y-m-d H:i:s', strtotime($endDate . '+1 days -1 second')
-		);
+		if ($endDate) {
+			$data['TaskContent']['task_end_date'] = date(
+				'Y-m-d H:i:s', strtotime($endDate . '+1 days -1 second')
+			);
+		}
 		return $data;
 	}
 }

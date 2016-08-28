@@ -241,9 +241,10 @@ class TaskContent extends TasksAppModel {
 		} else {
 			$getValidate = $this->_getValidateSpecification();
 		}
+		$getDateValidate = $getDateValidate = $this->_getValidateTaskDate($options);
 
 		$this->validate = Hash::merge(
-			$this->validate, $getValidate
+			$this->validate, $getValidate, $getDateValidate
 		);
 		return parent::beforeValidate($options);
 	}
@@ -299,23 +300,6 @@ class TaskContent extends TasksAppModel {
 					'required' => true,
 				],
 			),
-			'task_start_date' => array(
-				'datetime' => array(
-					'rule' => array('datetime'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				),
-			),
-			'task_end_date' => array(
-				'datetime' => array(
-					'rule' => array('datetime'),
-					'message' => __d('net_commons', 'Invalid request.'),
-				),
-				'fromTo' => array(
-					'rule' => array('validateDatetimeFromTo',
-						array('from' => $this->data['TaskContent']['task_start_date'])),
-					'message' => __d('net_commons', 'Invalid request.'),
-				)
-			),
 			'category_id' => array(
 				'numeric' => array(
 					'rule' => array('inList', $this->_categoryIds),
@@ -351,6 +335,13 @@ class TaskContent extends TasksAppModel {
 					'boolean' => array(
 							'rule' => array('boolean'),
 					'message' => __d('net_commons', 'Invalid request.')
+					),
+					'isDateCheck' => array(
+						'rule' => array('validateIsDateCheck',
+							array('from' => $this->data['TaskContent']['task_start_date'],
+								'to' => $this->data['TaskContent']['task_end_date'])
+						),
+						'message' => __d('tasks', 'Please set the start date or end date.')
 					),
 			),
 			'use_calendar' => array(
@@ -392,6 +383,44 @@ class TaskContent extends TasksAppModel {
 				),
 			),
 		);
+		return $validate;
+	}
+
+/**
+ * 実施日に関するバリデーションルールを返す
+ *
+ * @param array $options options
+ * @return array
+ */
+	protected function _getValidateTaskDate($options = array()) {
+		$start = array();
+		$end = array();
+		if (isset($options['is_start_date']) && $options['is_start_date']) {
+			$start = array(
+				'task_start_date' => array(
+					'datetime' => array(
+						'rule' => array('datetime'),
+						'message' => __d('net_commons', 'Invalid request.'),
+					),
+				),
+			);
+		}
+		if (isset($options['is_end_date']) && $options['is_end_date']) {
+			$end = array(
+				'task_end_date' => array(
+					'datetime' => array(
+						'rule' => array('datetime'),
+						'message' => __d('net_commons', 'Invalid request.'),
+					),
+					'fromTo' => array(
+						'rule' => array('validateDatetimeFromTo',
+							array('from' => $this->data['TaskContent']['task_start_date'])),
+						'message' => __d('net_commons', 'Invalid request.'),
+					)
+				),
+			);
+		}
+		$validate = array_merge($start, $end);
 		return $validate;
 	}
 
@@ -557,22 +586,6 @@ class TaskContent extends TasksAppModel {
 	}
 
 /**
- * date_colorにより期限間近か否か判定
- *
- * @param array $dateColor ToDoの実施期間判定色
- *
- * @return array
- */
-	public function isDeadLine($dateColor) {
-		if ($dateColor == TaskContent::TASK_DEADLINE_CLOSE
-			|| $dateColor == TaskContent::TASK_BEYOND_THE_END_DATE
-		) {
-			return true;
-		}
-		return false;
-	}
-
-/**
  * ToDoのデータを一件返す
  *
  * @param void $key key
@@ -656,7 +669,19 @@ class TaskContent extends TasksAppModel {
 			$this->create(); // 常に新規登録
 			// 先にvalidate 失敗したらfalse返す
 			$this->set($data);
-			if (! $this->validates(array('only_progress' => false))) {
+			$options = array(
+				'only_progress' => false,
+				'is_date' => false,
+			);
+			if ($data['TaskContent']['task_start_date']) {
+				$options['is_date'] = true;
+				$options['is_start_date'] = true;
+			}
+			if ($data['TaskContent']['task_end_date']) {
+				$options['is_date'] = true;
+				$options['is_end_date'] = true;
+			}
+			if (! $this->validates($options)) {
 				$this->rollback();
 				return false;
 			}
@@ -739,7 +764,8 @@ class TaskContent extends TasksAppModel {
 			$data['status'] = TaskContent::TASK_CONTENT_STATUS_IN_DRAFT;
 
 			$this->set($data);
-			if (! $this->validates(array('only_progress' => true))) {
+			$options = array('only_progress' => true);
+			if (! $this->validates($options)) {
 				return false;
 			}
 
