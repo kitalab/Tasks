@@ -17,7 +17,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 
 		<header class="clearfix">
 			<div class="pull-left">
-				<?php echo $this->Workflow->label($taskContent['TaskContent']['status']); ?>
+				<?php echo $this->LinkButton->toList(); ?>
 			</div>
 			<div class="pull-right">
 				<?php if ($this->Workflow->canEdit('Tasks.TaskContent', $taskContent)) : ?>
@@ -38,7 +38,11 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 
 		<article>
 			<div class="clearfix task-word-break">
-				<?php echo $this->NetCommonsHtml->blockTitle($taskContent['TaskContent']['title']); ?>
+				<?php echo $this->NetCommonsHtml->blockTitle(
+					$taskContent['TaskContent']['title'],
+					null,
+					array('status' => $this->Workflow->label($taskContent['TaskContent']['status']))
+				); ?>
 			</div>
 
 			<div class="clearfix task-content-margin-2">
