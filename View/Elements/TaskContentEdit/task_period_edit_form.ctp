@@ -75,10 +75,12 @@
 			</div>
 			<?php 
 			echo $this->NetCommonsForm->error('TaskContent.is_date_set');
-			if (! $this->NetCommonsForm->error('TaskContent.is_date_set')) {
 				echo $this->NetCommonsForm->error('TaskContent.task_start_date');
+			if ($this->NetCommonsForm->error('TaskContent.task_start_date')
+					!== $this->NetCommonsForm->error('TaskContent.task_end_date')
+			) {
+				echo $this->NetCommonsForm->error('TaskContent.task_end_date');
 			}
-			echo $this->NetCommonsForm->error('TaskContent.task_end_date');
 			?>
 		</div>
 	</div>
