@@ -65,14 +65,14 @@ class TaskContentGetListTest extends WorkflowGetTest {
 		$methodName = $this->_methodName;
 
 		//データ生成
-		$params = array();
-		$order = array();
+		$lists = array();
+		$conditions = array();
 
 		//テスト実施
-		$result = $this->$model->$methodName($params, $order);
+		$result = $this->$model->$methodName($lists, $conditions);
 
 		//チェック
-		$this->assertNotEmpty($result);
+		$this->assertEmpty($result);
 	}
 
 /**
@@ -85,12 +85,12 @@ class TaskContentGetListTest extends WorkflowGetTest {
 		$methodName = $this->_methodName;
 
 		//データ生成
-		$params = array(
+		$lists = array(
 			0 => array(
 				'TaskContent.is_completion' => 0,
 			),
 		);
-		$order = array(
+		$conditions = array(
 			'TaskContent.progress_rate' => 'asc',
 			'TaskContent.task_end_date' => 'asc',
 			'TaskContent.priority' => 'desc',
@@ -98,7 +98,7 @@ class TaskContentGetListTest extends WorkflowGetTest {
 		);
 
 		//テスト実施
-		$result = $this->$model->$methodName($params, $order);
+		$result = $this->$model->$methodName($lists, $conditions);
 
 		//チェック
 		$this->assertEmpty($result);

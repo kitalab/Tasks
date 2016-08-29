@@ -210,17 +210,13 @@ class TaskContentsController extends TasksAppController {
 		// 担当者絞り込み
 		if (isset($conditions['user_id'])) {
 			if ($this->TaskCharge->searchChargeUser($conditions['user_id'])) {
-				$userParam = array(
-					'TaskCharge.user_id' => $conditions['user_id']
-				);
+				$userParam = array('TaskCharge.user_id' => $conditions['user_id']);
 				$currentUserId = $conditions['user_id'];
 			} else {
 				$currentUserId = 'all';
 			}
 		} elseif (Current::read('User.id')) {
-			$userParam = array(
-				'TaskCharge.user_id' => Current::read('User.id')
-			);
+			$userParam = array('TaskCharge.user_id' => Current::read('User.id'));
 		} else {
 			$currentUserId = 'all';
 		}
@@ -235,15 +231,11 @@ class TaskContentsController extends TasksAppController {
 			} elseif (isset(
 					$isCompletionOptions['TaskContents.is_completion.' . $conditions['is_completion']]
 			)) {
-				$params[] = array(
-						'TaskContent.is_completion' => $conditions['is_completion']
-				);
+				$params[] = array('TaskContent.is_completion' => $conditions['is_completion']);
 				$currentIsCompletion = $conditions['is_completion'];
 			}
 		} else {
-			$params[] = array(
-				'TaskContent.is_completion' => TaskContent::TASK_CONTENT_INCOMPLETE_TASK
-			);
+			$params[] = array('TaskContent.is_completion' => TaskContent::TASK_CONTENT_INCOMPLETE_TASK);
 		}
 
 		// 並べ替えoption取得
@@ -256,16 +248,23 @@ class TaskContentsController extends TasksAppController {
 
 		$params = $this->__setTaskChargeContents($params, $userParam);
 
-		$taskContents = $this->TaskContent->getList($params, $order);
+		$taskContents = array();
+		$deadLineTasks = array();
+		// カテゴリ分けされていないToDo一覧取得
+		$listArray = $this->TaskContent->getAllList($params, $order);
+		if ($listArray) {
+			$lists = $listArray['results'];
+			$listConditions = $listArray['conditions'];
+			// 期限間近のToDo一覧を取得
+			$deadLineTasks = Hash::extract($lists, '{n}[isDeadLine=' . true . ']');
+			// 表示するデータを整理する
+			$taskContents = $this->TaskContent->getList($lists, $listConditions);
+		}
 
-		// 期限間近のToDo一覧を分けて取得
-		$deadLineTasks = Hash::extract($taskContents, '{n}.TaskContents.{n}[isDeadLine=' . true . ']');
-		$deadLineTasks = Set::sort(
-				$deadLineTasks, '{n}.' . $sort['deadLineSort'], $sort['deadLineDirection']
-		);
+		// 期限間近のToDo一覧
 		$this->set('deadLineTasks', $deadLineTasks);
 
-		// 通常のToDo一覧
+		// ToDo一覧
 		$this->set('taskContents', $taskContents);
 
 		// デフォルトの担当者選択肢を取得
@@ -374,16 +373,16 @@ class TaskContentsController extends TasksAppController {
  */
 	private function __getSortParam($conditions = array(), $sortOptions = array()) {
 		$sortPram = '';
-		$deadLineSort = '';
-		$deadLineDirection = '';
-		$afterOrder = array('TaskContent.is_date_set' => 'desc', 'TaskContent.task_end_date' => 'asc');
+		$afterOrder = array(
+				'TaskContent.is_date_set' => 'desc',
+				'TaskContent.task_end_date is null',
+				'TaskContent.task_end_date' => 'asc'
+		);
 		if (isset($conditions['sort']) && isset($conditions['direction'])) {
-			$deadLineSort = $conditions['sort'];
-			$deadLineDirection = $conditions['direction'];
 			$sortPram = $conditions['sort'] . '.' . $conditions['direction'];
 		}
 		if (isset($sortOptions[$sortPram])
-			&& $sortOptions[$sortPram] !== 'TaskContent.task_end_date.asc'
+			&& $sortPram !== 'TaskContent.task_end_date.asc'
 		) {
 			$order = array($conditions['sort'] => $conditions['direction']);
 			$order = array_merge($order, $afterOrder);
@@ -391,15 +390,11 @@ class TaskContentsController extends TasksAppController {
 		} else {
 			$order = $afterOrder;
 			$currentSort = 'TaskContent.task_end_date.asc';
-			$deadLineSort = 'TaskContent.task_end_date';
-			$deadLineDirection = 'asc';
 		}
 
 		$sort = array(
 			'order' => $order,
 			'currentSort' => $currentSort,
-			'deadLineSort' => $deadLineSort,
-			'deadLineDirection' => $deadLineDirection,
 		);
 
 		return $sort;

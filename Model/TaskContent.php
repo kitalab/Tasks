@@ -241,10 +241,9 @@ class TaskContent extends TasksAppModel {
 		} else {
 			$getValidate = $this->_getValidateSpecification();
 		}
-		$getDateValidate = $getDateValidate = $this->_getValidateTaskDate($options);
 
 		$this->validate = Hash::merge(
-			$this->validate, $getValidate, $getDateValidate
+			$this->validate, $getValidate
 		);
 		return parent::beforeValidate($options);
 	}
@@ -310,10 +309,8 @@ class TaskContent extends TasksAppModel {
 			'priority' => array(
 				'numeric' => array(
 					'rule' => array('inList', array(
-						TaskContent::TASK_PRIORITY_UNDEFINED,
-						TaskContent::TASK_PRIORITY_LOW,
-						TaskContent::TASK_PRIORITY_MEDIUM,
-						TaskContent::TASK_PRIORITY_HIGH
+						TaskContent::TASK_PRIORITY_UNDEFINED, TaskContent::TASK_PRIORITY_LOW,
+						TaskContent::TASK_PRIORITY_MEDIUM, TaskContent::TASK_PRIORITY_HIGH
 					)),
 					'allowEmpty' => true,
 				'message' => __d('net_commons', 'Invalid request.')
@@ -365,6 +362,8 @@ class TaskContent extends TasksAppModel {
 				),
 			),
 		);
+		$validate = $this->_getValidateTaskDate($validate);
+
 		return $validate;
 	}
 
@@ -389,24 +388,23 @@ class TaskContent extends TasksAppModel {
 /**
  * 実施日に関するバリデーションルールを返す
  *
- * @param array $options options
+ * @param array $validate validate
  * @return array
  */
-	protected function _getValidateTaskDate($options = array()) {
-		$start = array();
-		$end = array();
-		if (isset($options['is_start_date']) && $options['is_start_date']) {
-			$start = array(
+	protected function _getValidateTaskDate($validate = array()) {
+		if ($this->data['TaskContent']['task_start_date']) {
+			$validate = Hash::merge($validate, array(
 				'task_start_date' => array(
 					'datetime' => array(
 						'rule' => array('datetime'),
 						'message' => __d('net_commons', 'Invalid request.'),
 					),
 				),
-			);
+			));
 		}
-		if (isset($options['is_end_date']) && $options['is_end_date']) {
-			$end = array(
+
+		if ($this->data['TaskContent']['task_end_date']) {
+			$validate = Hash::merge($validate, array(
 				'task_end_date' => array(
 					'datetime' => array(
 						'rule' => array('datetime'),
@@ -414,24 +412,24 @@ class TaskContent extends TasksAppModel {
 					),
 					'fromTo' => array(
 						'rule' => array('validateDatetimeFromTo',
-							array('from' => $this->data['TaskContent']['task_start_date'])),
+								array('from' => $this->data['TaskContent']['task_start_date'])),
 						'message' => __d('net_commons', 'Invalid request.'),
 					)
 				),
-			);
+			));
 		}
-		$validate = array_merge($start, $end);
+
 		return $validate;
 	}
 
 /**
- * ToDoの一覧データを返す
+ * ToDoの一覧データを全て返す
  *
  * @param array $params 絞り込み条件
  * @param array $order 並べ替え条件
  * @return array
  */
-	public function getList($params = array(), $order = array()) {
+	public function getAllList($params = array(), $order = array()) {
 		$conditions = $this->getConditions(Current::read('Block.id'), $params);
 
 		$lists = $this->find('threaded',
@@ -441,9 +439,45 @@ class TaskContent extends TasksAppModel {
 			return array();
 		}
 
+		$results = array();
+		// isDeadLine及びdate_colorを取得
+		foreach ($lists as $list) {
+			// 現在実施中
+			$list['TaskContent']['date_color'] = TaskContent::TASK_BEING_PERFORMED;
+			// ここでdate_colorをセット＆Controllerで期限間近判定用のフラグをセット
+			if (empty($list['TaskContent']['is_completion'])
+					&& ! empty($list['TaskContent']['is_date_set'])
+			) {
+				$list['TaskContent']['date_color'] = $this->getTaskDateColor(
+						$list['TaskContent']['task_start_date'],
+						$list['TaskContent']['task_end_date']
+				);
+			}
+
+			$isDeadLine = $this->isDeadLine($list['TaskContent']['date_color']);
+			$results[] = array_merge($list, array('isDeadLine' => $isDeadLine));
+		}
+
+		// $listsにdate_colorを取得した$resultsを代入する
+		$listArray = array(
+			'results' => $results,
+			'conditions' => $conditions
+		);
+
+		return $listArray;
+	}
+
+/**
+ * ToDoの一覧データを必要なデータのみに整理して返す
+ *
+ * @param array $lists ToDoの取得データ
+ * @param array $listConditions ToDo全体データ取得時に使用したconditions
+ * @return array
+ */
+	public function getList($lists = array(), $listConditions = array()) {
 		// カテゴリなしは進捗率を表示しないので条件から省く
 		$categoryRateParam = array('Not' => array('TaskContent.category_id' => 0));
-		$conditions = array_merge($conditions, $categoryRateParam);
+		$listConditions = array_merge($listConditions, $categoryRateParam);
 		// バーチャルフィールドを追加
 		$this->virtualFields['cnt'] = 0;
 		$this->virtualFields['sum'] = 0;
@@ -453,7 +487,7 @@ class TaskContent extends TasksAppModel {
 						'TaskContent.category_id', 'count(TaskContent.category_id) as TaskContent__cnt',
 						'TaskContent.progress_rate', 'sum(TaskContent.progress_rate) as TaskContent__sum'
 				),
-				'conditions' => $conditions,
+				'conditions' => $listConditions,
 				'group' => array('TaskContent.category_id'),
 		));
 		$categoryData = Hash::combine($categoryData, '{n}.TaskContent.category_id', '{n}.TaskContent');
@@ -555,21 +589,9 @@ class TaskContent extends TasksAppModel {
 					$contentLists, '{n}.TaskCharge.{n}[task_content_id=' . $content['id'] . ']'
 				);
 
-				// 現在実施中
-				$content['date_color'] = TaskContent::TASK_BEING_PERFORMED;
-				// ここでdate_colorをセット＆Controllerで期限間近判定用のフラグをセット
-				if ($content['is_completion'] === false && ! empty($content['is_date_set'])) {
-					$content['date_color'] = $this->getTaskDateColor(
-							$content['task_start_date'],
-							$content['task_end_date']
-					);
-				}
-
-				$isDeadLine = $this->isDeadLine($content['date_color']);
 				$results['TaskContents'][] = array(
 					'TaskContent' => $content,
 					'TaskCharge' => $taskCharge,
-					'isDeadLine' => $isDeadLine,
 				);
 			}
 
@@ -669,19 +691,8 @@ class TaskContent extends TasksAppModel {
 			$this->create(); // 常に新規登録
 			// 先にvalidate 失敗したらfalse返す
 			$this->set($data);
-			$options = array(
-				'only_progress' => false,
-				'is_date' => false,
-			);
-			if ($data['TaskContent']['task_start_date']) {
-				$options['is_date'] = true;
-				$options['is_start_date'] = true;
-			}
-			if ($data['TaskContent']['task_end_date']) {
-				$options['is_date'] = true;
-				$options['is_end_date'] = true;
-			}
-			if (! $this->validates($options)) {
+
+			if (! $this->validates(array('only_progress' => false))) {
 				$this->rollback();
 				return false;
 			}
@@ -764,8 +775,7 @@ class TaskContent extends TasksAppModel {
 			$data['status'] = TaskContent::TASK_CONTENT_STATUS_IN_DRAFT;
 
 			$this->set($data);
-			$options = array('only_progress' => true);
-			if (! $this->validates($options)) {
+			if (! $this->validates( array('only_progress' => true))) {
 				return false;
 			}
 
