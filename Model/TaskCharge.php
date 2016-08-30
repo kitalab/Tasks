@@ -97,7 +97,6 @@ class TaskCharge extends TasksAppModel {
 		if ($isMyUser) {
 			$taskContent['TaskCharge'][] = array('user_id' => Current::read('User.id'));
 		}
-		$this->log($taskContent);
 		$selectUsers['selectUsers'] = array();
 		if (isset($taskContent['TaskCharge'])) {
 			$selectUsers =

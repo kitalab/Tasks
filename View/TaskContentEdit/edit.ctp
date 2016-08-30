@@ -150,8 +150,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 
 			<?php echo $this->NetCommonsForm->end(); ?>
 
-
-			<?php if ($this->request->params['action'] === 'edit') : ?>
+			<?php if ($this->request->params['action'] === 'edit' && $isDeletable) : ?>
 				<div class="panel-footer text-right">
 					<?php echo $this->element('TaskContentEdit/delete_form'); ?>
 				</div>

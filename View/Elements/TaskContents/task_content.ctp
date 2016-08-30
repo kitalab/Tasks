@@ -81,11 +81,11 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					<?php echo h($color[$content['TaskContent']['date_color']]); ?>">
 					<?php if (empty($content['TaskContent']['priority'])): ?>
 						<div class="task-date-font">
-							<?php echo $this->TaskContent->displayDate($content['TaskContent']['task_end_date'], $content['TaskContent']['is_date_set']); ?>
+							<?php echo $this->TaskContent->displayDate($content['TaskContent']['task_end_date'], $content['TaskContent']['is_date_set'], false); ?>
 						</div>
 					<?php else: ?>
 						<div class="task-index-priority-1 task-word-break task-date-font">
-							<?php echo $this->TaskContent->displayDate($content['TaskContent']['task_end_date'], $content['TaskContent']['is_date_set']); ?>
+							<?php echo $this->TaskContent->displayDate($content['TaskContent']['task_end_date'], $content['TaskContent']['is_date_set'], false); ?>
 						</div>
 						<?php echo $this->element('TaskContents/priority_icon', array(
 								'priority' => $content['TaskContent']['priority'],

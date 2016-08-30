@@ -33,9 +33,11 @@ class TaskContentHelper extends AppHelper {
  *
  * @param string $date 実施期間
  * @param bool $isDateSet 実施期間使用フラグ
+ * @param bool $isView 詳細画面フラグ
  * @return string HTML
  */
-	public function displayDate($date, $isDateSet) {
+	public function displayDate($date, $isDateSet, $isView) {
+		$displayDate = '';
 		if ($isDateSet && $date !== null) {
 			$format = '';
 			$now = $this->NetCommonsTime->getNowDatetime();
@@ -47,7 +49,7 @@ class TaskContentHelper extends AppHelper {
 			}
 
 			$displayDate = $this->Date->dateFormat($date, $format);
-		} else {
+		} elseif (! $isView) {
 			$displayDate = __d('tasks', 'Not Date Set');
 		}
 
