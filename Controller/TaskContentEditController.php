@@ -113,12 +113,13 @@ class TaskContentEditController extends TasksAppController {
 				return $this->redirect($url);
 			}
 			// ToDo担当者ユーザー保持
-			$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
+			$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data, false);
 
 			$this->NetCommons->handleValidationError($this->TaskContent->validationErrors);
 
 		} else {
 			$this->request->data = Hash::merge($this->request->data, $this->TaskContent->create());
+			$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data, true);
 		}
 		$this->request->data = $this->NetCommonsTime->toUserDatetimeArray(
 			$this->request->data,
@@ -149,7 +150,7 @@ class TaskContentEditController extends TasksAppController {
 		}
 
 		// ToDo担当者ユーザー保持
-		$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data);
+		$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data, false);
 
 		if (empty($taskContent)) {
 			return $this->throwBadRequest();

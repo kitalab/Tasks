@@ -86,7 +86,7 @@ class TaskChargeGetSelectUsersTest extends NetCommonsGetTest {
 		$taskContent = $this->__data();
 
 		//テスト実施
-		$result = $this->$model->$methodName($taskContent);
+		$result = $this->$model->$methodName($taskContent, false);
 
 		//登録データ取得
 		$expected = $taskContent;
@@ -108,7 +108,7 @@ class TaskChargeGetSelectUsersTest extends NetCommonsGetTest {
 		$taskContent = null;
 
 		//テスト実施
-		$result = $this->$model->$methodName($taskContent);
+		$result = $this->$model->$methodName($taskContent, false);
 
 		//チェック
 		$this->assertNull($result);
