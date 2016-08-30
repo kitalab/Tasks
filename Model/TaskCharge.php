@@ -85,14 +85,19 @@ class TaskCharge extends TasksAppModel {
 	}
 
 /**
- * 選択済みユーザを設定
+ * 担当者ユーザを設定
  *
  * @param array $taskContent ToDoデータ
- * @return {void}
+ * @param bool $isMyUser 作成者ユーザー取得フラグ
+ * @return array
  */
-	public function getSelectUsers($taskContent) {
+	public function getSelectUsers($taskContent, $isMyUser) {
 		$this->loadModels(['User' => 'Users.User']);
 
+		if ($isMyUser) {
+			$taskContent['TaskCharge'][] = array('user_id' => Current::read('User.id'));
+		}
+		$this->log($taskContent);
 		$selectUsers['selectUsers'] = array();
 		if (isset($taskContent['TaskCharge'])) {
 			$selectUsers =
