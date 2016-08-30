@@ -51,9 +51,15 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						<?php echo h(__d('tasks', 'Implementation period') . __d('tasks', 'Colon')); ?>
 					</div>
 					<div class="task-view-table-cell">
-						<?php echo $this->TaskContent->displayDate($taskContent['TaskContent']['task_start_date'], $taskContent['TaskContent']['is_date_set']); ?>
-						<?php echo h(__d('tasks', 'Till')); ?>
-						<?php echo $this->TaskContent->displayDate($taskContent['TaskContent']['task_end_date'], $taskContent['TaskContent']['is_date_set']); ?>
+						<?php 
+						if (empty($taskContent['TaskContent']['task_start_date']) && empty($taskContent['TaskContent']['is_date_set'])) {
+							echo h(__d('tasks', 'Undefined'));
+						} else {
+							echo $this->TaskContent->displayDate($taskContent['TaskContent']['task_start_date'], $taskContent['TaskContent']['is_date_set'], true);
+							echo h(__d('tasks', 'Till'));
+							echo $this->TaskContent->displayDate($taskContent['TaskContent']['task_end_date'], $taskContent['TaskContent']['is_date_set'], true);
+						}
+						?>
 					</div>
 				</div>
 				<div class="task-view-table-cell pull-left task-content-margin-3">
