@@ -94,7 +94,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					<div class="form-group">
 						<?php echo $this->NetCommonsForm->wysiwyg('TaskContent.content', array(
 								'label' => __d('tasks', 'Content'),
-								'required' => true,
+								'required' => false,
 							)
 						); ?>
 					</div>
