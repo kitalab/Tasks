@@ -292,13 +292,6 @@ class TaskContent extends TasksAppModel {
 					'required' => true,
 				],
 			),
-			'content' => array(
-				'notBlank' => [
-					'rule' => array('notBlank'),
-					'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Content')),
-					'required' => true,
-				],
-			),
 			'category_id' => array(
 				'numeric' => array(
 					'rule' => array('inList', $this->_categoryIds),

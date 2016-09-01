@@ -29,7 +29,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 	 ng-init="initialize(<?php echo h(json_encode($this->request->data)); ?>)">
 	<article>
 
-		<h1><?php echo h(__d('tasks', 'Task')); ?></h1>
+		<h1 class="tasks_taskTitle"><?php echo h($listTitle) ?></h1>
 
 		<div class="panel panel-default">
 
@@ -94,7 +94,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 					<div class="form-group">
 						<?php echo $this->NetCommonsForm->wysiwyg('TaskContent.content', array(
 								'label' => __d('tasks', 'Content'),
-								'required' => true,
+								'required' => false,
 							)
 						); ?>
 					</div>

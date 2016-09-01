@@ -198,8 +198,8 @@ class TaskContentEditControllerEditTest extends WorkflowControllerEditTest {
 		// ** コンテンツなし
 		$results[count($results)] = array(
 			'urlOptions' => array(
-				'frame_id' => '14',
-				'block_id' => null,
+				'frame_id' => $data['Frame']['id'],
+				'block_id' => $data['Block']['id'],
 				'key' => null
 			),
 			'assert' => array('method' => 'assertEquals', 'expected' => 'emptyRender'),
