@@ -78,6 +78,7 @@ class TaskContentEditController extends TasksAppController {
  */
 	public function add() {
 		$this->_prepare();
+		$this->set('listTitle', $this->_taskTitle);
 
 		if ($this->request->is('post')) {
 			$data = $this->request->data;
@@ -142,6 +143,8 @@ class TaskContentEditController extends TasksAppController {
  * @throws BadRequestException
  */
 	public function edit() {
+		$this->_prepare();
+		$this->set('listTitle', $this->_taskTitle);
 		$key = $this->params['key'];
 		$taskContent = $this->TaskContent->getTask($key);
 

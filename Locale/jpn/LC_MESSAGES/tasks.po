@@ -81,7 +81,7 @@ msgstr "ToDo"
 
 # 登録（編集）画面で使用
 msgid "Title"
-msgstr "ToDo名"
+msgstr "件名"
 
 # 登録（編集）画面で使用
 msgid "Person in charge of user selection"
