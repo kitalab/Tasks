@@ -77,6 +77,7 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 				'status' => null,
 				'title' => 'Title 1',
 				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+				'priority' => 1,
 				'is_date_set' => true,
 				'is_enable_mail' => true,
 				'task_start_date' => '2016-03-10 07:10:12',
@@ -233,16 +234,37 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 		//テストデータ
 		$results = array();
 		array_push($results, Hash::merge($result, array(
-			'data' => array(
-				'TaskCharge' => array(
-					0 => array(
-						'user_id' => 200
-					),
-				),
-			),
+			'validationError' => array(
+				'field' => 'TaskContent.title',
+				'value' => '',
+				'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Title')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
+			'validationError' => array(
+				'field' => 'TaskContent.priority',
+				'value' => 100,
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
+			'validationError' => array(
+				'field' => 'TaskContent.is_date_set',
+				'value' => 100,
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
+			'validationError' => array(
+				'field' => 'TaskContent.task_start_date',
+				'value' => '2112-09-03 07:10:12',
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
 			'validationError' => array(
 				'field' => 'TaskCharge.0.user_id',
-				'value' => '',
+				'value' => 200,
 				'message' => sprintf(__d('net_commons', 'Failed on validation errors. Please check the input data.')),
 			)
 		)));
