@@ -213,7 +213,7 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
 
 		// 完了・未完了の絞り込み
 		$data2 = $this->__data();
-		$data2['is_completion'] = 1;
+		$data2['TaskContents']['is_completion'] = 1;
 
 		$results[2] = array(
 			'urlOptions' => $data2,

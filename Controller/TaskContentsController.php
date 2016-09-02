@@ -206,17 +206,11 @@ class TaskContentsController extends TasksAppController {
 			$params[] = array('TaskContent.category_id' => $conditions['category_id']);
 		}
 
-		$currentUserId = '';
 		// 担当者絞り込み
-		if (isset($conditions['user_id'])) {
-			if ($this->TaskCharge->searchChargeUser($conditions['user_id'])) {
-				$userParam = array('TaskCharge.user_id' => $conditions['user_id']);
-				$currentUserId = $conditions['user_id'];
-			} else {
-				$currentUserId = 'all';
-			}
-		} elseif (Current::read('User.id')) {
-			$userParam = array('TaskCharge.user_id' => Current::read('User.id'));
+		if (isset($conditions['user_id'])
+				&& $this->TaskCharge->searchChargeUser($conditions['user_id'])) {
+			$userParam = array('TaskCharge.user_id' => $conditions['user_id']);
+			$currentUserId = $conditions['user_id'];
 		} else {
 			$currentUserId = 'all';
 		}
