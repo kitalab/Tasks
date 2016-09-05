@@ -86,16 +86,21 @@ class TaskBlocksControllerEditTest extends BlocksControllerEditTest {
 				'language_id' => '2',
 				'room_id' => '1',
 				'plugin_key' => $this->plugin,
-				'public_type' => '1',
-				'from' => null,
-				'to' => null,
+				'public_type' => '2',
+				'publish_start' => '2015-01-28 04:56:56',
+				'publish_end' => '2015-01-31 04:56:56',
 			),
-
 			'Task' => array(
 				'id' => $taskId,
 				'key' => $taskKey,
 				'block_id' => $blockId,
 				'name' => 'Task name',
+			),
+			'TaskSetting' => array(
+				'id' => $taskId,
+				'use_workflow' => 1,
+				'use_comment_approval' => 1,
+				'use_comment' => 1,
 			),
 			'old' => Array(
 				'Categories' =>
@@ -152,6 +157,27 @@ class TaskBlocksControllerEditTest extends BlocksControllerEditTest {
 				'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Task name')),
 			)
 		);
+		$results[4] = array('method' => 'post', 'data' => $data,
+			'validationError' => array(
+				'field' => 'Block.public_type',
+				'value' => '100',
+				'message' => __d('net_commons', 'Failed on validation errors. Please check the input data.'),
+			)
+		);
+		$results[5] = array('method' => 'post', 'data' => $data,
+			'validationError' => array(
+				'field' => 'Block.publish_start',
+				'value' => '2112-09-03 10:00:00',
+				'message' => 'value="2112-09-03 10:00:00"',
+			)
+		);
+		$results[6] = array('method' => 'post', 'data' => $data,
+			'validationError' => array(
+				'field' => 'TaskSetting.use_comment',
+				'value' => '',
+				'message' => __d('net_commons', 'Failed on validation errors. Please check the input data.'),
+			)
+		);
 
 		return $results;
 	}
@@ -181,9 +207,30 @@ class TaskBlocksControllerEditTest extends BlocksControllerEditTest {
 				'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Task name')),
 			)
 		);
+		$results[4] = array('method' => 'put', 'data' => $data,
+			'validationError' => array(
+				'field' => 'Block.public_type',
+				'value' => '100',
+				'message' => __d('net_commons', 'Failed on validation errors. Please check the input data.'),
+			)
+		);
+		$results[5] = array('method' => 'put', 'data' => $data,
+			'validationError' => array(
+				'field' => 'Block.publish_start',
+				'value' => '2112-09-03 10:00:00',
+				'message' => 'value="2112-09-03 10:00:00"',
+			)
+		);
+		$results[6] = array('method' => 'put', 'data' => $data,
+			'validationError' => array(
+				'field' => 'TaskSetting.use_comment',
+				'value' => '',
+				'message' => __d('net_commons', 'Failed on validation errors. Please check the input data.'),
+			)
+		);
 
 		$data['old'] = array();
-		$results[4] = array('method' => 'put', 'data' => $data, 'validationError' => false);
+		$results[7] = array('method' => 'put', 'data' => $data, 'validationError' => false);
 
 		return $results;
 	}
