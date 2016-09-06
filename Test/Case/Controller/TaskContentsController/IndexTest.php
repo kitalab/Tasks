@@ -118,11 +118,28 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
 
 		// ソート
 		$data4 = $this->__data();
-		$data4['sort'] = 'TaskContent.task_end_date';
+		$data4['sort'] = 'TaskContent.progress_rate';
 		$data4['direction'] = 'asc';
 
 		$results[4] = array(
 			'urlOptions' => $data4,
+			'assert' => array('method' => 'assertNotEmpty'),
+		);
+
+		// 完了・未完了の絞り込み
+		$data5 = $this->__data();
+		$data5['is_completion'] = 0;
+
+		$results[5] = array(
+			'urlOptions' => $data5,
+			'assert' => array('method' => 'assertNotEmpty'),
+		);
+
+		$data6 = $this->__data();
+		$data6['is_completion'] = 'all';
+
+		$results[6] = array(
+			'urlOptions' => $data6,
 			'assert' => array('method' => 'assertNotEmpty'),
 		);
 
@@ -211,9 +228,9 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
 			'assert' => array('method' => 'assertNotEmpty'),
 		);
 
-		// 完了・未完了の絞り込み
+		// 担当者による絞り込み ユーザーIDがNullの場合
 		$data2 = $this->__data();
-		$data2['TaskContents']['is_completion'] = 1;
+		$data2['user_id'] = 100;
 
 		$results[2] = array(
 			'urlOptions' => $data2,
