@@ -14,7 +14,7 @@ $url = Hash::merge(array(
 	'action' => 'index'),
 	$params);
 if (! $currentIsCompletion):
-	$currentIsCompletion = TaskContent::TASK_CONTENT_INCOMPLETE_TASK;
+	$currentIsCompletion = TasksComponent::TASK_CONTENT_INCOMPLETE_TASK;
 endif;
 ?>
 

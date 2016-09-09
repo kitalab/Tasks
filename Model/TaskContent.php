@@ -19,118 +19,6 @@ App::uses('TasksAppModel', 'Tasks.Model');
 class TaskContent extends TasksAppModel {
 
 /**
- * 公開中のTODO
- *
- * @var string
- */
-	const TASK_CONTENT_STATUS_PUBLISHED = WorkflowComponent::STATUS_PUBLISHED;
-
-/**
- * 一時保存中のTODO
- *
- * @var string
- */
-	const TASK_CONTENT_STATUS_IN_DRAFT = WorkflowComponent::STATUS_IN_DRAFT;
-
-/**
- * メールを送信しない
- *
- * @var const
- */
-	const TASK_CONTENT_NOT_IS_MAIL_SEND = 0;
-
-/**
- * 未完了のToDo
- *
- * @var const
- */
-	const TASK_CONTENT_INCOMPLETE_TASK = 0;
-
-/**
- * 完了したToDo
- *
- * @var const
- */
-	const TASK_CONTENT_IS_COMPLETION = 1;
-
-/**
- * 実施開始日前のToDo
- *
- * @var const
- */
-	const TASK_START_DATE_BEFORE = 1;
-
-/**
- * 実施終了日間近のToDo
- *
- * @var const
- */
-	const TASK_DEADLINE_CLOSE = 2;
-
-/**
- * 実施終了日を過ぎたToDo
- *
- * @var const
- */
-	const TASK_BEYOND_THE_END_DATE = 3;
-
-/**
- * 実施中のToDo
- *
- * @var const
- */
-	const TASK_BEING_PERFORMED = 4;
-
-/**
- * 一覧画面でのユーザーアイコン表示上限
- *
- * @var const
- */
-	const LIST_DISPLAY_NUM = 5;
-
-/**
- * ToDoの進捗率の刻み数
- *
- * @var const
- */
-	const TASK_PROGRESS_RATE_INCREMENTS = 10;
-
-/**
- * ToDo完了時の進捗率
- *
- * @var const
- */
-	const TASK_COMPLETION_PROGRESS_RATE = 100;
-
-/**
- * 重要度未設定
- *
- * @var const
- */
-	const TASK_PRIORITY_UNDEFINED = 0;
-
-/**
- * 重要度低
- *
- * @var const
- */
-	const TASK_PRIORITY_LOW = 1;
-
-/**
- * 重要度中
- *
- * @var const
- */
-	const TASK_PRIORITY_MEDIUM = 2;
-
-/**
- * 重要度高
- *
- * @var const
- */
-	const TASK_PRIORITY_HIGH = 3;
-
-/**
  * @var int recursiveはデフォルトアソシエーションなしに
  */
 	public $recursive = -1;
@@ -260,9 +148,9 @@ class TaskContent extends TasksAppModel {
  */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
-		for ($i = 0; $i <= TaskContent::TASK_COMPLETION_PROGRESS_RATE;) {
+		for ($i = 0; $i <= TasksComponent::TASK_COMPLETION_PROGRESS_RATE;) {
 			$this->_progressRates[$i] = $i;
-			$i += TaskContent::TASK_PROGRESS_RATE_INCREMENTS;
+			$i += TasksComponent::TASK_PROGRESS_RATE_INCREMENTS;
 		}
 
 		// 必要なモデル読み込み
@@ -302,8 +190,8 @@ class TaskContent extends TasksAppModel {
 			'priority' => array(
 				'numeric' => array(
 					'rule' => array('inList', array(
-						TaskContent::TASK_PRIORITY_UNDEFINED, TaskContent::TASK_PRIORITY_LOW,
-						TaskContent::TASK_PRIORITY_MEDIUM, TaskContent::TASK_PRIORITY_HIGH
+						TasksComponent::TASK_PRIORITY_UNDEFINED, TasksComponent::TASK_PRIORITY_LOW,
+						TasksComponent::TASK_PRIORITY_MEDIUM, TasksComponent::TASK_PRIORITY_HIGH
 					)),
 					'allowEmpty' => true,
 				'message' => __d('net_commons', 'Invalid request.')
@@ -440,7 +328,7 @@ class TaskContent extends TasksAppModel {
 		// isDeadLine及びdate_colorを取得
 		foreach ($lists as $list) {
 			// 現在実施中
-			$list['TaskContent']['date_color'] = TaskContent::TASK_BEING_PERFORMED;
+			$list['TaskContent']['date_color'] = TasksComponent::TASK_BEING_PERFORMED;
 			// ここでdate_colorをセット＆Controllerで期限間近判定用のフラグをセット
 			if (empty($list['TaskContent']['is_completion'])
 					&& ! empty($list['TaskContent']['is_date_set'])
@@ -743,13 +631,13 @@ class TaskContent extends TasksAppModel {
 		$this->begin();
 		try {
 			$isCompletion = false;
-			if ((int)$progressRate === TaskContent::TASK_COMPLETION_PROGRESS_RATE) {
+			if ((int)$progressRate === TasksComponent::TASK_COMPLETION_PROGRESS_RATE) {
 				$isCompletion = true;
 			}
 
 			$conditions = array(
 				'TaskContent.key' => $key,
-				'TaskContent.status' => TaskContent::TASK_CONTENT_STATUS_PUBLISHED,
+				'TaskContent.status' => TasksComponent::TASK_CONTENT_STATUS_PUBLISHED,
 			);
 
 			if (! Current::permission('content_publishable')) {
@@ -777,7 +665,7 @@ class TaskContent extends TasksAppModel {
 			);
 
 			// statusを一時保存の状態として設定しバリデーション処理を行う
-			$data['status'] = TaskContent::TASK_CONTENT_STATUS_IN_DRAFT;
+			$data['status'] = TasksComponent::TASK_CONTENT_STATUS_IN_DRAFT;
 
 			$this->set($data);
 			if (! $this->validates( array('only_progress' => true))) {

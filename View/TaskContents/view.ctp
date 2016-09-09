@@ -122,7 +122,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 							$disabled = 'disabled';
 							if ((Hash::extract($taskContent, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']')
 									|| $this->Workflow->canEdit('Tasks.TaskContent', $taskContent))
-									&& $taskContent['TaskContent']['status'] === TaskContent::TASK_CONTENT_STATUS_PUBLISHED
+									&& $taskContent['TaskContent']['status'] === TasksComponent::TASK_CONTENT_STATUS_PUBLISHED
 							):
 								$disabled = '';
 							endif;

@@ -38,6 +38,7 @@ class TasksAppController extends AppController {
 	public $components = array (
 		'Pages.PageLayout',
 		'Security',
+		'Tasks.Tasks',
 	);
 
 /**

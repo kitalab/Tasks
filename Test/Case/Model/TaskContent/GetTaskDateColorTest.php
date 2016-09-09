@@ -74,7 +74,7 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 
 		//チェック
 		$this->assertNotEmpty($result);
-		$this->assertEquals(TaskContent::TASK_DEADLINE_CLOSE, $result);
+		$this->assertEquals(TasksComponent::TASK_DEADLINE_CLOSE, $result);
 	}
 
 /**
@@ -97,7 +97,7 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 
 		//チェック
 		$this->assertNotEmpty($result);
-		$this->assertEquals(TaskContent::TASK_BEYOND_THE_END_DATE, $result);
+		$this->assertEquals(TasksComponent::TASK_BEYOND_THE_END_DATE, $result);
 	}
 
 /**
@@ -120,7 +120,7 @@ class TaskContentGetTaskDateColorTest extends WorkflowGetTest {
 
 		//チェック
 		$this->assertNotEmpty($result);
-		$this->assertEquals(TaskContent::TASK_START_DATE_BEFORE, $result);
+		$this->assertEquals(TasksComponent::TASK_START_DATE_BEFORE, $result);
 	}
 
 }
