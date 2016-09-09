@@ -314,6 +314,7 @@ class TaskContentEditControllerEditTest extends WorkflowControllerEditTest {
 				'key' => $contentKey,
 			),
 		));
+		$results[4]['data']['TaskContent']['is_date_set'] = false;
 
 		return $results;
 	}
@@ -346,7 +347,35 @@ class TaskContentEditControllerEditTest extends WorkflowControllerEditTest {
 			'validationError' => array(
 				'field' => 'TaskContent.title',
 				'value' => '',
-				'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Title'))
+				'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Title')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
+			'validationError' => array(
+				'field' => 'TaskContent.priority',
+				'value' => 100,
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
+			'validationError' => array(
+				'field' => 'TaskContent.is_date_set',
+				'value' => 100,
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
+			'validationError' => array(
+				'field' => 'TaskContent.task_start_date',
+				'value' => '2112-09-03 07:10:12',
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
+			'validationError' => array(
+				'field' => 'TaskCharge.0.user_id',
+				'value' => 200,
+				'message' => sprintf(__d('net_commons', 'Failed on validation errors. Please check the input data.')),
 			)
 		)));
 

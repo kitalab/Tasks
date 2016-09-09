@@ -190,11 +190,11 @@ class TaskContent extends TasksAppModel {
 			'order' => ''
 		),
 		'CategoryOrder' => array(
-				'className' => 'Categories.CategoryOrder',
-				'foreignKey' => false,
-				'conditions' => 'CategoryOrder.category_key=Category.key',
-				'fields' => '',
-				'order' => ''
+			'className' => 'Categories.CategoryOrder',
+			'foreignKey' => false,
+			'conditions' => 'CategoryOrder.category_key=Category.key',
+			'fields' => '',
+			'order' => ''
 		),
 		'Block' => array(
 			'className' => 'Blocks.Block',
@@ -286,11 +286,11 @@ class TaskContent extends TasksAppModel {
 	protected function _getValidateSpecification() {
 		$validate = array(
 			'title' => array(
-				'notBlank' => [
+				'notBlank' => array(
 					'rule' => array('notBlank'),
 					'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Title')),
 					'required' => true,
-				],
+				),
 			),
 			'category_id' => array(
 				'numeric' => array(
@@ -368,6 +368,10 @@ class TaskContent extends TasksAppModel {
 	protected function _getValidateOnlyProgress() {
 		$validate = array(
 			'progress_rate' => array(
+				'notBlank' => array(
+					'rule' => array('notBlank'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
 				'numeric' => array(
 					'rule' => array('inList', $this->_progressRates),
 					'allowEmpty' => true,
@@ -425,7 +429,7 @@ class TaskContent extends TasksAppModel {
 	public function getAllList($params = array(), $order = array()) {
 		$conditions = $this->getConditions(Current::read('Block.id'), $params);
 
-		$lists = $this->find('threaded',
+		$lists = $this->find('all',
 			array('recursive' => 1, 'conditions' => $conditions, 'order' => $order));
 
 		if (! $lists) {
@@ -676,7 +680,8 @@ class TaskContent extends TasksAppModel {
 				'TaskCharge' => array(
 					'id' => null,
 					'user_id' => $value,
-				));
+				)
+			);
 		});
 
 		$this->begin();
@@ -734,7 +739,7 @@ class TaskContent extends TasksAppModel {
  * @return bool
  * @throws InternalErrorException
  */
-	public function saveProgressRate($key, $progressRate) {
+	public function updateProgressRate($key, $progressRate) {
 		$this->begin();
 		try {
 			$isCompletion = false;
@@ -748,12 +753,19 @@ class TaskContent extends TasksAppModel {
 			);
 
 			if (! Current::permission('content_publishable')) {
-				$test = $this->find('first',
-						array('recursive' => 1, 'conditions' => $conditions));
-				$chargeUser = Hash::extract($test, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']');
+				$taskContents = $this->find('first',
+					array('recursive' => 1, 'conditions' => $conditions));
+				$chargeUser = Hash::extract(
+					$taskContents, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']'
+				);
+
+				$taskContent = Hash::extract($taskContents, 'TaskContent');
 
 				// 担当者でなくTODO作成者でもないのであればfalseを返す
-				if (! $chargeUser && $test['TaskContent']['created_user'] !== Current::read('User.id')) {
+				if (! $taskContent
+						|| ! $chargeUser
+						&& $taskContent['created_user'] !== Current::read('User.id')
+				) {
 					return false;
 				}
 			}
