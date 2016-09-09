@@ -182,7 +182,7 @@ class TaskProgressRateControllerEditTest extends NetCommonsControllerTestCase {
  * @return void
  */
 	public function testEditPostValidationError() {
-		$this->_mockForReturnFalse('taskContent', 'saveProgressRate');
+		$this->_mockForReturnFalse('taskContent', 'updateProgressRate');
 
 		//テスト実行
 		$result = $this->_testPostAction('post', $this->__data(),

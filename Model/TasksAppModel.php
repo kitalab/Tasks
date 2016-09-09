@@ -47,9 +47,8 @@ class TasksAppModel extends AppModel {
 		}
 		$compareValue = $isCompareFrom ? $params['from'] : $params['to'];
 
-		if (($isCompareFrom && $checkValue >= $compareValue) ||
-			(! $isCompareFrom && $checkValue <= $compareValue)
-		) {
+		if (($isCompareFrom && $checkValue >= $compareValue)
+				|| (! $isCompareFrom && $checkValue <= $compareValue)) {
 			return true;
 		}
 		return false;

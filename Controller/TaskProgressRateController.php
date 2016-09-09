@@ -53,7 +53,7 @@ class TaskProgressRateController extends TasksAppController {
 			$this->params['data'] = array_merge($this->params['data'], $rateCondition);
 			$progressRate = $this->params['data']['TaskContent']['progress_rate'];
 			// 進捗率を更新する
-			if (! $this->TaskContent->saveProgressRate($key, $progressRate)) {
+			if (! $this->TaskContent->updateProgressRate($key, $progressRate)) {
 				$this->throwBadRequest();
 				return;
 			}

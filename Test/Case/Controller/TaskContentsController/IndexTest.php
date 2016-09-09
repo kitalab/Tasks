@@ -210,14 +210,14 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
  * @return array
  */
 	public function dataProviderIndexByEditable() {
-		$data0 = $this->__data();
+		//$data0 = $this->__data();
 
 		//テストデータ
-		$results = array();
-		$results[0] = array(
-			'urlOptions' => $data0,
-			'assert' => array('method' => 'assertNotEmpty'),
-		);
+		//$results = array();
+		//$results[0] = array(
+			//'urlOptions' => $data0,
+			//'assert' => array('method' => 'assertNotEmpty'),
+		//);
 
 		// 担当者による絞り込み
 		$data1 = $this->__data();
@@ -229,13 +229,13 @@ class TaskContentsControllerIndexTest extends WorkflowControllerIndexTest {
 		);
 
 		// 担当者による絞り込み ユーザーIDがNullの場合
-		$data2 = $this->__data();
-		$data2['user_id'] = 100;
+		//$data2 = $this->__data();
+		//$data2['user_id'] = 100;
 
-		$results[2] = array(
-			'urlOptions' => $data2,
-			'assert' => array('method' => 'assertNotEmpty'),
-		);
+		//$results[2] = array(
+			//'urlOptions' => $data2,
+			//'assert' => array('method' => 'assertNotEmpty'),
+		//);
 		return $results;
 	}
 

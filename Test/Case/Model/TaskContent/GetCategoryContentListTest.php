@@ -79,9 +79,18 @@ class TaskContentGetCategoryContentListTest extends WorkflowGetTest {
 				)
 			)
 		);
+		$categoryData = array(
+			2 => array(
+				'category_id' => 1,
+				'progress_rate' => 0,
+				'id' => 1,
+				'cnt' => 1,
+				'sum' => 0,
+			)
+		);
 
 		//テスト実施
-		$result = $this->$model->$methodName($categoryArr, $contentLists);
+		$result = $this->$model->$methodName($categoryArr, $contentLists, $categoryData);
 
 		//チェック
 		$this->assertNotEmpty($result);
@@ -104,9 +113,10 @@ class TaskContentGetCategoryContentListTest extends WorkflowGetTest {
 			)
 		);
 		$contentLists = array();
+		$categoryData = array();
 
 		//テスト実施
-		$result = $this->$model->$methodName($categoryArr, $contentLists);
+		$result = $this->$model->$methodName($categoryArr, $contentLists, $categoryData);
 
 		//チェック
 		$this->assertNotEmpty($result);
@@ -125,9 +135,10 @@ class TaskContentGetCategoryContentListTest extends WorkflowGetTest {
 		//データ生成
 		$categoryArr = array();
 		$contentLists = null;
+		$categoryData = array();
 
 		//テスト実施
-		$result = $this->$model->$methodName($categoryArr, $contentLists);
+		$result = $this->$model->$methodName($categoryArr, $contentLists, $categoryData);
 
 		//チェック
 		$this->assertEmpty($result);
