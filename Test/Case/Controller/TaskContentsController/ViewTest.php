@@ -118,6 +118,10 @@ class TaskContentsControllerViewTest extends WorkflowControllerViewTest {
 			'urlOptions' => Hash::insert($data6, 'key', 'content_key_999'),
 			'assert' => array('method' => 'assertNull'),
 		);
+		$results[7] = array(
+			'urlOptions' => Hash::insert($data, 'block_id', '1'),
+			'assert' => null, 'exception' => 'BadRequestException'
+		);
 
 		return $results;
 	}
@@ -133,6 +137,35 @@ class TaskContentsControllerViewTest extends WorkflowControllerViewTest {
  * @return void
  */
 	public function testView($urlOptions, $assert, $exception = null, $return = 'view') {
+		//テスト実行
+		parent::testView($urlOptions, $assert, $exception, $return);
+		if ($exception) {
+			return;
+		}
+
+		//チェック
+		$this->__assertView($urlOptions['key'], false);
+	}
+
+/**
+ * viewアクションのテスト（TaskSettingが取得できなかった場合）
+ *
+ * @param array $urlOptions URLオプション
+ * @param array $assert テストの期待値
+ * @param string|null $exception Exception
+ * @param string $return testActionの実行後の結果
+ * @dataProvider dataProviderView
+ * @return void
+ */
+	public function testViewTaskSettingNotFound($urlOptions, $assert, $exception = null, $return = 'view') {
+		$mockModel = 'Tasks.TaskSetting';
+		$mockMethod = 'getTaskSetting';
+		list($mockPlugin, $mockModel) = pluginSplit($mockModel);
+		$this->controller->$mockModel = $this->getMockForModel(
+			$mockPlugin . '.' . $mockModel,
+			array($mockMethod),
+			array('plugin' => 'Tasks')
+		);
 		//テスト実行
 		parent::testView($urlOptions, $assert, $exception, $return);
 		if ($exception) {
