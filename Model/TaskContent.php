@@ -133,6 +133,7 @@ class TaskContent extends TasksAppModel {
 		$this->validate = Hash::merge(
 			$this->validate, $getValidate
 		);
+
 		return parent::beforeValidate($options);
 	}
 
@@ -563,6 +564,7 @@ class TaskContent extends TasksAppModel {
 		$this->loadModels([
 			'TaskCharge' => 'Tasks.TaskCharge',
 		]);
+
 		$data['TaskCharges'] = Hash::map($data, 'TaskCharge.{n}.user_id', function ($value) {
 			return array(
 				'TaskCharge' => array(
@@ -588,6 +590,7 @@ class TaskContent extends TasksAppModel {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 			$data['TaskContent'] = $savedData['TaskContent'];
+
 			// 担当者を登録
 			if (! $this->TaskCharge->setCharges($data)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
@@ -609,7 +612,9 @@ class TaskContent extends TasksAppModel {
 			// メール処理
 			$mailSendUserIdArr =
 				Hash::extract($data, 'TaskCharges.{n}.TaskCharge.user_id');
-			$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_USER_IDS, $mailSendUserIdArr);
+			if ($mailSendUserIdArr) {
+				$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_USER_IDS, $mailSendUserIdArr);
+			}
 
 			$this->commit();
 

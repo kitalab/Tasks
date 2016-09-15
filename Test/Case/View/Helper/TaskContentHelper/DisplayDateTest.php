@@ -56,12 +56,34 @@ class TaskContentHelperDisplayDateTest extends NetCommonsHelperTestCase {
  * @return array
  */
 	public function dataProviderDisplayDate() {
-		$results = array();
-		$results[0] = array(
-			'date' => '2016-10-10 10:10:10'
-		);
-		$results[1] = array(
-			'date' => '2017-10-10 10:10:10'
+		$results = array(
+			array(
+				'date' => date('Y/m/d H:m:s')
+			),
+			array(
+				'date' => date('Y/m/d H:m:s', strtotime('+1 day'))
+			),
+			array(
+				'date' => date('Y/m/d H:m:s', strtotime('-1 day'))
+			),
+			array(
+				'date' => date('Y/m/d H:m:s', strtotime('+1 week'))
+			),
+			array(
+				'date' => date('Y/m/d H:m:s', strtotime('-1 week'))
+			),
+			array(
+				'date' => date('Y/m/d H:m:s', strtotime('+1 month'))
+			),
+			array(
+				'date' => date('Y/m/d H:m:s', strtotime('-1 month'))
+			),
+			array(
+				'date' => date('Y/m/d H:m:s', strtotime('+1 year'))
+			),
+			array(
+				'date' => date('Y/m/d H:m:s', strtotime('-1 year'))
+			)
 		);
 
 		return $results;
@@ -79,12 +101,17 @@ class TaskContentHelperDisplayDateTest extends NetCommonsHelperTestCase {
 		$date = $data;
 		$isDateSet = true;
 		$isView = true;
+		$dateYear = date('Y', strtotime($date));
+		$nowYear = date('Y');
 
 		//テスト実施
 		$result = $this->TaskContent->displayDate($date, $isDateSet, $isView);
 
-		//チェック
-		debug($result);
+		if ($dateYear === $nowYear) {
+			$this->assertEquals(date('m/d', strtotime($date)), $result);
+		} else {
+			$this->assertEquals(date('Y/m/d', strtotime($date)), $result);
+		}
 	}
 
 /**
@@ -102,7 +129,7 @@ class TaskContentHelperDisplayDateTest extends NetCommonsHelperTestCase {
 		$result = $this->TaskContent->displayDate($date, $isDateSet, $isView);
 
 		//チェック
-		debug($result);
+		$this->assertEquals(__d('tasks', 'Not Date Set'), $result);
 	}
 
 }

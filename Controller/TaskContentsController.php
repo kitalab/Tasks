@@ -165,25 +165,6 @@ class TaskContentsController extends TasksAppController {
 	}
 
 /**
- * 権限の取得
- *
- * @return array
- */
-	protected function _getPermission() {
-		$permissionNames = array(
-			'content_readable',
-			'content_creatable',
-			'content_editable',
-			'content_publishable',
-		);
-		$permission = array();
-		foreach ($permissionNames as $key) {
-			$permission[$key] = Current::permission($key);
-		}
-		return $permission;
-	}
-
-/**
  * 一覧
  *
  * @param array $conditions ソート絞り込み条件

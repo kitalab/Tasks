@@ -25,13 +25,35 @@ class TaskCharge extends TasksAppModel {
 /**
  * Validate this model
  *
- * @param array $data input data
  * @return bool
  */
-	public function validateTaskCharge($data) {
-		$this->set($data);
-		$this->validates();
+	public function validateTaskCharge() {
+		$this->validates = $this->_getValidateSpecification();
 		return $this->validationErrors ? false : true;
+	}
+
+/**
+ * バリデーションルールを返す
+ *
+ * @return array
+ */
+	protected function _getValidateSpecification() {
+		$validate = array(
+			'task_content_id' => array(
+				'naturalNumber' => array(
+					'rule' => array('naturalNumber'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
+			),
+			'user_id' => array(
+				'naturalNumber' => array(
+					'rule' => array('naturalNumber'),
+					'message' => __d('net_commons', 'Invalid request.'),
+				),
+			),
+		);
+
+		return $validate;
 	}
 
 /**
