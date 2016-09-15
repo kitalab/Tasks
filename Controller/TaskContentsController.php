@@ -165,25 +165,6 @@ class TaskContentsController extends TasksAppController {
 	}
 
 /**
- * 権限の取得
- *
- * @return array
- */
-	protected function _getPermission() {
-		$permissionNames = array(
-			'content_readable',
-			'content_creatable',
-			'content_editable',
-			'content_publishable',
-		);
-		$permission = array();
-		foreach ($permissionNames as $key) {
-			$permission[$key] = Current::permission($key);
-		}
-		return $permission;
-	}
-
-/**
  * 一覧
  *
  * @param array $conditions ソート絞り込み条件
@@ -229,7 +210,7 @@ class TaskContentsController extends TasksAppController {
 				$currentIsCompletion = $conditions['is_completion'];
 			}
 		} else {
-			$params[] = array('TaskContent.is_completion' => TaskContent::TASK_CONTENT_INCOMPLETE_TASK);
+			$params[] = array('TaskContent.is_completion' => TasksComponent::TASK_CONTENT_INCOMPLETE_TASK);
 		}
 
 		// 並べ替えoption取得
@@ -311,13 +292,13 @@ class TaskContentsController extends TasksAppController {
 
 		if ($selectTarget === 'is_completion') {
 			$selectOptions = array(
-				'TaskContents.is_completion.' . TaskContent::TASK_CONTENT_INCOMPLETE_TASK => array(
+				'TaskContents.is_completion.' . TasksComponent::TASK_CONTENT_INCOMPLETE_TASK => array(
 					'label' => __d('tasks', 'Incomplete task'),
-					'is_completion' => TaskContent::TASK_CONTENT_INCOMPLETE_TASK,
+					'is_completion' => TasksComponent::TASK_CONTENT_INCOMPLETE_TASK,
 				),
-				'TaskContents.is_completion.' . TaskContent::TASK_CONTENT_IS_COMPLETION => array(
+				'TaskContents.is_completion.' . TasksComponent::TASK_CONTENT_IS_COMPLETION => array(
 					'label' => __d('tasks', 'Completed task'),
-					'is_completion' => TaskContent::TASK_CONTENT_IS_COMPLETION,
+					'is_completion' => TasksComponent::TASK_CONTENT_IS_COMPLETION,
 				),
 				'TaskContents.is_completion.' . 'all' => array(
 					'label' => __d('tasks', 'All task'),

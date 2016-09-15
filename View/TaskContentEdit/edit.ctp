@@ -18,7 +18,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 <?php
 //$checkMailClass = '';
 //if (! isset($mailSetting['MailSetting']['is_mail_send'])
-//		|| $mailSetting['MailSetting']['is_mail_send'] == TaskContent::TASK_CONTENT_NOT_IS_MAIL_SEND
+//		|| $mailSetting['MailSetting']['is_mail_send'] == TasksComponent::TASK_CONTENT_NOT_IS_MAIL_SEND
 //) {
 //	$checkMailClass = 'hidden';
 //}
@@ -72,10 +72,10 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 
 					<?php
 					$priorityOptions = array(
-						TaskContent::TASK_PRIORITY_UNDEFINED => __d('tasks', 'Undefined'),
-						TaskContent::TASK_PRIORITY_LOW => __d('tasks', 'Low'),
-						TaskContent::TASK_PRIORITY_MEDIUM => __d('tasks', 'Medium'),
-						TaskContent::TASK_PRIORITY_HIGH => __d('tasks', 'High')
+						TasksComponent::TASK_PRIORITY_UNDEFINED => __d('tasks', 'Undefined'),
+						TasksComponent::TASK_PRIORITY_LOW => __d('tasks', 'Low'),
+						TasksComponent::TASK_PRIORITY_MEDIUM => __d('tasks', 'Medium'),
+						TasksComponent::TASK_PRIORITY_HIGH => __d('tasks', 'High')
 					);
 					?>
 					<?php echo $this->NetCommonsForm->input('TaskContent.priority',

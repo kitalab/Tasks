@@ -20,9 +20,9 @@ echo $this->NetCommonsForm->create(
 	'TaskProgressRate', array('type' => 'post', 'url' => $url)
 );
 
-for ($i = 0; $i <= TaskContent::TASK_COMPLETION_PROGRESS_RATE;) {
+for ($i = 0; $i <= TasksComponent::TASK_COMPLETION_PROGRESS_RATE;) {
 	$options[$i] = $i . '%';
-	$i += TaskContent::TASK_PROGRESS_RATE_INCREMENTS;
+	$i += TasksComponent::TASK_PROGRESS_RATE_INCREMENTS;
 }
 
 echo $this->NetCommonsForm->input('TaskContent.progress_rate', array(

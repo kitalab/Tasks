@@ -29,9 +29,9 @@ class TaskChargeBehavior extends ModelBehavior {
  */
 	public function beforeValidate(Model $model, $options = array()) {
 		$model->loadModels(array(
-			'TaskCharge' => 'Tasks.TaskCharge',
-			'User' => 'Users.User',
-				)
+				'TaskCharge' => 'Tasks.TaskCharge',
+				'User' => 'Users.User'
+			)
 		);
 
 		// ToDo担当者のバリデーション処理

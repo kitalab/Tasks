@@ -67,8 +67,9 @@ class TaskChargeValidateTaskChargeTest extends NetCommonsModelTestCase {
 		//データ生成
 		$data = null;
 
+		$this->$model->set($data);
 		//テスト実施
-		$result = $this->$model->$methodName($data);
+		$result = $this->$model->$methodName();
 
 		//チェック
 		$this->assertTrue($result);

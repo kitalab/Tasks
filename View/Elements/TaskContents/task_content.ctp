@@ -37,7 +37,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 							'controller' => 'task_progress_rate',
 							'action' => 'edit',
 							'content_key' => h($content['TaskContent']['key']),
-							'TaskContent' => array('progress_rate' => TaskContent::TASK_COMPLETION_PROGRESS_RATE),
+							'TaskContent' => array('progress_rate' => TasksComponent::TASK_COMPLETION_PROGRESS_RATE),
 					);
 					echo $this->NetCommonsForm->create(
 						'TaskProgressRate', array('type' => 'post', 'url' => $url)
@@ -48,7 +48,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						$charge = Hash::extract($content, 'TaskCharge.{n}[user_id=' . Current::read('User.id') . ']');
 					}
 					if (($charge || $this->Workflow->canEdit('Tasks.TaskContent', $content))
-							&& $content['TaskContent']['status'] === TaskContent::TASK_CONTENT_STATUS_PUBLISHED) {
+							&& $content['TaskContent']['status'] === TasksComponent::TASK_CONTENT_STATUS_PUBLISHED) {
 						$disabled = '';
 					}
 					?>
@@ -71,10 +71,10 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 	
 				<?php
 				$color = array(
-					TaskContent::TASK_START_DATE_BEFORE => 'text-muted',
-					TaskContent::TASK_DEADLINE_CLOSE => 'text-warning',
-					TaskContent::TASK_BEYOND_THE_END_DATE => 'text-danger',
-					TaskContent::TASK_BEING_PERFORMED => ''
+					TasksComponent::TASK_START_DATE_BEFORE => 'text-muted',
+					TasksComponent::TASK_DEADLINE_CLOSE => 'text-warning',
+					TasksComponent::TASK_BEYOND_THE_END_DATE => 'text-danger',
+					TasksComponent::TASK_BEING_PERFORMED => ''
 				);
 				?>
 				<td class="col-xs-4 col-sm-2 col-md-2 col-lg-2 task-index-content-text-middle task-word-break
@@ -119,7 +119,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						<?php foreach ($content['TaskCharge'] as $userInCharge): ?>
 							<?php
 							$count++;
-							if ($count <= TaskContent::LIST_DISPLAY_NUM) {
+							if ($count <= TasksComponent::LIST_DISPLAY_NUM) {
 								echo $this->DisplayUser->avatar($userInCharge, [], 'user_id');
 							} else {
 								echo '...';

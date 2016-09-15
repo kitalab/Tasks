@@ -1,9 +1,9 @@
 <?php
 /**
- * TaskContent::isDeadLine()のテスト
+ * TasksAppModel::isDeadLine()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
- * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
+ * @author Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>
  * @link http://www.netcommons.org NetCommons Project
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
@@ -12,12 +12,12 @@
 App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
 
 /**
- * TaskContent::isDeadLine()のテスト
+ * TasksAppModel::isDeadLine()のテスト
  *
- * @author Tomoyoshi Nakata <nakata.tomoyoshi@withone.co.jp>
- * @package NetCommons\Tasks\Test\Case\Model\TaskContent
+ * @author Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>
+ * @package NetCommons\Tasks\Test\Case\Model\TasksAppModel
  */
-class TaskContentIsDeadLineTest extends NetCommonsModelTestCase {
+class TasksAppModelIsDeadLineTest extends NetCommonsModelTestCase {
 
 /**
  * Fixtures
@@ -46,7 +46,7 @@ class TaskContentIsDeadLineTest extends NetCommonsModelTestCase {
  *
  * @var string
  */
-	protected $_modelName = 'TaskContent';
+	protected $_modelName = 'TasksAppModel';
 
 /**
  * Method name
@@ -56,11 +56,11 @@ class TaskContentIsDeadLineTest extends NetCommonsModelTestCase {
 	protected $_methodName = 'isDeadLine';
 
 /**
- * isDeadLine() 終了期限間近の場合のテスト
+ * isDeadLine()のテスト
  *
  * @return void
  */
-	public function testIsDeadLineClose() {
+	public function testIsDeadLine() {
 		$model = $this->_modelName;
 		$methodName = $this->_methodName;
 
@@ -72,16 +72,6 @@ class TaskContentIsDeadLineTest extends NetCommonsModelTestCase {
 
 		//チェック
 		$this->assertTrue($result);
-	}
-
-/**
- * isDeadLine() 終了期限切れの場合のテスト
- *
- * @return void
- */
-	public function testIsDeadLineEnd() {
-		$model = $this->_modelName;
-		$methodName = $this->_methodName;
 
 		//データ生成
 		$dateColor = TasksComponent::TASK_BEYOND_THE_END_DATE;
@@ -94,11 +84,11 @@ class TaskContentIsDeadLineTest extends NetCommonsModelTestCase {
 	}
 
 /**
- * isDeadLine() 現在実施中の場合のテスト
+ * IsDeadLineFalse()のテスト
  *
  * @return void
  */
-	public function testIsDeadLinePerformed() {
+	public function testIsDeadLineFalse() {
 		$model = $this->_modelName;
 		$methodName = $this->_methodName;
 
@@ -110,38 +100,9 @@ class TaskContentIsDeadLineTest extends NetCommonsModelTestCase {
 
 		//チェック
 		$this->assertFalse($result);
-	}
-
-/**
- * isDeadLine() 現在の日付が開始日より前の場合のテスト
- *
- * @return void
- */
-	public function testIsDeadLineBefore() {
-		$model = $this->_modelName;
-		$methodName = $this->_methodName;
 
 		//データ生成
 		$dateColor = TasksComponent::TASK_START_DATE_BEFORE;
-
-		//テスト実施
-		$result = $this->$model->$methodName($dateColor);
-
-		//チェック
-		$this->assertFalse($result);
-	}
-
-/**
- * isDeadLine() Nullのテスト
- *
- * @return void
- */
-	public function testIsDeadLineNull() {
-		$model = $this->_modelName;
-		$methodName = $this->_methodName;
-
-		//データ生成
-		$dateColor = null;
 
 		//テスト実施
 		$result = $this->$model->$methodName($dateColor);

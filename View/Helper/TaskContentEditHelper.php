@@ -65,9 +65,6 @@ class TaskContentEditHelper extends AppHelper {
 
 		$ret = '';
 		$ret .= $this->NetCommonsForm->input($fieldName, $options);
-		if (!empty($help)) {
-			$ret .= '<span class="help-block">' . $help . '</span>';
-		}
 		return $ret;
 	}
 }

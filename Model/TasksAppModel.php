@@ -3,6 +3,7 @@
  * TaskAppModel
  */
 App::uses('AppModel', 'Model');
+App::uses('TasksComponent', 'Tasks.Controller/Component');
 
 /**
  * Class TasksAppModel
@@ -66,23 +67,23 @@ class TasksAppModel extends AppModel {
 		$now = date('Ymd', strtotime(date('Y/m/d H:i:s')));
 		$deadLine = date('Ymd', strtotime('+2 day'));
 
-		$dateColor = TaskContent::TASK_BEING_PERFORMED;
+		$dateColor = TasksComponent::TASK_BEING_PERFORMED;
 		// 現在の日付が開始日より前
 		if (! empty($taskStartDate)
 				&& intval(date('Ymd', strtotime($taskStartDate))) > $now
 		) {
-			$dateColor = TaskContent::TASK_START_DATE_BEFORE;
+			$dateColor = TasksComponent::TASK_START_DATE_BEFORE;
 		}
 		if (! empty($taskEndDate)) {
 			// 終了期限間近
 			if (intval(date('Ymd', strtotime($taskEndDate))) >= intval($now)
 					&& intval(date('Ymd', strtotime($taskEndDate))) <= intval($deadLine)
 			) {
-				$dateColor = TaskContent::TASK_DEADLINE_CLOSE;
+				$dateColor = TasksComponent::TASK_DEADLINE_CLOSE;
 				// 終了期限切れ
 			} elseif (intval(date('Ymd', strtotime($taskEndDate))) < intval($now)
 			) {
-				$dateColor = TaskContent::TASK_BEYOND_THE_END_DATE;
+				$dateColor = TasksComponent::TASK_BEYOND_THE_END_DATE;
 			}
 		}
 
@@ -97,8 +98,8 @@ class TasksAppModel extends AppModel {
  * @return array
  */
 	public function isDeadLine($dateColor) {
-		if ($dateColor == TaskContent::TASK_DEADLINE_CLOSE
-			|| $dateColor == TaskContent::TASK_BEYOND_THE_END_DATE
+		if ($dateColor == TasksComponent::TASK_DEADLINE_CLOSE
+			|| $dateColor == TasksComponent::TASK_BEYOND_THE_END_DATE
 		) {
 			return true;
 		}
