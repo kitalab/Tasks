@@ -10,6 +10,7 @@
  */
 
 App::uses('TasksAppModel', 'Tasks.Model');
+App::uses('MailQueueBehavior', 'Mails.Model/Behavior');
 
 /**
  * Summary for TaskContent Model
@@ -224,16 +225,24 @@ class TaskContent extends TasksAppModel {
 					),
 			),
 			'use_calendar' => array(
-					'boolean' => array(
-							'rule' => array('boolean'),
-					'message' => __d('net_commons', 'Invalid request.')
-					),
+				'boolean' => array(
+					'rule' => array('boolean'),
+				'message' => __d('net_commons', 'Invalid request.')
+				),
 			),
 			'email_send_timing' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
 					'allowEmpty' => true,
 				'message' => __d('net_commons', 'Invalid request.')
+				),
+				'isSetReminderCheck' => array(
+					'rule' => array('validateIsSetReminderCheck',
+						array('to' => $this->data['TaskContent']['task_end_date'],
+							'is_enable_mail' => $this->data['TaskContent']['is_enable_mail']
+						)
+					),
+					'message' => __d('tasks', 'Please set the end date.')
 				),
 			),
 			'progress_rate' => array(
@@ -369,12 +378,12 @@ class TaskContent extends TasksAppModel {
 		$this->virtualFields['sum'] = 0;
 		// カテゴリ毎の全体のToDo数と進捗率を取得
 		$categoryData = $this->find('all', array(
-				'fields' => array(
-						'TaskContent.category_id', 'count(TaskContent.category_id) as TaskContent__cnt',
-						'TaskContent.progress_rate', 'sum(TaskContent.progress_rate) as TaskContent__sum'
-				),
-				'conditions' => $listConditions,
-				'group' => array('TaskContent.category_id'),
+			'fields' => array(
+				'TaskContent.category_id', 'count(TaskContent.category_id) as TaskContent__cnt',
+				'TaskContent.progress_rate', 'sum(TaskContent.progress_rate) as TaskContent__sum'
+			),
+			'conditions' => $listConditions,
+			'group' => array('TaskContent.category_id'),
 		));
 		$categoryData = Hash::combine($categoryData, '{n}.TaskContent.category_id', '{n}.TaskContent');
 
@@ -512,10 +521,6 @@ class TaskContent extends TasksAppModel {
 			'conditions' => $conditions
 		));
 
-		if (! $lists) {
-			return array();
-		}
-
 		return $lists;
 	}
 
@@ -574,7 +579,13 @@ class TaskContent extends TasksAppModel {
 			);
 		});
 
+		// メール送信用の必要パラメーター取得
+		$reminder = Hash::extract($data, 'is_reminder');
+		$makeReminder = Hash::extract($data, 'is_make_reminder');
+		$mailSendUserIdArr = Hash::extract($data, 'TaskCharges.{n}.TaskCharge.user_id');
+
 		$this->begin();
+		$isMakeReminder = false;
 		try {
 			$this->create(); // 常に新規登録
 			// 先にvalidate 失敗したらfalse返す
@@ -583,6 +594,37 @@ class TaskContent extends TasksAppModel {
 			if (! $this->validates(array('only_progress' => false))) {
 				$this->rollback();
 				return false;
+			}
+
+			// リマインダーメール作成判断フラグ取得
+			$isMakeReminder = $this->isReminder($reminder, $makeReminder);
+
+			if ($makeReminder) {
+				// リマインダーメール設定
+				$this->setSetting('typeKey', 'reminder');
+				$this->setSetting('X-URL', array('controller' => 'task_contents'));
+				// 実施終了日の日時を0持00分に変更する
+				$taskEndDate = date('Y-m-d H:i:s',
+						strtotime($data['TaskContent']['task_end_date'] . ' -1day +1 second'));
+				$sendTimes[] = date(
+					'Y-m-d H:i:s', strtotime(
+						$taskEndDate . ' -' . $data['TaskContent']['email_send_timing'] . 'day'
+					)
+				);
+				$this->setAddEmbedTagValue('X-BODY',
+					__d('tasks', 'Now %s days in advance of the period end date.',
+							$data['TaskContent']['email_send_timing']
+					)
+				);
+				$this->setSendTimeReminder($sendTimes);
+				$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_USER_IDS, $mailSendUserIdArr);
+				// 通常保存のメールと重複してしまうため投稿メールのOFF
+				$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_IS_MAIL_SEND_POST, 0);
+				// グループ配信のみ
+				$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_WORKFLOW_TYPE,
+						MailQueueBehavior::MAIL_QUEUE_WORKFLOW_TYPE_GROUP_ONLY);
+			} else {
+				$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_USER_IDS, $mailSendUserIdArr);
 			}
 
 			if (($savedData = $this->save($data, false)) === false) {
@@ -596,31 +638,26 @@ class TaskContent extends TasksAppModel {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
-			//$sendTimes = array(NetCommonsTime::getNowDatetime());
-			//リマインダーメール設定
-			//if ($data['TaskContent']['is_enable_mail']) {
-			//実施終了日の日時を0持00分に変更する
-			//$taskEndDate = date('Y-m-d H:i:s',
-			//strtotime($data['TaskContent']['task_end_date'] . ' -1day +1 second'));
-			//$sendTimes = array(
-			//date('Y-m-d H:i:s', strtotime(
-			//	$taskEndDate . ' -' . $data['TaskContent']['email_send_timing'] . 'day'
-			//))
-			//);
-			//}
-			//$this->setSendTimeReminder($sendTimes);
-			// メール処理
-			$mailSendUserIdArr =
-				Hash::extract($data, 'TaskCharges.{n}.TaskCharge.user_id');
-			if ($mailSendUserIdArr) {
-				$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_USER_IDS, $mailSendUserIdArr);
-			}
-
 			$this->commit();
 
 		} catch (Exception $e) {
 			$this->rollback($e);
 		}
+
+		$savedData['is_makeReminder'] = $isMakeReminder;
+
+		return $savedData;
+	}
+
+/**
+ * 通知メール及びリマインダーメールを作成する
+ *
+ * @param array $data 登録データ
+ * @return bool
+ */
+	public function setReminderMail($data) {
+		$data['is_make_reminder'] = true;
+		$savedData = $this->saveContent($data);
 		return $savedData;
 	}
 

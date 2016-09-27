@@ -72,7 +72,7 @@ class TaskContentGetAllListTest extends WorkflowGetTest {
 		$result = $this->$model->$methodName($params, $order);
 
 		//チェック
-		debug($result);
+		$this->assertNotEmpty($result);
 	}
 
 /**

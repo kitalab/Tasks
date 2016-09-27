@@ -81,10 +81,17 @@ class TaskContentEditControllerBeforeFilterTest extends NetCommonsControllerTest
 		$blockId = '2';
 
 		//テスト実行
-		$this->_testGetAction(array('action' => 'edit', 'block_id' => $blockId), array('method' => 'assertEmpty'), 'BadRequestException', 'view');
+		$this->_testGetAction(
+			array(
+				'action' => 'edit', 'block_id' => $blockId
+			),
+			array(
+				'method' => 'assertEmpty'
+			),
+			'BadRequestException', 'view'
+		);
 
 		//チェック
-		debug($this->view);
 	}
 
 }

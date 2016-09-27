@@ -219,7 +219,6 @@ class TaskContentUpdateProgressRateTest extends NetCommonsModelTestCase {
 
 		//テスト実施
 		$result = $this->$model->$methodName($key, $progressRate);
-		debug($result);
 
 		//チェック
 		$this->assertFalse($result);

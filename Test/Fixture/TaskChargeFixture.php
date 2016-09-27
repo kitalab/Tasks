@@ -102,6 +102,15 @@ class TaskChargeFixture extends CakeTestFixture {
 			'modified_user' => '1',
 			'modified' => '2016-03-17 07:10:12',
 		),
+		array(
+			'id' => '8',
+			'task_content_id' => '9',
+			'user_id' => '7',
+			'created_user' => '1',
+			'created' => '2016-03-17 07:10:12',
+			'modified_user' => '1',
+			'modified' => '2016-03-17 07:10:12',
+		),
 	);
 
 }

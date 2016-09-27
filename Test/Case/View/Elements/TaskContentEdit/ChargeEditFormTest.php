@@ -64,8 +64,5 @@ class TasksViewElementsTaskContentEditChargeEditFormTest extends NetCommonsContr
 		//チェック
 		$pattern = '/' . preg_quote('View/Elements/TaskContentEdit/charge_edit_form', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
-
-		debug($this->view);
 	}
-
 }

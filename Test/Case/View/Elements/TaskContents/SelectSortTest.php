@@ -68,8 +68,5 @@ class TasksViewElementsTaskContentsSelectSortTest extends NetCommonsControllerTe
 		//チェック
 		$pattern = '/' . preg_quote('View/Elements/TaskContents/select_sort', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
-
-		debug($this->view);
 	}
-
 }

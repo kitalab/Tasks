@@ -67,8 +67,5 @@ class TasksViewElementsTaskContentsSelectUserTest extends NetCommonsControllerTe
 		//チェック
 		$pattern = '/' . preg_quote('View/Elements/TaskContents/select_user', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
-
-		debug($this->view);
 	}
-
 }

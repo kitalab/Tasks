@@ -95,11 +95,11 @@ class TaskContentEditController extends TasksAppController {
 			$data['TaskContent']['language_id'] = Current::read('Language.id');
 
 			// set task_end_date
-			if ($data['TaskContent']['is_date_set'] && $data['TaskContent']['task_end_date']) {
-				$data = $this->__setTaskEndDateTime($data);
-			} elseif (! $data['TaskContent']['is_date_set']) {
-				$data['TaskContent']['task_start_date'] = null;
-				$data['TaskContent']['task_end_date'] = null;
+			$data = $this->__setTaskDate($data);
+			if (! $data['TaskContent']['is_enable_mail']) {
+				unset($data['TaskContent']['email_send_timing']);
+			} else {
+				$data['is_reminder'] = true;
 			}
 
 			if (($result = $this->TaskContent->saveContent($data))) {
@@ -108,7 +108,8 @@ class TaskContentEditController extends TasksAppController {
 					'action' => 'view',
 					'frame_id' => Current::read('Frame.id'),
 					'block_id' => Current::read('Block.id'),
-					'key' => $result['TaskContent']['key']
+					'key' => $result['TaskContent']['key'],
+					'is_makeReminder' => $result['is_makeReminder']
 				));
 
 				return $this->redirect($url);
@@ -182,23 +183,23 @@ class TaskContentEditController extends TasksAppController {
 			$data = $this->request->data;
 
 			// set task_end_date
-			if ($data['TaskContent']['is_date_set'] && $data['TaskContent']['task_end_date']) {
-				$data = $this->__setTaskEndDateTime($data);
-			} elseif (! $data['TaskContent']['is_date_set']) {
-				$data['TaskContent']['task_start_date'] = null;
-				$data['TaskContent']['task_end_date'] = null;
+			$data = $this->__setTaskDate($data);
+
+			if (! $data['TaskContent']['is_enable_mail']) {
+				unset($data['TaskContent']['email_send_timing']);
 			}
 
 			unset($data['TaskContent']['id']); // 常に新規保存
 
-			if ($this->TaskContent->saveContent($data)) {
+			if ($result = $this->TaskContent->saveContent($data)) {
 				$url = NetCommonsUrl::actionUrl(
 					array(
 						'controller' => 'task_contents',
 						'action' => 'view',
 						'frame_id' => Current::read('Frame.id'),
 						'block_id' => Current::read('Block.id'),
-						'key' => $data['TaskContent']['key']
+						'key' => $data['TaskContent']['key'],
+						'is_makeReminder' => $result['is_makeReminder']
 					)
 				);
 
@@ -267,19 +268,25 @@ class TaskContentEditController extends TasksAppController {
 	}
 
 /**
- * Get Task End Date Time
+ * Set Task Date
  *
- * ToDoの実施日終了日の時刻を23:59:59に設定
- *
+ * 実施日設定が選択されていない場合実施日を初期化する
+ * 実施日設定が選択されており実施終了日が設定されている場合ToDoの実施日終了日の時刻を23:59:59に設定する
+ * 
  * @param array $data POSTされたToDoデータ
  * @return array
  */
-	private function __setTaskEndDateTime($data) {
-		$endDate = $data['TaskContent']['task_end_date'];
-		if ($endDate) {
-			$data['TaskContent']['task_end_date'] = date(
-				'Y-m-d H:i:s', strtotime($endDate . '+1 days -1 second')
-			);
+	private function __setTaskDate($data) {
+		if ($data['TaskContent']['is_date_set'] && $data['TaskContent']['task_end_date']) {
+			$endDate = $data['TaskContent']['task_end_date'];
+			if ($endDate) {
+				$data['TaskContent']['task_end_date'] = date(
+					'Y-m-d H:i:s', strtotime($endDate . '+1 days -1 second')
+				);
+			}
+		} elseif (! $data['TaskContent']['is_date_set']) {
+			$data['TaskContent']['task_start_date'] = null;
+			$data['TaskContent']['task_end_date'] = null;
 		}
 		return $data;
 	}

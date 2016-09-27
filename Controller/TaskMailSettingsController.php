@@ -35,4 +35,22 @@ class TaskMailSettingsController extends MailSettingsController {
 		'Mails.MailForm',
 	);
 
+/**
+ * beforeFilter
+ *
+ * @return void
+ * @throws NotFoundException
+ * @see NetCommonsAppController::beforeFilter()
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+
+		// メール設定 多段の場合にセット
+		$this->MailSettings->permission =
+				array('mail_content_receivable', 'mail_answer_receivable');
+		$this->MailSettings->typeKeys =
+				array(MailSettingFixedPhrase::DEFAULT_TYPE, 'reminder');
+
+		$this->backUrl = NetCommonsUrl::backToPageUrl(true);
+	}
 }

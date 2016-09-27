@@ -60,8 +60,5 @@ class TasksViewElementsTaskContentEditDeleteFormTest extends NetCommonsControlle
 		//チェック
 		$pattern = '/' . preg_quote('View/Elements/TaskContentEdit/delete_form', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
-
-		debug($this->view);
 	}
-
 }

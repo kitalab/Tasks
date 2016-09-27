@@ -17,9 +17,18 @@
 		<?php echo $this->BlockTabs->block(BlockTabsHelper::MAIN_TAB_MAIL_SETTING); ?>
 
 		<?php echo $this->MailForm->editFrom(
-			array(array(
-				'mailBodyPopoverMessage' => __d('cabinets', 'MailSetting.mail_fixed_phrase_body.popover'),
-			)),
+			array(
+				array(
+					'mailBodyPopoverMessage' => __d('tasks', 'MailSetting.mail_fixed_phrase_body.popover'),
+					'useNoticeAuthority' => 0,
+				),
+				array(
+					'mailTypeKey' => 'reminder',
+					'panelHeading' => '期限間近通知メール',
+					'mailBodyPopoverMessage' => __d('tasks', 'MailSetting.mail_fixed_phrase_body.popover_reminder'),
+					'useNoticeAuthority' => 0
+				),
+			),
 			NetCommonsUrl::backToIndexUrl('default_setting_action'),
 			0,
 			1

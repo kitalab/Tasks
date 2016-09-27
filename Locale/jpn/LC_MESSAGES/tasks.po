@@ -1,4 +1,3 @@
-# LANGUAGE translation of CakePHP Application
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 #
 msgid ""
@@ -206,3 +205,19 @@ msgstr "--:--"
 # バリデーション文言
 msgid "Please set the start date or end date."
 msgstr "実施期間を設定する場合は、開始日または終了日を設定してください。"
+
+# バリデーション文言
+msgid "Please set the end date."
+msgstr "実施期間終了日を通知をする日付が現在の日付を下回らないように設定を設定してください。"
+
+# 投稿メール基本文で使用
+msgid "MailSetting.mail_fixed_phrase_body.popover"
+msgstr "{X-PLUGIN_NAME}に投稿されたのでお知らせします。<br />ルーム名:{X-ROOM}<br />ToDoタイトル:{X-SUBJECT}<br />投稿者:{X-USER}<br />投稿日時:{X-TO_DATE}<br /><br />{X-BODY}<br /><br />このToDoの内容を確認するには下記のリンクをクリックしてください。<br />{X-URL}"
+
+# リマインダーメール基本文で使用
+msgid "MailSetting.mail_fixed_phrase_body.popover_reminder"
+msgstr "{X-SUBJECT}が実施期限終了間近になったのでお知らせします。<br />ルーム名:{X-ROOM}<br />ToDoタイトル:{X-SUBJECT}<br />投稿日時:{X-TO_DATE}<br /><br />{X-BODY}<br /><br />このToDoの内容を確認するには下記のリンクをクリックしてください。<br />{X-URL}"
+
+# リマインダーメール本文で使用
+msgid "Now %s days in advance of the period end date."
+msgstr "実施期間終了日の%s日前になりました。"

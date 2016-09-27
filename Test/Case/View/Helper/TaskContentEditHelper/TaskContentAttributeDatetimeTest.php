@@ -70,9 +70,8 @@ class TaskContentEditHelperTaskContentAttributeDatetimeTest extends NetCommonsHe
 
 		//テスト実施
 		$result = $this->TaskContentEdit->taskContentAttributeDatetime($fieldName, $options);
-
 		//チェック
-		debug($result);
+		$this->assertNotEmpty($result);
 	}
 
 /**
@@ -87,9 +86,8 @@ class TaskContentEditHelperTaskContentAttributeDatetimeTest extends NetCommonsHe
 
 		//テスト実施
 		$result = $this->TaskContentEdit->taskContentAttributeDatetime($fieldName, $options);
-
 		//チェック
-		debug($result);
+		$this->assertNotEmpty($result);
 	}
 
 }
