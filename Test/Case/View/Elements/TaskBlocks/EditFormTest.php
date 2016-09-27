@@ -60,8 +60,5 @@ class TasksViewElementsTaskBlocksEditFormTest extends NetCommonsControllerTestCa
 		//チェック
 		$pattern = '/' . preg_quote('View/Elements/TaskBlocks/edit_form', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
-
-		debug($this->view);
 	}
-
 }

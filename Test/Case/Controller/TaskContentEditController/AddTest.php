@@ -79,7 +79,8 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 				'content' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 				'priority' => 1,
 				'is_date_set' => true,
-				'is_enable_mail' => true,
+				'is_enable_mail' => false,
+				'email_send_timing' => '2',
 				'task_start_date' => '2016-03-10 07:10:12',
 				'task_end_date' => '2016-03-17 07:10:12',
 			),
@@ -205,7 +206,6 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 				'frame_id' => null,
 				'block_id' => $data['Block']['id']),
 		);
-		$results[3]['data']['TaskContent']['is_date_set'] = false;
 
 		return $results;
 	}
@@ -242,6 +242,13 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 		)));
 		array_push($results, Hash::merge($result, array(
 			'validationError' => array(
+				'field' => 'TaskContent.category_id',
+				'value' => 'text',
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
+			'validationError' => array(
 				'field' => 'TaskContent.priority',
 				'value' => 100,
 				'message' => sprintf(__d('net_commons', 'Invalid request.')),
@@ -249,8 +256,29 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 		)));
 		array_push($results, Hash::merge($result, array(
 			'validationError' => array(
+				'field' => 'TaskContent.priority',
+				'value' => 'text',
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
+			'validationError' => array(
 				'field' => 'TaskContent.is_date_set',
 				'value' => 100,
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
+			'validationError' => array(
+				'field' => 'TaskContent.is_date_set',
+				'value' => 'text',
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
+		)));
+		array_push($results, Hash::merge($result, array(
+			'validationError' => array(
+				'field' => 'TaskContent.is_date_set',
+				'value' => '',
 				'message' => sprintf(__d('net_commons', 'Invalid request.')),
 			)
 		)));
@@ -266,6 +294,25 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 				'field' => 'TaskCharge.0.user_id',
 				'value' => 200,
 				'message' => sprintf(__d('net_commons', 'Failed on validation errors. Please check the input data.')),
+			)
+		)));
+
+		// リマインダーメールを作成するとき
+		$data2 = $this->__data();
+		$data2['TaskContent']['is_enable_mail'] = true;
+		$result2 = array(
+			'data' => $data2,
+			'urlOptions' => array(
+					'frame_id' => $data2['Frame']['id'],
+					'block_id' => $data2['Block']['id']
+			),
+			'validationError' => array(),
+		);
+		array_push($results, Hash::merge($result2, array(
+			'validationError' => array(
+				'field' => 'TaskContent.task_end_date',
+				'value' => '',
+				'message' => sprintf(__d('tasks', 'Please set the end date.')),
 			)
 		)));
 
@@ -311,8 +358,6 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 		$this->assertInput('button', 'save_' . WorkflowComponent::STATUS_IN_DRAFT, null, $this->view);
 		$this->assertInput('button', 'save_' . WorkflowComponent::STATUS_APPROVED, null, $this->view);
 
-		debug($this->view);
-
 		TestAuthGeneral::logout($this);
 	}
 
@@ -341,7 +386,43 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 		$this->assertInput('button', 'save_' . WorkflowComponent::STATUS_IN_DRAFT, null, $this->view);
 		$this->assertInput('button', 'save_' . WorkflowComponent::STATUS_PUBLISHED, null, $this->view);
 
-		debug($this->view);
+		//ログアウト
+		TestAuthGeneral::logout($this);
+	}
+
+/**
+ * edit()アクションのPOSTリクエストテスト
+ *
+ * @return void
+ */
+	public function testEditPost() {
+		//ログイン
+		TestAuthGeneral::login($this);
+		//テストデータ
+		$data = $this->__data();
+		$data['TaskContent']['is_date_set'] = false;
+		$data['TaskContent']['is_enable_mail'] = false;
+
+		//アクション実行
+		$url = NetCommonsUrl::actionUrl(array(
+			'plugin' => $this->plugin,
+			'controller' => $this->_controller,
+			'action' => 'add',
+			'content_key' => 'task_content_key',
+			'frame_id' => $data['Frame']['id'],
+			'block_id' => $data['Block']['id'],
+		));
+		$params = array(
+			'data' => $data,
+		);
+		$this->testAction($url, $params);
+
+		//チェック
+		$header = $this->controller->response->header();
+		$asserts = array(
+			array('method' => 'assertNotEmpty', 'value' => $header['Location'])
+		);
+		$this->asserts($asserts, $this->contents);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);

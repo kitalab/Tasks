@@ -139,15 +139,12 @@ class TaskContentsController extends TasksAppController {
 
 			$this->request->data['selectUsers'] = array();
 			$this->loadModel('Users.User');
-			foreach ($selectUsers as $userId) {
-				$this->request->data['selectUsers'][] = $this->User->getUser($userId);
-			}
+			$this->request->data['selectUsers'] = $this->__setSelectUsers($selectUsers);
 
 			// コメントを利用する
 			if ($this->_taskSetting['TaskSetting']['use_comment']) {
 				if ($this->request->is('post')) {
 					// コメントする
-
 					$taskContentKey = $taskContent['TaskContent']['key'];
 					$useCommentApproval = $this->_taskSetting['TaskSetting']['use_comment_approval'];
 					if (! $this->ContentComments->comment('tasks', $taskContentKey,
@@ -155,6 +152,24 @@ class TaskContentsController extends TasksAppController {
 					) {
 						return $this->throwBadRequest();
 					}
+				}
+			}
+
+			// リマインダーメールを設定
+			$conditions = $this->request->params['named'];
+			if (isset($conditions['is_makeReminder']) && $conditions['is_makeReminder'] === '1') {
+				if ($result = $this->TaskContent->setReminderMail($taskContent)) {
+					$url = NetCommonsUrl::actionUrl(array(
+						'controller' => 'task_contents',
+						'action' => 'view',
+						'frame_id' => Current::read('Frame.id'),
+						'block_id' => Current::read('Block.id'),
+						'key' => $result['TaskContent']['key'],
+					));
+					return $this->redirect($url);
+				} else {
+					// セーブに失敗しているのでBadRequestを返す
+					return $this->throwBadRequest();
 				}
 			}
 
@@ -397,5 +412,22 @@ class TaskContentsController extends TasksAppController {
 		}
 
 		return $params;
+	}
+
+/**
+ * Get Task Charge Content
+ *
+ * 絞り込み条件に担当者IDをセットする
+ *
+ * @param array $selectUsers 選択されている担当者配列
+ * @return array 
+ */
+	private function __setSelectUsers($selectUsers) {
+		$setSelectUsers = array();
+		foreach ($selectUsers as $userId) {
+			$setSelectUsers[] = $this->User->getUser($userId);
+		}
+
+		return $setSelectUsers;
 	}
 }

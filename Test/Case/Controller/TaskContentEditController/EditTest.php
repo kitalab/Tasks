@@ -344,39 +344,74 @@ class TaskContentEditControllerEditTest extends WorkflowControllerEditTest {
 		//テストデータ
 		$results = array();
 		array_push($results, Hash::merge($result, array(
-			'validationError' => array(
-				'field' => 'TaskContent.title',
-				'value' => '',
-				'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Title')),
-			)
+				'validationError' => array(
+						'field' => 'TaskContent.title',
+						'value' => '',
+						'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Title')),
+				)
 		)));
 		array_push($results, Hash::merge($result, array(
-			'validationError' => array(
-				'field' => 'TaskContent.priority',
-				'value' => 100,
-				'message' => sprintf(__d('net_commons', 'Invalid request.')),
-			)
+				'validationError' => array(
+						'field' => 'TaskContent.category_id',
+						'value' => 'text',
+						'message' => sprintf(__d('net_commons', 'Invalid request.')),
+				)
 		)));
 		array_push($results, Hash::merge($result, array(
-			'validationError' => array(
-				'field' => 'TaskContent.is_date_set',
-				'value' => 100,
-				'message' => sprintf(__d('net_commons', 'Invalid request.')),
-			)
+				'validationError' => array(
+						'field' => 'TaskContent.category_id',
+						'value' => 'text',
+						'message' => sprintf(__d('net_commons', 'Invalid request.')),
+				)
 		)));
 		array_push($results, Hash::merge($result, array(
-			'validationError' => array(
-				'field' => 'TaskContent.task_start_date',
-				'value' => '2112-09-03 07:10:12',
-				'message' => sprintf(__d('net_commons', 'Invalid request.')),
-			)
+				'validationError' => array(
+						'field' => 'TaskContent.priority',
+						'value' => 100,
+						'message' => sprintf(__d('net_commons', 'Invalid request.')),
+				)
 		)));
 		array_push($results, Hash::merge($result, array(
-			'validationError' => array(
-				'field' => 'TaskCharge.0.user_id',
-				'value' => 200,
-				'message' => sprintf(__d('net_commons', 'Failed on validation errors. Please check the input data.')),
-			)
+				'validationError' => array(
+						'field' => 'TaskContent.priority',
+						'value' => 'text',
+						'message' => sprintf(__d('net_commons', 'Invalid request.')),
+				)
+		)));
+		array_push($results, Hash::merge($result, array(
+				'validationError' => array(
+						'field' => 'TaskContent.is_date_set',
+						'value' => 100,
+						'message' => sprintf(__d('net_commons', 'Invalid request.')),
+				)
+		)));
+		array_push($results, Hash::merge($result, array(
+				'validationError' => array(
+						'field' => 'TaskContent.is_date_set',
+						'value' => 'text',
+						'message' => sprintf(__d('net_commons', 'Invalid request.')),
+				)
+		)));
+		array_push($results, Hash::merge($result, array(
+				'validationError' => array(
+						'field' => 'TaskContent.is_date_set',
+						'value' => '',
+						'message' => sprintf(__d('net_commons', 'Invalid request.')),
+				)
+		)));
+		array_push($results, Hash::merge($result, array(
+				'validationError' => array(
+						'field' => 'TaskContent.task_start_date',
+						'value' => '2112-09-03 07:10:12',
+						'message' => sprintf(__d('net_commons', 'Invalid request.')),
+				)
+		)));
+		array_push($results, Hash::merge($result, array(
+				'validationError' => array(
+						'field' => 'TaskCharge.0.user_id',
+						'value' => 200,
+						'message' => sprintf(__d('net_commons', 'Failed on validation errors. Please check the input data.')),
+				)
 		)));
 
 		return $results;
@@ -389,8 +424,6 @@ class TaskContentEditControllerEditTest extends WorkflowControllerEditTest {
  * @return void
  */
 	private function __assertEditGet($data) {
-		debug($this->view);
-
 		$this->assertInput(
 			'input', 'data[Frame][id]', $data['Frame']['id'], $this->view
 		);
@@ -449,8 +482,6 @@ class TaskContentEditControllerEditTest extends WorkflowControllerEditTest {
 		$this->assertInput('button', 'save_' . WorkflowComponent::STATUS_IN_DRAFT, null, $this->view);
 		$this->assertInput('button', 'save_' . WorkflowComponent::STATUS_PUBLISHED, null, $this->view);
 		$this->assertInput('input', '_method', 'DELETE', $this->view);
-
-		debug($this->view);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);

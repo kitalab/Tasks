@@ -70,8 +70,5 @@ class TasksViewElementsTaskContentsSelectProgressTest extends NetCommonsControll
 		//チェック
 		$pattern = '/' . preg_quote('View/Elements/TaskContents/select_progress', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
-
-		debug($this->view);
 	}
-
 }

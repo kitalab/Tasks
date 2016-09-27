@@ -68,8 +68,6 @@ class TasksViewElementsTaskContentsSelectIsCompletionTest extends NetCommonsCont
 		//チェック
 		$pattern = '/' . preg_quote('View/Elements/TaskContents/select_is_completion', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
-
-		debug($this->view);
 	}
 
 /**
@@ -92,8 +90,5 @@ class TasksViewElementsTaskContentsSelectIsCompletionTest extends NetCommonsCont
 		//チェック
 		$pattern = '/' . preg_quote('View/Elements/TaskContents/select_is_completion', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
-
-		debug($this->view);
 	}
-
 }

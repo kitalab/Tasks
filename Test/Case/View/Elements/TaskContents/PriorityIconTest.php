@@ -89,8 +89,5 @@ class TasksViewElementsTaskContentsPriorityIconTest extends NetCommonsController
 		//チェック
 		$pattern = '/' . preg_quote('View/Elements/TaskContents/priority_icon', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
-
-		debug($this->view);
 	}
-
 }

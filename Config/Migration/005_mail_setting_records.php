@@ -84,6 +84,35 @@ ToDoタイトル:{X-SUBJECT}
 このToDoの内容を確認するには下記のリンクをクリックしてください。
 {X-URL}',
 			),
+
+			//コンテンツ通知 - 定型文
+			// * 英語
+				array(
+					'language_id' => '1',
+					'plugin_key' => self::PLUGIN_KEY,
+					'block_key' => null,
+					'type_key' => 'reminder',
+					'mail_fixed_phrase_subject' => '[{X-SITE_NAME}-{X-PLUGIN_NAME}]{X-SUBJECT}({X-ROOM})', //デフォルト(__d('mails', 'MailSetting.mail_fixed_phrase_subject'))
+					'mail_fixed_phrase_body' => '{X-SUBJECT}', //デフォルト(__d('mails', 'MailSetting.mail_fixed_phrase_body'))
+				),
+			// * 日本語
+				array(
+					'language_id' => '2',
+					'plugin_key' => self::PLUGIN_KEY,
+					'block_key' => null,
+					'type_key' => 'reminder',
+					'mail_fixed_phrase_subject' => '[{X-SITE_NAME}-{X-PLUGIN_NAME}]{X-SUBJECT}({X-ROOM})実施期限終了間近のお知らせ',
+					'mail_fixed_phrase_body' => '{X-SUBJECT}が実施期限終了間近になったのでお知らせします。
+ルーム名:{X-ROOM}
+TODO名:{X-SUBJECT}
+投稿者:{X-USER}
+投稿日時:{X-TO_DATE}
+
+{X-BODY}
+
+このToDoの内容を確認するには下記のリンクをクリックしてください。
+{X-URL}',
+				),
 		),
 	);
 

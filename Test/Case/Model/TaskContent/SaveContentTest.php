@@ -29,6 +29,9 @@ class TaskContentSaveContentTest extends WorkflowSaveTest {
 	public $fixtures = array(
 		'plugin.categories.category',
 		'plugin.categories.category_order',
+		'plugin.mails.mail_setting',
+		'plugin.mails.mail_queue',
+		'plugin.mails.mail_queue_user',
 		'plugin.tasks.task',
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
@@ -59,14 +62,16 @@ class TaskContentSaveContentTest extends WorkflowSaveTest {
 	protected $_methodName = 'saveContent';
 
 /**
- * setUp
+ * setUp method
  *
  * @return void
  */
 	public function setUp() {
 		parent::setUp();
-		$this->TaskContent->Behaviors->unload('ContentComment');
-		$this->TaskContent->Behaviors->unload('Topics');
+		$model = $this->_modelName;
+		$this->$model->Behaviors->unload('ContentComment');
+		$this->$model->Behaviors->unload('Topics');
+		$this->$model->Behaviors->load('MailQueue');
 	}
 
 /**
@@ -79,6 +84,7 @@ class TaskContentSaveContentTest extends WorkflowSaveTest {
  */
 	public function dataProviderSave() {
 		$data['TaskContent'] = (new TaskContentFixture())->records[1];
+		$data['TaskCharge'][] = (new TaskChargeFixture())->records[0];
 		$data['TaskContent']['status'] = '1';
 
 		$results = array();
@@ -159,7 +165,8 @@ class TaskContentSaveContentTest extends WorkflowSaveTest {
  * @return void
  */
 	public function testSaveFalse() {
-		$data['TaskContent'] = (new TaskContentFixture())->records[9];
+		$data['TaskContent'] = (new TaskContentFixture())->records[1];
+		$data['TaskContent']['title'] = null;
 
 		$model = $this->_modelName;
 		$method = $this->_methodName;
@@ -168,5 +175,4 @@ class TaskContentSaveContentTest extends WorkflowSaveTest {
 		$result = $this->$model->$method($data);
 		$this->assertFalse($result);
 	}
-
 }

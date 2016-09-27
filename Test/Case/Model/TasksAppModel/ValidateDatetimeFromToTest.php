@@ -94,7 +94,6 @@ class TasksAppModelValidateDatetimeFromToTest extends NetCommonsModelTestCase {
 			'reply_deadline' => '2016-03-24 00:00'
 		);
 		$params = array(
-			//'from' => '2016-03-23 00:00',
 			'to' => '2016-03-24 00:00'
 		);
 
