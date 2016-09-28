@@ -185,8 +185,12 @@ class TaskContentEditController extends TasksAppController {
 			// set task_end_date
 			$data = $this->__setTaskDate($data);
 
+			// set task_end_date
+			$data = $this->__setTaskDate($data);
 			if (! $data['TaskContent']['is_enable_mail']) {
 				unset($data['TaskContent']['email_send_timing']);
+			} else {
+				$data['is_reminder'] = true;
 			}
 
 			unset($data['TaskContent']['id']); // 常に新規保存
