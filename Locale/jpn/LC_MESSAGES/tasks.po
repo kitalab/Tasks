@@ -63,6 +63,10 @@ msgid "Close of the deadline order"
 msgstr "期限の近い順"
 
 # 一覧画面で使用
+msgid "Title order"
+msgstr "タイトル順"
+
+# 一覧画面で使用
 msgid "Priority order"
 msgstr "重要度の高い順"
 

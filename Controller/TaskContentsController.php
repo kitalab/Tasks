@@ -192,6 +192,7 @@ class TaskContentsController extends TasksAppController {
 		$params = array();
 		$afterOrder = array(
 			'TaskContent.task_end_date' => 'asc',
+			'TaskContent.title' => 'desc',
 			'TaskContent.priority' => 'desc',
 			'TaskContent.modified' => 'desc'
 		);
@@ -329,6 +330,11 @@ class TaskContentsController extends TasksAppController {
 					'label' => __d('tasks', 'Close of the deadline order'),
 					'sort' => 'TaskContent.task_end_date',
 					'direction' => 'asc'
+				),
+				'TaskContent.title.asc' => array(
+						'label' => __d('tasks', 'Title order'),
+						'sort' => 'TaskContent.title',
+						'direction' => 'asc'
 				),
 				'TaskContent.priority.desc' => array(
 					'label' => __d('tasks', 'Priority order'),
