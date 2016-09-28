@@ -203,9 +203,10 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 		$results[3] = array(
 			'data' => $data, 'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
 			'urlOptions' => array(
-				'frame_id' => null,
+				'frame_id' => $data['Frame']['id'],
 				'block_id' => $data['Block']['id']),
 		);
+		$results[3]['data']['TaskContent']['is_date_set'] = false;
 
 		return $results;
 	}
@@ -303,8 +304,8 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 		$result2 = array(
 			'data' => $data2,
 			'urlOptions' => array(
-					'frame_id' => $data2['Frame']['id'],
-					'block_id' => $data2['Block']['id']
+				'frame_id' => $data2['Frame']['id'],
+				'block_id' => $data2['Block']['id']
 			),
 			'validationError' => array(),
 		);

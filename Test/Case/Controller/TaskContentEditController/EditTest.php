@@ -316,6 +316,21 @@ class TaskContentEditControllerEditTest extends WorkflowControllerEditTest {
 		));
 		$results[4]['data']['TaskContent']['is_date_set'] = false;
 
+		// * 編集権限あり
+		// ** リマインダーメール作成
+		$contentKey = 'content_key_1';
+		array_push($results, array(
+			'data' => $data,
+			'role' => Role::ROOM_ROLE_KEY_EDITOR,
+			'urlOptions' => array(
+				'frame_id' => $data['Frame']['id'],
+				'block_id' => $data['Block']['id'],
+				'key' => $contentKey,
+			),
+		));
+		$results[5]['data']['TaskContent']['task_end_date'] = date('Ymd', strtotime('+10 day'));
+		$results[5]['data']['TaskContent']['is_enable_mail'] = true;
+
 		return $results;
 	}
 
@@ -344,74 +359,74 @@ class TaskContentEditControllerEditTest extends WorkflowControllerEditTest {
 		//テストデータ
 		$results = array();
 		array_push($results, Hash::merge($result, array(
-				'validationError' => array(
-						'field' => 'TaskContent.title',
-						'value' => '',
-						'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Title')),
-				)
+			'validationError' => array(
+				'field' => 'TaskContent.title',
+				'value' => '',
+				'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('tasks', 'Title')),
+			)
 		)));
 		array_push($results, Hash::merge($result, array(
-				'validationError' => array(
-						'field' => 'TaskContent.category_id',
-						'value' => 'text',
-						'message' => sprintf(__d('net_commons', 'Invalid request.')),
-				)
+			'validationError' => array(
+				'field' => 'TaskContent.category_id',
+				'value' => 'text',
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
 		)));
 		array_push($results, Hash::merge($result, array(
-				'validationError' => array(
-						'field' => 'TaskContent.category_id',
-						'value' => 'text',
-						'message' => sprintf(__d('net_commons', 'Invalid request.')),
-				)
+			'validationError' => array(
+				'field' => 'TaskContent.category_id',
+				'value' => 'text',
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
 		)));
 		array_push($results, Hash::merge($result, array(
-				'validationError' => array(
-						'field' => 'TaskContent.priority',
-						'value' => 100,
-						'message' => sprintf(__d('net_commons', 'Invalid request.')),
-				)
+			'validationError' => array(
+				'field' => 'TaskContent.priority',
+				'value' => 100,
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
 		)));
 		array_push($results, Hash::merge($result, array(
-				'validationError' => array(
-						'field' => 'TaskContent.priority',
-						'value' => 'text',
-						'message' => sprintf(__d('net_commons', 'Invalid request.')),
-				)
+			'validationError' => array(
+				'field' => 'TaskContent.priority',
+				'value' => 'text',
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
 		)));
 		array_push($results, Hash::merge($result, array(
-				'validationError' => array(
-						'field' => 'TaskContent.is_date_set',
-						'value' => 100,
-						'message' => sprintf(__d('net_commons', 'Invalid request.')),
-				)
+			'validationError' => array(
+				'field' => 'TaskContent.is_date_set',
+				'value' => 100,
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
 		)));
 		array_push($results, Hash::merge($result, array(
-				'validationError' => array(
-						'field' => 'TaskContent.is_date_set',
-						'value' => 'text',
-						'message' => sprintf(__d('net_commons', 'Invalid request.')),
-				)
+			'validationError' => array(
+				'field' => 'TaskContent.is_date_set',
+				'value' => 'text',
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
 		)));
 		array_push($results, Hash::merge($result, array(
-				'validationError' => array(
-						'field' => 'TaskContent.is_date_set',
-						'value' => '',
-						'message' => sprintf(__d('net_commons', 'Invalid request.')),
-				)
+			'validationError' => array(
+				'field' => 'TaskContent.is_date_set',
+				'value' => '',
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
 		)));
 		array_push($results, Hash::merge($result, array(
-				'validationError' => array(
-						'field' => 'TaskContent.task_start_date',
-						'value' => '2112-09-03 07:10:12',
-						'message' => sprintf(__d('net_commons', 'Invalid request.')),
-				)
+			'validationError' => array(
+				'field' => 'TaskContent.task_start_date',
+				'value' => '2112-09-03 07:10:12',
+				'message' => sprintf(__d('net_commons', 'Invalid request.')),
+			)
 		)));
 		array_push($results, Hash::merge($result, array(
-				'validationError' => array(
-						'field' => 'TaskCharge.0.user_id',
-						'value' => 200,
-						'message' => sprintf(__d('net_commons', 'Failed on validation errors. Please check the input data.')),
-				)
+			'validationError' => array(
+				'field' => 'TaskCharge.0.user_id',
+				'value' => 200,
+				'message' => sprintf(__d('net_commons', 'Failed on validation errors. Please check the input data.')),
+			)
 		)));
 
 		return $results;
