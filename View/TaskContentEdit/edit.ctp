@@ -17,8 +17,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 
 <?php
 $checkMailClass = '';
-if (! isset($mailSetting['MailSetting']['is_mail_send'])
-		|| $mailSetting['MailSetting']['is_mail_send'] == TasksComponent::TASK_CONTENT_NOT_IS_MAIL_SEND) {
+if (! isset($mailSetting['MailSetting']['is_mail_send']) || ! $mailSetting['MailSetting']['is_mail_send']) {
 	$checkMailClass = 'hidden';
 }
 ?>
@@ -98,7 +97,6 @@ if (! isset($mailSetting['MailSetting']['is_mail_send'])
 						); ?>
 					</div>
 
-<!--	リマインダーメール設定項目				-->
 					<div class="form-group <?php echo $checkMailClass; ?>" data-calendar-name="checkMail">
 						<?php
 						echo $this->NetCommonsForm->checkbox('TaskContent.is_enable_mail', array(

@@ -192,7 +192,7 @@ class TaskContentsController extends TasksAppController {
 		$params = array();
 		$afterOrder = array(
 			'TaskContent.task_end_date' => 'asc',
-			'TaskContent.title' => 'desc',
+			'TaskContent.title' => 'asc',
 			'TaskContent.priority' => 'desc',
 			'TaskContent.modified' => 'desc'
 		);
@@ -236,21 +236,12 @@ class TaskContentsController extends TasksAppController {
 
 		// order情報を整理
 		$order = array_merge($sort['order'], $afterOrder);
-
 		$params = $this->__setTaskChargeContents($params, $userParam);
 
-		$taskContents = array();
-		$deadLineTasks = array();
-		// カテゴリ分けされていないToDo一覧取得
-		$listArray = $this->TaskContent->getAllList($params, $order);
-		if ($listArray) {
-			$lists = $listArray['results'];
-			$listConditions = $listArray['conditions'];
-			// 期限間近のToDo一覧を取得
-			$deadLineTasks = Hash::extract($lists, '{n}[isDeadLine=' . true . ']');
-			// 表示するデータを整理する
-			$taskContents = $this->TaskContent->getList($lists, $listConditions);
-		}
+		// ToDo一覧を取得
+		$taskContents = $this->TaskContent->getTaskContentList($params, $order);
+		// 期限間近のToDo一覧を取得
+		$deadLineTasks = Hash::extract($taskContents, '{n}.TaskContents.{n}[isDeadLine=' . true . ']');
 
 		// 期限間近のToDo一覧
 		$this->set('deadLineTasks', $deadLineTasks);
@@ -370,9 +361,9 @@ class TaskContentsController extends TasksAppController {
 	private function __getSortParam($conditions = array(), $sortOptions = array()) {
 		$sortPram = '';
 		$afterOrder = array(
-				'TaskContent.is_date_set' => 'desc',
-				'TaskContent.task_end_date is null',
-				'TaskContent.task_end_date' => 'asc'
+			'TaskContent.is_date_set' => 'desc',
+			'TaskContent.task_end_date is null',
+			'TaskContent.task_end_date' => 'asc'
 		);
 		if (isset($conditions['sort']) && isset($conditions['direction'])) {
 			$sortPram = $conditions['sort'] . '.' . $conditions['direction'];

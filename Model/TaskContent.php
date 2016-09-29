@@ -318,61 +318,68 @@ class TaskContent extends TasksAppModel {
 	}
 
 /**
- * ToDoの一覧データを全て返す
+ * ToDoの一覧データを返す
  *
  * @param array $params 絞り込み条件
  * @param array $order 並べ替え条件
  * @return array
  */
-	public function getAllList($params = array(), $order = array()) {
+	public function getTaskContentList($params = array(), $order = array()) {
 		$conditions = $this->getConditions(Current::read('Block.id'), $params);
 
-		$lists = $this->find('all',
-			array('recursive' => 1, 'conditions' => $conditions, 'order' => $order));
+		$taskContents = $this->find('all',
+				array('recursive' => 0, 'conditions' => $conditions, 'order' => $order));
 
-		if (! $lists) {
+		if (! $taskContents) {
 			return array();
 		}
 
-		$results = array();
-		// isDeadLine及びdate_colorを取得
-		foreach ($lists as $list) {
+		// コンテンツID配列を生成
+		$taskContentIdArr = Hash::extract($taskContents, '{n}.TaskContent.id');
+
+		// コンテンツIDがキーの担当者連想配列を生成
+		$taskCharges = $this->TaskCharge->find('all',
+				array('recursive' => 0, 'conditions' => array('task_content_id' => $taskContentIdArr)));
+		$sortedTaskCharges = Hash::combine(
+			$taskCharges, '{n}.TaskCharge.user_id', '{n}.TaskCharge', '{n}.TaskCharge.task_content_id'
+		);
+
+		// isDeadLine及びdate_colorを取得、担当者を設定
+		$addedTaskContents = array();
+		foreach ($taskContents as $taskContent) {
+			if (isset($sortedTaskCharges[$taskContent['TaskContent']['id']])) {
+				$taskContent['TaskCharge'] = $sortedTaskCharges[$taskContent['TaskContent']['id']];
+			}
+
 			// 現在実施中
-			$list['TaskContent']['date_color'] = TasksComponent::TASK_BEING_PERFORMED;
+			$taskContent['TaskContent']['date_color'] = TasksComponent::TASK_BEING_PERFORMED;
 			// ここでdate_colorをセット＆Controllerで期限間近判定用のフラグをセット
-			if (empty($list['TaskContent']['is_completion'])
-					&& ! empty($list['TaskContent']['is_date_set'])
+			if (empty($taskContent['TaskContent']['is_completion'])
+					&& ! empty($taskContent['TaskContent']['is_date_set'])
 			) {
-				$list['TaskContent']['date_color'] = $this->getTaskDateColor(
-						$list['TaskContent']['task_start_date'],
-						$list['TaskContent']['task_end_date']
+				$taskContent['TaskContent']['date_color'] = $this->getTaskDateColor(
+						$taskContent['TaskContent']['task_start_date'],
+						$taskContent['TaskContent']['task_end_date']
 				);
 			}
 
-			$isDeadLine = $this->isDeadLine($list['TaskContent']['date_color']);
-			$results[] = array_merge($list, array('isDeadLine' => $isDeadLine));
+			$isDeadLine = $this->isDeadLine($taskContent['TaskContent']['date_color']);
+			$addedTaskContents[] = array_merge($taskContent, array('isDeadLine' => $isDeadLine));
 		}
 
-		// $listsにdate_colorを取得した$resultsを代入する
-		$listArray = array(
-			'results' => $results,
-			'conditions' => $conditions
+		// カテゴリIDがキーのコンテンツ連想配列を生成
+		$sortedTaskContents = Hash::combine(
+			$addedTaskContents,
+			'{n}.TaskContent.id', '{n}', '{n}.TaskContent.category_id'
 		);
 
-		return $listArray;
-	}
+		// カテゴリ情報を取得
+		$categories = $this->getCategory($addedTaskContents);
 
-/**
- * ToDoの一覧データを必要なデータのみに整理して返す
- *
- * @param array $lists ToDoの取得データ
- * @param array $listConditions ToDo全体データ取得時に使用したconditions
- * @return array
- */
-	public function getList($lists = array(), $listConditions = array()) {
+		// カテゴリ毎の進捗率情報を取得
 		// カテゴリなしは進捗率を表示しないので条件から省く
 		$categoryRateParam = array('Not' => array('TaskContent.category_id' => 0));
-		$listConditions = array_merge($listConditions, $categoryRateParam);
+		$listConditions = array_merge($conditions, $categoryRateParam);
 		// バーチャルフィールドを追加
 		$this->virtualFields['cnt'] = 0;
 		$this->virtualFields['sum'] = 0;
@@ -385,29 +392,27 @@ class TaskContent extends TasksAppModel {
 			'conditions' => $listConditions,
 			'group' => array('TaskContent.category_id'),
 		));
-		$categoryData = Hash::combine($categoryData, '{n}.TaskContent.category_id', '{n}.TaskContent');
+		$categoryRates = Hash::combine($categoryData, '{n}.TaskContent.category_id', '{n}.TaskContent');
 
-		$taskContentList = $this->getTaskContentList($lists, $categoryData);
+		$results = array();
+		foreach ($categories as $category) {
+			$result = array();
+			if (isset($sortedTaskContents[$category['id']])) {
+				$result['TaskContents'] = $sortedTaskContents[$category['id']];
 
-		return $taskContentList;
-	}
+				// ToDoListカテゴリがある場合進捗率の平均値を取得する
+				$categoryPriority = 0;
+				if (isset($categoryRates[$category['id']])) {
+					$categoryPriority = $this->getCategoryPriority($categoryRates[$category['id']]);
+				}
 
-/**
- * カテゴリデータとToDoデータを整理したLISTを返す
- *
- * @param array $lists 担当者絞り込み条件で取得したデータ
- * @param array $categoryData カテゴリ毎の全体のToDo数と進捗率
- *
- * @return array
- */
-	public function getTaskContentList($lists, $categoryData = array()) {
-		// カテゴリ情報を取得
-		$categoryArr = $this->getCategory($lists);
+				$result['Category'] = $category;
+				$result['Category']['category_priority'] = $categoryPriority;
+				$results[] = $result;
+			}
+		}
 
-		// ToDo一覧情報を取得
-		$taskContentList = $this->getCategoryContentList($categoryArr, $lists, $categoryData);
-
-		return $taskContentList;
+		return $results;
 	}
 
 /**
@@ -452,54 +457,6 @@ class TaskContent extends TasksAppModel {
 		$categoryArr = array_merge($notCategory, $categoryArr);
 
 		return $categoryArr;
-	}
-
-/**
- * ToDoと担当者データを紐づけたデータを返す
- *
- * @param array $categoryArr カテゴリデータ
- * @param array $contentLists ToDoリスト
- * @param array $categoryData カテゴリ毎の全体のToDo数と進捗率
- *
- * @return array
- */
-	public function getCategoryContentList($categoryArr, $contentLists, $categoryData = array()) {
-		$taskContentList = array();
-
-		foreach ($categoryArr as $category) {
-			$results = array();
-			$categoryPriority = 0;
-			if (empty($category['id'])) {
-				$category['id'] = 0;
-				$category['name'] = __d('tasks', 'No category');
-			}
-
-			$contents = Hash::extract(
-				$contentLists, '{n}.TaskContent[category_id=' . $category['id'] . ']', '{n}'
-			);
-
-			// ToDoとToDo担当者を一つの配列にまとめる
-			foreach ($contents as $content) {
-				$taskCharge = Hash::extract(
-					$contentLists, '{n}.TaskCharge.{n}[task_content_id=' . $content['id'] . ']'
-				);
-
-				$results['TaskContents'][] = array(
-					'TaskContent' => $content,
-					'TaskCharge' => $taskCharge,
-				);
-			}
-
-			// ToDoListカテゴリがある場合進捗率の平均値を取得する
-			if (isset($categoryData[$category['id']])) {
-				$categoryPriority = $this->getCategoryPriority($categoryData[$category['id']]);
-			}
-
-			$results['Category'] = $category;
-			$results['Category']['category_priority'] = $categoryPriority;
-			$taskContentList[] = $results;
-		}
-		return $taskContentList;
 	}
 
 /**

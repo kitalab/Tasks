@@ -279,19 +279,19 @@ class Task extends TasksAppModel {
  */
 	public function updateCategoryId($categoryId) {
 		$this->loadModels([
-				'TaskContent' => 'Tasks.TaskContent',
+			'TaskContent' => 'Tasks.TaskContent',
 		]);
 
 		$this->begin();
 		try {
 			$data = array(
-					'category_id' => 0,
-					'status' => 1
+				'category_id' => 0,
+				'status' => 1
 			);
 
 			$this->set($data);
 			$conditions = array(
-					'TaskContent.category_id' => $categoryId,
+				'TaskContent.category_id' => $categoryId,
 			);
 			if (! $this->TaskContent->updateAll($data, $conditions)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
