@@ -65,13 +65,23 @@ class TaskContentGetTaskContentListTest extends WorkflowGetTest {
 		$methodName = $this->_methodName;
 
 		//データ生成
-		$lists = array();
+		$params = array();
+		$order = array();
 
 		//テスト実施
-		$result = $this->$model->$methodName($lists);
+		$result = $this->$model->$methodName($params, $order);
 
 		//チェック
 		$this->assertNotNull($result);
-	}
 
+		//データ生成
+		$params = array('TaskContent.title' => 'test');
+		$order = array();
+
+		//テスト実施
+		$result = $this->$model->$methodName($params, $order);
+
+		//チェック
+		$this->assertEmpty($result);
+	}
 }

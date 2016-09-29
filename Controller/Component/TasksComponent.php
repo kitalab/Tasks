@@ -34,13 +34,6 @@ class TasksComponent extends Component {
 	const TASK_CONTENT_STATUS_IN_DRAFT = WorkflowComponent::STATUS_IN_DRAFT;
 
 /**
- * メールを送信しない
- *
- * @var const
- */
-	const TASK_CONTENT_NOT_IS_MAIL_SEND = 0;
-
-/**
  * 未完了のToDo
  *
  * @var const

@@ -34,13 +34,17 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				<?php else: ?>
 					<?php
 					$url = array(
-							'controller' => 'task_progress_rate',
-							'action' => 'edit',
-							'content_key' => h($content['TaskContent']['key']),
-							'TaskContent' => array('progress_rate' => TasksComponent::TASK_COMPLETION_PROGRESS_RATE),
+						'controller' => 'task_progress_rate',
+						'action' => 'edit',
+						'content_key' => h($content['TaskContent']['key']),
+						'TaskContent' => array('progress_rate' => TasksComponent::TASK_COMPLETION_PROGRESS_RATE),
 					);
 					echo $this->NetCommonsForm->create(
-						'TaskProgressRate', array('type' => 'post', 'url' => $url)
+						'TaskProgressRate', array(
+							'type' => 'post',
+							'url' => $url,
+							'id' => 'task_content_id_' . $content['TaskContent']['id']
+						)
 					);
 					$disabled = 'disabled';
 					$charge = '';
@@ -115,18 +119,20 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 	
 				<td class="hidden-xs col-md-sm4 col-md-3 col-lg-3 task-index-content-text-middle">
 					<span class="nc-groups-avatar-list">
-						<?php $count = 0; ?>
-						<?php foreach ($content['TaskCharge'] as $userInCharge): ?>
-							<?php
-							$count++;
-							if ($count <= TasksComponent::LIST_DISPLAY_NUM) {
-								echo $this->DisplayUser->avatar($userInCharge, [], 'user_id');
-							} else {
-								echo '...';
-								break;
+						<?php
+						if (isset($content['TaskCharge'])) {
+							$count = 0;
+							foreach ($content['TaskCharge'] as $userInCharge) {
+								$count++;
+								if ($count <= TasksComponent::LIST_DISPLAY_NUM) {
+									echo $this->DisplayUser->avatar($userInCharge, [], 'user_id');
+								} else {
+									echo '...';
+									break;
+								}
 							}
-							?>
-						<?php endforeach; ?>
+						}
+						?>
 					</span>
 				</td>
 			</tr>
