@@ -57,7 +57,7 @@ class TasksAppController extends AppController {
 	protected function _setupTaskTitle() {
 		$this->loadModel('Blocks.Block');
 		$block = $this->Block->findById(Current::read('Block.id'));
-		$this->_taskTitle = $block['Block']['name'];
+		$this->_taskTitle = $block['BlocksLanguage']['name'];
 	}
 
 /**

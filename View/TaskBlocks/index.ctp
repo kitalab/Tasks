@@ -26,7 +26,7 @@
 				'Frame.block_id'
 			); ?>
 			<?php echo $this->BlockIndex->tableHeader(
-				'Block.name', __d('tasks', 'Task name'),
+				'BlocksLanguage.name', __d('tasks', 'Task name'),
 				array('sort' => true, 'editUrl' => true)
 			); ?>
 			<?php echo $this->BlockIndex->tableHeader(
@@ -55,7 +55,7 @@
 				'Frame.block_id', $task['Block']['id']
 			); ?>
 			<?php echo $this->BlockIndex->tableData(
-				'Block.name', $task['Block']['name'],
+				'BlocksLanguage.name', $task['BlocksLanguage']['name'],
 				array('editUrl' => array('block_id' => $task['Block']['id']))
 			); ?>
 			<?php echo $this->BlockIndex->tableData(
