@@ -118,10 +118,10 @@ class TaskContentsControllerViewTest extends WorkflowControllerViewTest {
 			'urlOptions' => Hash::insert($data6, 'key', 'content_key_999'),
 			'assert' => array('method' => 'assertNull'),
 		);
-		//$results[7] = array(
-		//	'urlOptions' => Hash::insert($data, 'block_id', '1'),
-		//	'assert' => null, 'exception' => 'BadRequestException'
-		//);
+		$results[7] = array(
+			'urlOptions' => Hash::insert($data, 'block_id', '10'),
+			'assert' => null, 'exception' => 'BadRequestException'
+		);
 		// リマインダーメールを作成するとき
 		$data8 = $this->__data();
 		$data8['is_makeReminder'] = true;
