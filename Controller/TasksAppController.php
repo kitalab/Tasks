@@ -32,7 +32,7 @@ class TasksAppController extends AppController {
 
 /**
  * use component
- * 
+ *
  * @var array
  */
 	public $components = array (
@@ -56,7 +56,12 @@ class TasksAppController extends AppController {
  */
 	protected function _setupTaskTitle() {
 		$this->loadModel('Blocks.Block');
-		$block = $this->Block->findById(Current::read('Block.id'));
+		$block = $this->Block->find('first', array(
+			'recursive' => 0,
+			'condtions' => array(
+				'Block.id' => Current::read('Block.id')
+			)
+		));
 		$this->_taskTitle = $block['BlocksLanguage']['name'];
 	}
 
@@ -77,7 +82,8 @@ class TasksAppController extends AppController {
  * @return bool True on success, False on failure
  */
 	protected function _initTask($contains = []) {
-		if (! $task = $this->Task->getTask(Current::read('Block.id'), Current::read('Room.id'))) {
+		$task = $this->Task->getTask();
+		if (! $task) {
 			return $this->throwBadRequest();
 		}
 		$this->_TaskTitle = $task['Task']['name'];

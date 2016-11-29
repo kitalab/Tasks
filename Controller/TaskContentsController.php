@@ -417,7 +417,7 @@ class TaskContentsController extends TasksAppController {
  * 絞り込み条件に担当者IDをセットする
  *
  * @param array $selectUsers 選択されている担当者配列
- * @return array 
+ * @return array
  */
 	private function __setSelectUsers($selectUsers) {
 		$setSelectUsers = array();
