@@ -20,8 +20,8 @@
 
 	<?php
 	$options = array(
-		'0' => __d('Tasks', 'No Date'),
-		'1' => __d('Tasks', 'Set Date'),
+		'0' => __d('tasks', 'No Date'),
+		'1' => __d('tasks', 'Set Date'),
 	);
 	echo $this->NetCommonsForm->radio(
 		'TaskContent.is_date_set', $options, array(
