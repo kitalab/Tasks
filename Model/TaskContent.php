@@ -63,6 +63,10 @@ class TaskContent extends TasksAppModel {
 		'Wysiwyg.Wysiwyg' => array(
 			'fields' => array('content'),
 		),
+		//多言語
+		'M17n.M17n' => array(
+			'keyField' => 'category_id'
+		),
 	);
 
 /**
@@ -119,6 +123,23 @@ class TaskContent extends TasksAppModel {
 	);
 
 /**
+ * Called before each find operation. Return false if you want to halt the find
+ * call, otherwise return the (modified) query data.
+ *
+ * @param array $query Data used to execute this query, i.e. conditions, order, etc.
+ * @return mixed true if the operation should continue, false if it should abort; or, modified
+ *  $query to continue with new $query
+ * @link http://book.cakephp.org/2.0/en/models/callback-methods.html#beforefind
+ */
+	public function beforeFind($query) {
+		if (Hash::get($query, 'recursive') > -1 && ! $this->id) {
+			$belongsTo = $this->Category->bindModelCategoryLang('TaskContent.category_id');
+			$this->bindModel($belongsTo, true);
+		}
+		return true;
+	}
+
+/**
  * バリデートメッセージ多言語化対応のためのラップ
  *
  * @param array $options options
@@ -140,7 +161,7 @@ class TaskContent extends TasksAppModel {
 
 /**
  * コンストラクタ
- * 
+ *
  * @param bool|int|string|array $id Set this ID for this model on startup,
  * can also be an array of options, see above.
  * @param string $table Name of database table to use.

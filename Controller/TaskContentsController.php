@@ -105,11 +105,14 @@ class TaskContentsController extends TasksAppController {
 		$conditions = $this->request->params['named'];
 
 		if (isset($conditions['category_id'])) {
-			$category = $this->Category->findById($conditions['category_id']);
+			$category = $this->Category->find('first', array(
+				'recursive' => 0,
+				'conditions' => array('Category.id' => $conditions['category_id']),
+			));
 			if (! $category) {
 				return $this->throwBadRequest();
 			}
-			$this->set('categoryLabel', $category['Category']['name']);
+			$this->set('categoryLabel', $category['CategoriesLanguage']['name']);
 		}
 
 		$this->__list($conditions);

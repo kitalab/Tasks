@@ -62,6 +62,7 @@ class TasksAppController extends AppController {
 				'Block.id' => Current::read('Block.id')
 			)
 		));
+		var_dump($block);
 		$this->_taskTitle = $block['BlocksLanguage']['name'];
 	}
 

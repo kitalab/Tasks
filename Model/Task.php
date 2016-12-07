@@ -54,6 +54,10 @@ class Task extends TasksAppModel {
 		),
 		'Categories.Category',
 		'NetCommons.OriginalKey',
+		//多言語
+		'M17n.M17n' => array(
+			'keyField' => 'block_id'
+		),
 	);
 
 /**
