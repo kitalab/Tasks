@@ -29,6 +29,7 @@ class TaskContentSaveContentTest extends WorkflowSaveTest {
 	public $fixtures = array(
 		'plugin.categories.category',
 		'plugin.categories.category_order',
+		'plugin.categories.categories_language',
 		'plugin.mails.mail_setting',
 		'plugin.mails.mail_queue',
 		'plugin.mails.mail_queue_user',

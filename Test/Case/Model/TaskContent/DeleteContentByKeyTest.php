@@ -30,6 +30,7 @@ class TaskContentDeleteContentByKeyTest extends NetCommonsModelTestCase {
 	public $fixtures = array(
 		'plugin.categories.category',
 		'plugin.categories.category_order',
+		'plugin.categories.categories_language',
 		'plugin.tasks.task',
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
