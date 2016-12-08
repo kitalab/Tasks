@@ -198,6 +198,10 @@ msgstr ""
 msgid "One week before the task period"
 msgstr ""
 
+#: Tasks/View/TaskContentEdit/edit.ctp:137
+msgid "Use calendar"
+msgstr ""
+
 #: Tasks/View/TaskContents/index.ctp:75
 msgid "Not task"
 msgstr ""

@@ -65,7 +65,23 @@ class TaskContent extends TasksAppModel {
 		),
 		//多言語
 		'M17n.M17n' => array(
-			'keyField' => 'category_id'
+			'allUpdateField' => array(
+				'category_id',
+				'priority',
+				'task_start_date',
+				'task_end_date',
+				'is_enable_mail',
+				'email_send_timing',
+				'use_calendar',
+				'is_completion',
+				'progress_rate'
+			),
+			'associations' => array(
+				'TaskCharge' => array(
+					'class' => 'Tasks.TaskCharge',
+					'foreignKey' => 'task_content_id',
+				),
+			),
 		),
 	);
 
@@ -96,7 +112,10 @@ class TaskContent extends TasksAppModel {
 			'fields' => '',
 			'order' => '',
 			'counterCache' => array(
-				'content_count' => array('TaskContent.is_latest' => 1),
+				'content_count' => array(
+					'TaskContent.is_origin' => true,
+					'TaskContent.is_latest' => true
+				),
 			),
 		),
 	);
@@ -396,6 +415,11 @@ class TaskContent extends TasksAppModel {
 
 		// カテゴリ情報を取得
 		$categories = $this->getCategory($addedTaskContents);
+		$categoryLangArr = Hash::combine(
+			$addedTaskContents,
+			'{n}.CategoriesLanguage.category_id',
+			'{n}.CategoriesLanguage'
+		);
 
 		// カテゴリ毎の進捗率情報を取得
 		// カテゴリなしは進捗率を表示しないので条件から省く
@@ -428,6 +452,9 @@ class TaskContent extends TasksAppModel {
 				}
 
 				$result['Category'] = $category;
+				$result['CategoriesLanguage'] = Hash::get(
+					$categoryLangArr, $category['id'], array('name' => __d('tasks', 'No category'))
+				);
 				$result['Category']['category_priority'] = $categoryPriority;
 				$results[] = $result;
 			}
