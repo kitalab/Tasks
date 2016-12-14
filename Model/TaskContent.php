@@ -65,7 +65,7 @@ class TaskContent extends TasksAppModel {
 		),
 		//多言語
 		'M17n.M17n' => array(
-			'allUpdateField' => array(
+			'commonFields' => array(
 				'category_id',
 				'priority',
 				'task_start_date',
@@ -82,6 +82,7 @@ class TaskContent extends TasksAppModel {
 					'foreignKey' => 'task_content_id',
 				),
 			),
+			'afterCallback' => false,
 		),
 	);
 
@@ -626,13 +627,16 @@ class TaskContent extends TasksAppModel {
 				// 通常保存のメールと重複してしまうため投稿メールのOFF
 				$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_IS_MAIL_SEND_POST, 0);
 				// グループ配信のみ
-				$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_WORKFLOW_TYPE,
-						MailQueueBehavior::MAIL_QUEUE_WORKFLOW_TYPE_GROUP_ONLY);
+				$this->setSetting(
+					MailQueueBehavior::MAIL_QUEUE_SETTING_WORKFLOW_TYPE,
+					MailQueueBehavior::MAIL_QUEUE_WORKFLOW_TYPE_GROUP_ONLY
+				);
 			} else {
 				$this->setSetting(MailQueueBehavior::MAIL_QUEUE_SETTING_USER_IDS, $mailSendUserIdArr);
 			}
 
-			if (($savedData = $this->save($data, false)) === false) {
+			$savedData = $this->save($data, false);
+			if ($savedData === false) {
 				//このsaveで失敗するならvalidate以外なので例外なげる
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
@@ -642,6 +646,10 @@ class TaskContent extends TasksAppModel {
 			if (! $this->TaskCharge->setCharges($data)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
+
+			//多言語化の処理
+			$this->set($savedData);
+			$this->saveM17nData();
 
 			$this->commit();
 
