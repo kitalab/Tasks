@@ -51,7 +51,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 						<?php echo h(__d('tasks', 'Implementation period') . __d('tasks', 'Colon')); ?>
 					</div>
 					<div class="task-view-table-cell">
-						<?php 
+						<?php
 						if (empty($taskContent['TaskContent']['task_start_date']) && empty($taskContent['TaskContent']['is_date_set'])) {
 							echo h(__d('tasks', 'Undefined'));
 						} else {
@@ -75,13 +75,13 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				</div>
 				<div class="task-view-table-cell pull-left task-content-margin-3">
 					<?php echo h(__d('tasks', 'Category') . __d('tasks', 'Colon')); ?>
-					<?php if (h($taskContent['Category']['name'])): ?>
+					<?php if (h($taskContent['CategoriesLanguage']['name'])): ?>
 						<?php
 						$url = array(
 							'controller' => 'task_contents',
 							'action' => 'index');
 						?>
-						<?php echo $this->NetCommonsHtml->link($taskContent['Category']['name'],
+						<?php echo $this->NetCommonsHtml->link($taskContent['CategoriesLanguage']['name'],
 							Hash::merge($url, array('category_id' => $taskContent['Category']['id'])));
 						?>
 					<?php else : ?>

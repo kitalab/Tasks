@@ -54,6 +54,10 @@ class Task extends TasksAppModel {
 		),
 		'Categories.Category',
 		'NetCommons.OriginalKey',
+		//多言語
+		'M17n.M17n' => array(
+			'keyField' => 'block_id'
+		),
 	);
 
 /**
@@ -147,6 +151,8 @@ class Task extends TasksAppModel {
 				),
 				'Block' => array(
 					'room_id' => Current::read('Room.id'),
+				),
+				'BlocksLanguage' => array(
 					'language_id' => Current::read('Language.id'),
 				),
 			)
@@ -166,24 +172,9 @@ class Task extends TasksAppModel {
 		$this->loadModels(['TaskSetting' => 'Tasks.TaskSetting']);
 
 		$task = $this->find('all', array(
-				'recursive' => -1,
-				'fields' => array(
-					$this->alias . '.*',
-					$this->Block->alias . '.*',
-				),
-				'joins' => array(
-					array(
-						'table' => $this->Block->table,
-						'alias' => $this->Block->alias,
-						'type' => 'INNER',
-						'conditions' => array(
-							$this->alias . '.block_id' . ' = ' . $this->Block->alias . ' .id',
-						),
-					),
-				),
-				'conditions' => $this->getBlockConditionById(),
-			)
-		);
+			'recursive' => 0,
+			'conditions' => $this->getBlockConditionById(),
+		));
 		if (! $task) {
 			return $task;
 		}

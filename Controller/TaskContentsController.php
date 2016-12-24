@@ -105,11 +105,14 @@ class TaskContentsController extends TasksAppController {
 		$conditions = $this->request->params['named'];
 
 		if (isset($conditions['category_id'])) {
-			$category = $this->Category->findById($conditions['category_id']);
+			$category = $this->Category->find('first', array(
+				'recursive' => 0,
+				'conditions' => array('Category.id' => $conditions['category_id']),
+			));
 			if (! $category) {
 				return $this->throwBadRequest();
 			}
-			$this->set('categoryLabel', $category['Category']['name']);
+			$this->set('categoryLabel', $category['CategoriesLanguage']['name']);
 		}
 
 		$this->__list($conditions);
@@ -417,7 +420,7 @@ class TaskContentsController extends TasksAppController {
  * 絞り込み条件に担当者IDをセットする
  *
  * @param array $selectUsers 選択されている担当者配列
- * @return array 
+ * @return array
  */
 	private function __setSelectUsers($selectUsers) {
 		$setSelectUsers = array();

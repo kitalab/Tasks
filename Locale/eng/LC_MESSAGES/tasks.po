@@ -104,7 +104,7 @@ msgstr ""
 #: Tasks/Test/Case/View/Helper/TaskContentHelper/DisplayDateTest.php:132
 #: Tasks/View/Helper/TaskContentHelper.php:53
 msgid "Not Date Set"
-msgstr ""
+msgstr "--:--"
 
 #: Tasks/View/Elements/TaskBlockRolePermissions/edit_form.ctp:19
 msgid "Task creatable roles"
@@ -154,7 +154,7 @@ msgstr ""
 #: Tasks/View/Elements/TaskContents/task_content.ctp:117
 #: Tasks/View/TaskContents/index.ctp:112
 msgid "Progress rate percent"
-msgstr ""
+msgstr "%"
 
 #: Tasks/View/TaskContentEdit/edit.ctp:73
 #: Tasks/View/TaskContents/view.ctp:56;73
@@ -198,6 +198,10 @@ msgstr ""
 msgid "One week before the task period"
 msgstr ""
 
+#: Tasks/View/TaskContentEdit/edit.ctp:137
+msgid "Use calendar"
+msgstr ""
+
 #: Tasks/View/TaskContents/index.ctp:75
 msgid "Not task"
 msgstr ""
@@ -208,11 +212,11 @@ msgstr ""
 
 #: Tasks/View/TaskContents/view.ctp:51;66;77
 msgid "Colon"
-msgstr ""
+msgstr ":"
 
 #: Tasks/View/TaskContents/view.ctp:59
 msgid "Till"
-msgstr ""
+msgstr " - "
 
 #: Tasks/View/TaskContents/view.ctp:77
 msgid "Category"
@@ -224,19 +228,19 @@ msgstr ""
 
 #: Tasks/View/TaskContents/view.ctp:93
 msgid "Created_user"
-msgstr ""
+msgstr "Created user: "
 
 #: Tasks/View/TaskContents/view.ctp:106
 msgid "Modified user"
-msgstr ""
+msgstr "Modified user: "
 
 #: Tasks/View/TaskContents/view.ctp:119
 msgid "Progress rate"
-msgstr ""
+msgstr "Progress rate: "
 
 #: Tasks/View/TaskContents/view.ctp:156
 msgid "Person in charge"
-msgstr ""
+msgstr "Person in charge: "
 
 #: Tasks/View/TaskMailSettings/edit.ctp:22
 msgid "MailSetting.mail_fixed_phrase_body.popover"
@@ -245,4 +249,3 @@ msgstr ""
 #: Tasks/View/TaskMailSettings/edit.ctp:28
 msgid "MailSetting.mail_fixed_phrase_body.popover_reminder"
 msgstr ""
-

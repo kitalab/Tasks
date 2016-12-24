@@ -15,28 +15,6 @@
 class TaskFixture extends CakeTestFixture {
 
 /**
- * Fields
- *
- * @var array
- */
-	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary', 'comment' => 'ID'),
-		'block_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
-		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'Todo名', 'charset' => 'utf8'),
-		'key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'Todo Key', 'charset' => 'utf8'),
-		'status' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 4, 'unsigned' => false, 'comment' => '公開状況  1:公開中、2:公開申請中、3:下書き中、4:差し戻し'),
-		'public_type' => array('type' => 'integer', 'null' => false, 'default' => '1', 'length' => 4, 'unsigned' => false, 'comment' => '一般以下のパートが閲覧可能かどうか。（0:非公開, 1:公開, 2:期間限定公開'),
-		'created_user' => array('type' => 'integer', 'null' => true, 'default' => '0', 'unsigned' => false, 'comment' => '作成者'),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '作成日時'),
-		'modified_user' => array('type' => 'integer', 'null' => true, 'default' => '0', 'unsigned' => false, 'comment' => '更新者'),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null, 'comment' => '更新日時'),
-		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-		),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
-	);
-
-/**
  * Records
  *
  * @var array
@@ -46,7 +24,6 @@ class TaskFixture extends CakeTestFixture {
 			'id' => '2',
 			'block_id' => '2',
 			'key' => 'content_block_1',
-			'status' => '1',
 			'name' => 'Lorem ipsum dolor sit amet',
 			'public_type' => '1',
 			'created_user' => '1',
@@ -58,7 +35,6 @@ class TaskFixture extends CakeTestFixture {
 			'id' => '4',
 			'block_id' => '4',
 			'key' => 'content_block_2',
-			'status' => '1',
 			'name' => 'Lorem ipsum dolor sit amet',
 			'public_type' => '1',
 			'created_user' => '1',
@@ -67,5 +43,16 @@ class TaskFixture extends CakeTestFixture {
 			'modified' => '2016-03-17 07:10:12',
 		),
 	);
+
+/**
+ * Initialize the fixture.
+ *
+ * @return void
+ */
+	public function init() {
+		require_once App::pluginPath('Tasks') . 'Config' . DS . 'Schema' . DS . 'schema.php';
+		$this->fields = (new TasksSchema())->tables[Inflector::tableize($this->name)];
+		parent::init();
+	}
 
 }

@@ -124,17 +124,23 @@ if (! isset($mailSetting['MailSetting']['is_mail_send']) || ! $mailSetting['Mail
 						<?php echo $this->NetCommonsForm->error('TaskContent.email_send_timing'); ?>
 					</div>
 
-<!--	カレンダー連携登録チェックボックス				-->
-<!--					--><?php
-//					echo $this->NetCommonsForm->checkbox('TaskContent.use_calendar', array(
-//						'class' => 'text-left pull-left',
-//					));
-//					?>
-<!--					--><?php //echo $this->NetCommonsForm->label(
-//						'TaskContent.use_calendar',
-//						__d('tasks', 'Use calendar')
-//					); ?>
-<!--					--><?php //echo $this->NetCommonsForm->error('TaskContent.use_calendar'); ?>
+					<?php
+					//カレンダー連携登録チェックボックス
+					//echo $this->NetCommonsForm->checkbox('TaskContent.use_calendar', array(
+					//	'class' => 'text-left pull-left',
+					//));
+					?>
+					<?php
+					//カレンダー連携登録チェックボックス
+					//echo $this->NetCommonsForm->label(
+					//	'TaskContent.use_calendar',
+					//	__d('tasks', 'Use calendar')
+					//);
+					?>
+					<?php
+					//カレンダー連携登録チェックボックス
+					//echo $this->NetCommonsForm->error('TaskContent.use_calendar');
+					?>
 				</fieldset>
 
 				<hr/>
