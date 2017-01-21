@@ -48,6 +48,18 @@ class TaskContentHelperDisplayDateTest extends NetCommonsHelperTestCase {
 
 		//Helperロード
 		$this->loadHelper('Tasks.TaskContent', $viewVars, $requestData, $params);
+
+		NetCommonsTime::$siteTimezone = 'UTC';
+	}
+
+/**
+ * tearDown method
+ *
+ * @return void
+ */
+	public function tearDown() {
+		NetCommonsTime::$siteTimezone = null;
+		parent::tearDown();
 	}
 
 /**
