@@ -45,7 +45,7 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				); ?>
 			</div>
 
-			<?php if (!is_null($taskContent['TaskContent']['calendar_key'])) : ?>
+			<?php if ($taskContent['TaskContent']['calendar_key']) : ?>
 				<div class="clearfix text-danger">
 					<?php echo h(__d('tasks', 'Calendar registered')); ?>
 				</div>
