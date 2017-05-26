@@ -718,7 +718,7 @@ class TaskContent extends TasksAppModel {
 						'isDelRepeat' => false,	//tasksはfalse固定
 					));
 					$delCalendarKey = $this->CalendarDeleteActionPlan->deletePlanForLink($data);
-					if ($data['TaskContent']['calendar_key'] == $delCalendarKey) {
+//					if ($data['TaskContent']['calendar_key'] == $delCalendarKey) {
 						//削除が成功したので、calenar_keyをクリアし、use_calendarをＯＦＦにして、
 						//TaskContentにsave(update)しておく。
 						$data['TaskContent']['calendar_key'] = '';
@@ -728,7 +728,7 @@ class TaskContent extends TasksAppModel {
 							throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 						}
 						$data['TaskContent'] = $savedData['TaskContent'];
-					}
+//					}
 					$this->CalendarDeleteActionPlan->Behaviors->unload('Calendars.CalendarLink');
 				} else {
 					//calendar_keyが記録されていないので、なにもしない

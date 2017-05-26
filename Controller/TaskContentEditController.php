@@ -150,7 +150,7 @@ class TaskContentEditController extends TasksAppController {
 		$taskContent = $this->TaskContent->getTask($key);
 
 		$calendarKey = $taskContent['TaskContent']['calendar_key'];	//ADD カレンダ連携キーの取り出し
-		$taskContent['TaskContent']['use_calendar'] = !is_null($calendarKey) ? true : false;
+		$taskContent['TaskContent']['use_calendar'] = ($calendarKey == "") ? 0 : 1;
 		if (! $this->request->data) {
 			$this->request->data = $taskContent;
 		}
