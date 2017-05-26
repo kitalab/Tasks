@@ -83,5 +83,25 @@
 			}
 			?>
 		</div>
+
+        <?php
+		//ADD
+        //カレンダー連携登録チェックボックス
+        echo $this->NetCommonsForm->checkbox('TaskContent.use_calendar', array(
+          'class' => 'text-left pull-left',
+        ));
+        ?>
+        <?php
+        //カレンダー連携登録チェックボックス
+        echo $this->NetCommonsForm->label(
+          'TaskContent.use_calendar',
+          __d('tasks', 'Use calendar')
+        );
+        ?>
+        <?php
+        //カレンダー連携登録チェックボックス
+        echo $this->NetCommonsForm->error('TaskContent.use_calendar');
+		//ADD
+        ?>
 	</div>
 </div>

@@ -242,6 +242,14 @@ msgstr ""
 msgid "Person in charge"
 msgstr ""
 
+#: Tasks/View/TaskContents/view.ctp:50
+msgid "Calendar registered"
+msgstr ""
+
+#: Tasks/View/TaskContents/view.ctp:54
+msgid "Calendar not registered"
+msgstr ""
+
 #: Tasks/View/TaskMailSettings/edit.ctp:22
 msgid "MailSetting.mail_fixed_phrase_body.popover"
 msgstr ""

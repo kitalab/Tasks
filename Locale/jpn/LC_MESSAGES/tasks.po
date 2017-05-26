@@ -294,6 +294,16 @@ msgstr "進捗率："
 msgid "Person in charge"
 msgstr "担当者："
 
+# 詳細画面で使用
+#: Tasks/View/TaskContents/view.ctp:50
+msgid "Calendar registered"
+msgstr "カレンダー登録済み"
+
+# 詳細画面で使用
+#: Tasks/View/TaskContents/view.ctp:54
+msgid "Calendar not registered"
+msgstr "カレンダー未登録"
+
 # 投稿メール基本文で使用
 #: Tasks/View/TaskMailSettings/edit.ctp:22
 msgid "MailSetting.mail_fixed_phrase_body.popover"
