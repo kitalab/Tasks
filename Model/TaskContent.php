@@ -11,6 +11,8 @@
 
 App::uses('TasksAppModel', 'Tasks.Model');
 App::uses('MailQueueBehavior', 'Mails.Model/Behavior');
+App::uses('CalendarActionPlan', 'Calendars.Model');		//ADD
+App::uses('CalendarDeleteActionPlan', 'Calendars.Model');		//ADD
 
 /**
  * Summary for TaskContent Model
@@ -647,6 +649,93 @@ class TaskContent extends TasksAppModel {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 
+			//カレンダー連携ここから ADD
+			$cmd = 'del';
+			if ($data['TaskContent']['is_date_set']) {
+				$cmd =($data['TaskContent']['use_calendar']) ? 'save' : 'del';
+			}
+			if ($cmd==='save') {
+				//実施期間設定あり&&カレンダー登録する
+       			$this->loadModels([
+					'CalendarActionPlan' => 'Calendars.CalendarActionPlan',
+				]);
+
+				//登録・変更用settings指定付きでbehaviorロード
+				$this->CalendarActionPlan->Behaviors->load('Calendars.CalendarLink', array(
+					'linkPlugin' => Current::read('Plugin.key'),
+					'table' => $this->alias,	//fieldsの対象テーブル
+					'inputFields' => array(
+						'title' => 'title',
+						'description' => 'content',
+					),
+					'sysFields' => array(
+						'key' => 'key',	//tasksの場合、task_contentsテーブルのkey
+						'calendar_key' => 'calendar_key',	//tasksの場合、task_contentsテーブルのcalendar_key
+					),
+					'startendFields' => array(
+						'start_datetime' => 'task_start_date',
+						'end_datetime' => 'task_end_date',
+					),
+					'isServerTime' => true,
+					'useStartendComplete' => true,
+					'isLessthanOfEnd' => false,
+					'isRepeat' => false,
+					'isPlanRoomId' => false,
+				));
+
+				$calendarKey = $this->CalendarActionPlan->savePlanForLink($data);
+				if (is_string($calendarKey) && ! empty($calendarKey)) {
+					//カレンダ登録成功
+					//calenar_keyを TaskContentにsave(update)しておく。
+					$data['TaskContent']['calendar_key'] = $calendarKey;
+					$savedData = $this->save($data, false);
+					if ($savedData === false) {
+						throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+					}
+					$data['TaskContent'] = $savedData['TaskContent'];
+				} elseif ($calendarKey === '') {
+					//未承認や一時保存はカレンダー登録条件を満たさないのでスルー（通常）
+				} else { //false
+					//カレンダー登録時にエラー発生（エラー）
+					//例外なげる
+					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+				}
+				$this->CalendarActionPlan->Behaviors->unload('Calendars.CalendarLink');
+			} else {	//cmd===del
+				if (! empty($data['TaskContent']['calendar_key'])) {
+					//calendar_keyが記録されているので、消しにいく。
+					$this->loadModels([
+						'CalendarDeleteActionPlan' => 'Calendars.CalendarDeleteActionPlan',
+					]);
+					//削除用settings指定
+					$this->CalendarDeleteActionPlan->Behaviors->load('Calendars.CalendarLink', array(
+						'linkPlugin' => Current::read('Plugin.key'),
+						'table' => $this->alias,	//fieldsの対象テーブル
+						'sysFields' => array(
+							'key' => 'key',	//tasksの場合、task_contentsテーブルのkey
+							'calendar_key' => 'calendar_key',	//tasksの場合、task_contentsテーブルのcalendar_key
+						),
+						'isDelRepeat' => false,	//tasksはfalse固定
+					));
+					$delCalendarKey = $this->CalendarDeleteActionPlan->deletePlanForLink($data);
+					if ($data['TaskContent']['calendar_key'] == $delCalendarKey) {
+						//削除が成功したので、calenar_keyをクリアし、use_calendarをＯＦＦにして、
+						//TaskContentにsave(update)しておく。
+						$data['TaskContent']['calendar_key'] = '';
+						$data['TaskContent']['use_calendar'] = 0;
+						$savedData = $this->save($data, false);
+						if ($savedData === false) {
+							throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+						}
+						$data['TaskContent'] = $savedData['TaskContent'];
+					}
+					$this->CalendarDeleteActionPlan->Behaviors->unload('Calendars.CalendarLink');
+				} else {
+					//calendar_keyが記録されていないので、なにもしない
+				}
+			}
+			//カレンダー連携ここまで ADD
+
 			//多言語化の処理
 			$this->set($savedData);
 			$this->saveM17nData();
@@ -770,6 +859,33 @@ class TaskContent extends TasksAppModel {
 				) {
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 				}
+
+				//カレンダー連携ここから ADD
+       			$this->loadModels([
+					'CalendarDeleteActionPlan' => 'Calendars.CalendarDeleteActionPlan',
+				]);
+				//削除用settings指定
+				$this->CalendarDeleteActionPlan->Behaviors->load('Calendars.CalendarLink', array(
+					'linkPlugin' => Current::read('Plugin.key'),
+					'table' => $this->alias,	//fieldsの対象テーブル
+					'sysFields' => array(
+						'key' => 'key',	//tasksの場合、task_contentsテーブルのkey
+						'calendar_key' => 'calendar_key',	//tasksの場合、task_contentsテーブルのcalendar_key
+					),
+					'isDelRepeat' => false,	//tasksはfalse固定
+				));
+				$datas = $this->find('all', array(
+					'recursive' => -1,
+					'conditions' => array(
+						'TaskContent.key' => $key,
+					)
+				));
+				foreach ($datas as $data) {
+					$this->CalendarDeleteActionPlan->deletePlanForLink($data);
+				}
+				$this->CalendarDeleteActionPlan->Behaviors->unload('Calendars.CalendarLink');
+				//カレンダー連携ここまで ADD
+
 				if (! $this->deleteAll(array($this->alias . '.key' => $key), false, true)) {
 					throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 				}

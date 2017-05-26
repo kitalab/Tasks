@@ -242,6 +242,14 @@ msgstr "Progress rate: "
 msgid "Person in charge"
 msgstr "Person in charge: "
 
+#: Tasks/View/TaskContents/view.ctp:50
+msgid "Calendar registered"
+msgstr "Calendar registered"
+
+#: Tasks/View/TaskContents/view.ctp:54
+msgid "Calendar not registered"
+msgstr "Calendar not registered"
+
 #: Tasks/View/TaskMailSettings/edit.ctp:22
 msgid "MailSetting.mail_fixed_phrase_body.popover"
 msgstr ""
