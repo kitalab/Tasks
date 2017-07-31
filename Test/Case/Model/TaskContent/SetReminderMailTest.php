@@ -13,6 +13,12 @@ App::uses('WorkflowSaveTest', 'Workflow.TestSuite');
 App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
 App::uses('TaskContentFixture', 'Tasks.Test/Fixture');
 App::uses('TaskChargeFixture', 'Tasks.Test/Fixture');
+App::uses('CalendarFixture', 'Calendars.Test/Fixture');
+App::uses('CalendarFixture', 'Calendars.Test/Fixture');
+App::uses('CalendarEventFixture', 'Calendars.Test/Fixture');
+App::uses('CalendarEventContentFixture', 'Calendars.Test/Fixture');
+App::uses('CalendarFrameSettingFixture', 'Calendars.Test/Fixture');
+App::uses('CalendarFrameSettingSelectRoomFixture', 'Calendars.Test/Fixture');
 
 /**
  * TaskContent::setReminderMail()のテスト
@@ -28,6 +34,15 @@ class TaskContentSetReminderMailTest extends NetCommonsModelTestCase {
  * @var array
  */
 	public $fixtures = array(
+		'plugin.calendars.calendar',
+		'plugin.calendars.calendar_event',
+		'plugin.calendars.calendar_frame_setting',
+		'plugin.calendars.calendar_frame_setting_select_room',
+		'plugin.calendars.calendar_rrule',
+		'plugin.calendars.calendar_event_share_user',
+		'plugin.calendars.calendar_event_content',
+		'plugin.rooms.room_role',
+//		'plugin.calendars.event_content',
 		'plugin.categories.category',
 		'plugin.categories.category_order',
 		'plugin.categories.categories_language',
@@ -38,6 +53,7 @@ class TaskContentSetReminderMailTest extends NetCommonsModelTestCase {
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
 		'plugin.tasks.block_setting_for_task',
+		'plugin.tasks.rooms_language_for_task',
 		'plugin.categories.category',
 		'plugin.workflow.workflow_comment',
 	);

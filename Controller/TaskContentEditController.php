@@ -148,6 +148,9 @@ class TaskContentEditController extends TasksAppController {
 		$this->set('listTitle', $this->_taskTitle);
 		$key = $this->params['key'];
 		$taskContent = $this->TaskContent->getTask($key);
+		if (empty($taskContent)) {
+			return $this->throwBadRequest();
+		}
 
 		$calendarKey = $taskContent['TaskContent']['calendar_key'];	//ADD カレンダ連携キーの取り出し
 		$taskContent['TaskContent']['use_calendar'] = ($calendarKey == "") ? 0 : 1;
@@ -157,10 +160,6 @@ class TaskContentEditController extends TasksAppController {
 
 		// ToDo担当者ユーザー保持
 		$this->request->data = $this->TaskCharge->getSelectUsers($this->request->data, false);
-
-		if (empty($taskContent)) {
-			return $this->throwBadRequest();
-		}
 
 		if ($this->TaskContent->canEditWorkflowContent($taskContent) === false) {
 			return $this->throwBadRequest();

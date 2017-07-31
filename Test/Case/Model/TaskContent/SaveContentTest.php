@@ -27,6 +27,14 @@ class TaskContentSaveContentTest extends WorkflowSaveTest {
  * @var array
  */
 	public $fixtures = array(
+		'plugin.calendars.calendar',
+		'plugin.calendars.calendar_event',
+		'plugin.calendars.calendar_frame_setting',
+		'plugin.calendars.calendar_frame_setting_select_room',
+		'plugin.calendars.calendar_rrule',
+		'plugin.calendars.calendar_event_share_user',
+		'plugin.calendars.calendar_event_content',
+		'plugin.rooms.room_role',
 		'plugin.categories.category',
 		'plugin.categories.category_order',
 		'plugin.categories.categories_language',
@@ -37,6 +45,7 @@ class TaskContentSaveContentTest extends WorkflowSaveTest {
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
 		'plugin.tasks.block_setting_for_task',
+		'plugin.tasks.rooms_language_for_task',
 		'plugin.categories.category',
 		'plugin.workflow.workflow_comment',
 	);
@@ -87,6 +96,9 @@ class TaskContentSaveContentTest extends WorkflowSaveTest {
 		$data['TaskContent'] = (new TaskContentFixture())->records[1];
 		$data['TaskCharge'][] = (new TaskChargeFixture())->records[0];
 		$data['TaskContent']['status'] = '1';
+		
+		$data['TaskContent']['use_calendar'] = false;
+		$data['TaskContent']['calendar_key'] = '';
 
 		$results = array();
 		// * 編集の登録処理

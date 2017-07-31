@@ -25,6 +25,14 @@ class TaskContentsControllerViewTest extends WorkflowControllerViewTest {
  * @var array
  */
 	public $fixtures = array(
+		'plugin.calendars.calendar',
+		'plugin.calendars.calendar_event',
+		'plugin.calendars.calendar_frame_setting',
+		'plugin.calendars.calendar_frame_setting_select_room',
+		'plugin.calendars.calendar_rrule',
+		'plugin.calendars.calendar_event_share_user',
+		'plugin.calendars.calendar_event_content',
+		'plugin.rooms.room_role',
 		'plugin.categories.category',
 		'plugin.categories.category_order',
 		'plugin.categories.categories_language',
@@ -32,6 +40,7 @@ class TaskContentsControllerViewTest extends WorkflowControllerViewTest {
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
 		'plugin.tasks.block_setting_for_task',
+		'plugin.tasks.rooms_language_for_task',
 		'plugin.workflow.workflow_comment',
 		'plugin.content_comments.content_comment',
 	);
