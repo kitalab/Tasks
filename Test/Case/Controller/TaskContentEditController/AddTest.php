@@ -27,6 +27,7 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 	public $fixtures = array(
 		'plugin.categories.category',
 		'plugin.categories.category_order',
+		'plugin.categories.categories_language',
 		'plugin.tasks.task',
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
@@ -67,7 +68,7 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 				'id' => $blockId,
 				'key' => $blockKey,
 				'language_id' => '2',
-				'room_id' => '1',
+				'room_id' => '2',
 				'plugin_key' => $this->plugin,
 			),
 			'TaskContent' => array(
@@ -357,7 +358,7 @@ class TaskContentEditControllerAddTest extends WorkflowControllerAddTest {
 		//チェック
 		$this->__assertAddGet($data);
 		$this->assertInput('button', 'save_' . WorkflowComponent::STATUS_IN_DRAFT, null, $this->view);
-		$this->assertInput('button', 'save_' . WorkflowComponent::STATUS_APPROVED, null, $this->view);
+		$this->assertInput('button', 'save_' . WorkflowComponent::STATUS_APPROVAL_WAITING, null, $this->view);
 
 		TestAuthGeneral::logout($this);
 	}

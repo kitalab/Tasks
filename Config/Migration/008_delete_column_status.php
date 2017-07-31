@@ -38,7 +38,7 @@ class DeleteColumnStatus extends CakeMigration {
 			'create_field' => array(
 				'tasks' => array(
 					'status' => array(
-						'type' => 'integer', 'null' => false, 'default' => null, 'length' => 4, 'unsigned' => false, 'comment' => 'public status, 1: public, 2: public pending, 3: draft during 4: remand | 公開状況  1:公開中、2:公開申請中、3:下書き中、4:差し戻し |  | '
+						'type' => 'integer', 'null' => false, 'default' => null, 'length' => 4, 'unsigned' => false, 'comment' => '公開状況  1:公開中、2:公開申請中、3:下書き中、4:差し戻し'
 					)
 				)
 			)

@@ -29,6 +29,7 @@ class TaskSaveTest extends NetCommonsSaveTest {
 	public $fixtures = array(
 		'plugin.categories.category',
 		'plugin.categories.category_order',
+		'plugin.categories.categories_language',
 		'plugin.tasks.task',
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
@@ -101,7 +102,7 @@ class TaskSaveTest extends NetCommonsSaveTest {
 				'id' => $blockId,
 				'key' => $blockKey,
 				'language_id' => '2',
-				'room_id' => '1',
+				'room_id' => '2',
 				'plugin_key' => $this->plugin,
 				'public_type' => '1',
 			),
@@ -110,7 +111,6 @@ class TaskSaveTest extends NetCommonsSaveTest {
 				'key' => $taskKey,
 				'name' => 'taskName',
 				'block_id' => $blockId,
-				'status' => '0',
 				'public_type' => '1',
 			),
 			'TaskSetting' => array(

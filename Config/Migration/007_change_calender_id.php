@@ -38,7 +38,7 @@ class ChangeCalenderId extends CakeMigration {
 			'create_field' => array(
 				'task_contents' => array(
 					'calendar_key' => array(
-						'type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'Calender key | CONTENTキー | Hash値 | ', 'charset' => 'utf8'
+						'type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'カレンダーKey', 'charset' => 'utf8'
 					)
 				)
 			)

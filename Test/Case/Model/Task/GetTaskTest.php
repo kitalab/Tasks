@@ -27,6 +27,7 @@ class TaskGetTaskTest extends NetCommonsGetTest {
 	public $fixtures = array(
 		'plugin.categories.category',
 		'plugin.categories.category_order',
+		'plugin.categories.categories_language',
 		'plugin.tasks.task',
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
@@ -65,7 +66,7 @@ class TaskGetTaskTest extends NetCommonsGetTest {
  * @return array
  */
 	public function dataProviderGet() {
-		$existData = array('Block.id' => '2', 'Room.id' => '1'); // データあり
+		$existData = array('Block.id' => '2', 'Room.id' => '2'); // データあり
 		$notExistData = array('Block.id' => '0', 'Room.id' => '0'); // データなし
 
 		return array(

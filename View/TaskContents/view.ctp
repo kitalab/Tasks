@@ -45,13 +45,23 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				); ?>
 			</div>
 
+			<?php if ($taskContent['TaskContent']['calendar_key']) : ?>
+				<div class="clearfix text-danger">
+					<?php echo h(__d('tasks', 'Calendar registered')); ?>
+				</div>
+			<?php else : ?>
+				<div class="clearfix">
+					<?php echo h(__d('tasks', 'Calendar not registered')); ?>
+				</div>
+			<?php endif; ?>
+
 			<div class="clearfix task-content-margin-2">
 				<div class="pull-left task-content-margin-3">
 					<div class="task-view-table-cell-3">
 						<?php echo h(__d('tasks', 'Implementation period') . __d('tasks', 'Colon')); ?>
 					</div>
 					<div class="task-view-table-cell">
-						<?php 
+						<?php
 						if (empty($taskContent['TaskContent']['task_start_date']) && empty($taskContent['TaskContent']['is_date_set'])) {
 							echo h(__d('tasks', 'Undefined'));
 						} else {
@@ -75,13 +85,13 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 				</div>
 				<div class="task-view-table-cell pull-left task-content-margin-3">
 					<?php echo h(__d('tasks', 'Category') . __d('tasks', 'Colon')); ?>
-					<?php if (h($taskContent['Category']['name'])): ?>
+					<?php if (h($taskContent['CategoriesLanguage']['name'])): ?>
 						<?php
 						$url = array(
 							'controller' => 'task_contents',
 							'action' => 'index');
 						?>
-						<?php echo $this->NetCommonsHtml->link($taskContent['Category']['name'],
+						<?php echo $this->NetCommonsHtml->link($taskContent['CategoriesLanguage']['name'],
 							Hash::merge($url, array('category_id' => $taskContent['Category']['id'])));
 						?>
 					<?php else : ?>

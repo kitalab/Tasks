@@ -27,6 +27,7 @@ class TaskContentEditControllerBeforeFilterTest extends NetCommonsControllerTest
 	public $fixtures = array(
 		'plugin.categories.category',
 		'plugin.categories.category_order',
+		'plugin.categories.categories_language',
 		'plugin.tasks.task',
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
@@ -83,7 +84,7 @@ class TaskContentEditControllerBeforeFilterTest extends NetCommonsControllerTest
 		//テスト実行
 		$this->_testGetAction(
 			array(
-				'action' => 'edit', 'block_id' => $blockId
+				'action' => 'edit', 'block_id' => $blockId, 'key' => 'content_key_9'
 			),
 			array(
 				'method' => 'assertEmpty'

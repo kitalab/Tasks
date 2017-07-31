@@ -1,315 +1,260 @@
+# LANGUAGE translation of CakePHP Application
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Tasks\n"
-"POT-Creation-Date: 2016-06-30 15:00+0000\n"
-"PO-Revision-Date: 2016-06-30 15:00+0000\n"
+"Project-Id-Version: PROJECT VERSION\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Yuto Kitatsuji <kitatsuji.yuto@withone.co.jp>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.7.5\n"
-"Language: ja\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-# 一覧画面で使用
 #: Tasks/Controller/TaskContentsController.php:103
 #: Tasks/View/TaskContents/index.ctp:52
 msgid "No category assignment"
-msgstr "カテゴリ指定なし"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/Controller/TaskContentsController.php:283
 msgid "No person in charge"
-msgstr "担当者指定なし"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/Controller/TaskContentsController.php:303
 msgid "Incomplete task"
-msgstr "未完了のToDo"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/Controller/TaskContentsController.php:307
 msgid "Completed task"
-msgstr "完了したToDo"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/Controller/TaskContentsController.php:311
 msgid "All task"
-msgstr "全てのToDo"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/Controller/TaskContentsController.php:321
 msgid "Close of the deadline order"
-msgstr "期限の近い順"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/Controller/TaskContentsController.php:326
 msgid "Title order"
-msgstr "タイトル順"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/Controller/TaskContentsController.php:331
 msgid "Priority order"
-msgstr "重要度の高い順"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/Controller/TaskContentsController.php:336
 msgid "High progress rate order"
-msgstr "進捗率の高い順"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/Controller/TaskContentsController.php:341
 msgid "Low progress rate order"
-msgstr "進捗率の低い順"
+msgstr ""
 
-# 詳細画面で使用
 #: Tasks/Controller/TaskProgressRateController.php:61
 msgid "Updated progress rate"
-msgstr "進捗率を更新しました。"
+msgstr ""
 
-# ToDo一覧表示設定画面で使用
 #: Tasks/Model/Task.php:98
 #: Tasks/Test/Case/Controller/TaskBlocksController/EditTest.php:153;182
 #: Tasks/Test/Case/Model/Task/ValidateTest.php:78
 #: Tasks/View/TaskBlocks/index.ctp:29
 msgid "Task name"
-msgstr "ToDoリスト名"
+msgstr ""
 
-# ToDo一覧表示設定画面で使用
 #: Tasks/Model/Task.php:146
 #: Tasks/Test/Case/Model/Task/CreateTaskTest.php:71
 msgid "New task list %s"
-msgstr "新しいToDoリスト %s"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/Model/TaskContent.php:181
 #: Tasks/Test/Case/Controller/TaskContentEditController/AddTest.php:241
 #: Tasks/Test/Case/Controller/TaskContentEditController/EditTest.php:365
 #: Tasks/View/TaskContentEdit/edit.ctp:65
 msgid "Title"
-msgstr "件名"
+msgstr ""
 
-# バリデーション文言
 #: Tasks/Model/TaskContent.php:224
 msgid "Please set the start date or end date."
-msgstr "実施期間を設定する場合は、開始日または終了日を設定してください。"
+msgstr ""
 
-# バリデーション文言
 #: Tasks/Model/TaskContent.php:245
 #: Tasks/Test/Case/Controller/TaskContentEditController/AddTest.php:316
 msgid "Please set the end date."
-msgstr "実施期間終了日を通知をする日付が現在の日付を下回らないように設定を設定してください。"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/Model/TaskContent.php:449
 #: Tasks/Test/Case/Model/TaskContent/GetCategoryTest.php:135
 #: Tasks/View/TaskContents/index.ctp:105
 msgid "No category"
-msgstr "カテゴリなし"
+msgstr ""
 
-# リマインダーメール本文で使用
 #: Tasks/Model/TaskContent.php:572
 msgid "Now %s days in advance of the period end date."
-msgstr "実施期間終了日の%s日前になりました。"
+msgstr ""
 
 #: Tasks/Test/Case/Controller/TaskContentsController/IndexTest.php:165;198;257
 #: Tasks/View/TaskContents/index.ctp:29
 msgid "ToDo Add"
 msgstr ""
 
-# 共通で使用
 #: Tasks/Test/Case/View/Helper/TaskContentHelper/DisplayDateTest.php:132
 #: Tasks/View/Helper/TaskContentHelper.php:53
 msgid "Not Date Set"
-msgstr "--:--"
+msgstr ""
 
-# 権限設定画面で使用
 #: Tasks/View/Elements/TaskBlockRolePermissions/edit_form.ctp:19
 msgid "Task creatable roles"
-msgstr "ToDoを作成編集できる権限"
+msgstr ""
 
-# 権限設定画面で使用
 #: Tasks/View/Elements/TaskBlockRolePermissions/edit_form.ctp:36
 msgid "Task creatable"
-msgstr "ToDoの作成編集"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/Elements/TaskBlocks/delete_form.ctp:14;34
 msgid "Task"
-msgstr "ToDo"
+msgstr ""
 
-# ブロック設定画面で使用
 #: Tasks/View/Elements/TaskBlocks/edit_form.ctp:23
 msgid "Task list"
-msgstr "ToDoリスト名"
+msgstr ""
 
-# 権限設定画面で使用
 #: Tasks/View/Elements/TaskBlocks/edit_form.ctp:31
 msgid "Use comment"
-msgstr "コメントを使用する"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/Elements/TaskContentEdit/charge_edit_form.ctp:14
 msgid "Charge of person in task"
-msgstr "ToDo担当者"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/Elements/TaskContentEdit/charge_edit_form.ctp:20
 msgid "Person in charge of user selection"
-msgstr "担当者"
+msgstr ""
 
 #: Tasks/View/Elements/TaskContentEdit/delete_form.ctp:26
 msgid "ToDo"
 msgstr ""
 
-# 共通で使用
 #: Tasks/View/Elements/TaskContentEdit/task_period_edit_form.ctp:17
 #: Tasks/View/TaskContents/view.ctp:51
 msgid "Implementation period"
-msgstr "実施期間"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/Elements/TaskContentEdit/task_period_edit_form.ctp:23
 msgid "No Date"
-msgstr "設定しない"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/Elements/TaskContentEdit/task_period_edit_form.ctp:24
 msgid "Set Date"
-msgstr "設定する"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/View/Elements/TaskContents/task_content.ctp:117
 #: Tasks/View/TaskContents/index.ctp:112
 msgid "Progress rate percent"
-msgstr "%"
+msgstr ""
 
-# 共通で使用
 #: Tasks/View/TaskContentEdit/edit.ctp:73
 #: Tasks/View/TaskContents/view.ctp:56;73
 msgid "Undefined"
-msgstr "未設定"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/TaskContentEdit/edit.ctp:74
 msgid "Low"
-msgstr "低"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/TaskContentEdit/edit.ctp:75
 msgid "Medium"
-msgstr "中"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/TaskContentEdit/edit.ctp:76
 msgid "High"
-msgstr "高"
+msgstr ""
 
-# 共通で使用
 #: Tasks/View/TaskContentEdit/edit.ctp:81
 #: Tasks/View/TaskContents/view.ctp:66
 msgid "Priority"
-msgstr "重要度"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/TaskContentEdit/edit.ctp:94
 msgid "Content"
-msgstr "内容"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/TaskContentEdit/edit.ctp:109
 msgid "Inform in advance by mail"
-msgstr "実施期間終了日前にメール通知する"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/TaskContentEdit/edit.ctp:114
 msgid "One day before the task period"
-msgstr "実施期間終了日の1日前"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/TaskContentEdit/edit.ctp:115
 msgid "Two days before the task period"
-msgstr "実施期間終了日の2日前"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/TaskContentEdit/edit.ctp:116
 msgid "One week before the task period"
-msgstr "実施期間終了日の1週間前"
+msgstr ""
 
-# 登録（編集）画面で使用
 #: Tasks/View/TaskContentEdit/edit.ctp:137
 msgid "Use calendar"
-msgstr "カレンダーに登録する"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/View/TaskContents/index.ctp:75
 msgid "Not task"
-msgstr "ToDoがありません。"
+msgstr ""
 
-# 一覧画面で使用
 #: Tasks/View/TaskContents/index.ctp:88
 msgid "Deadline close Expiration"
-msgstr "期限間近・期限切れ"
+msgstr ""
 
-# 詳細画面で使用
 #: Tasks/View/TaskContents/view.ctp:51;66;77
 msgid "Colon"
-msgstr "："
+msgstr ""
 
-# 詳細画面で使用
 #: Tasks/View/TaskContents/view.ctp:59
 msgid "Till"
-msgstr "～"
+msgstr ""
 
-# 共通で使用
 #: Tasks/View/TaskContents/view.ctp:77
 msgid "Category"
-msgstr "カテゴリ"
+msgstr ""
 
-# 共通で使用
 #: Tasks/View/TaskContents/view.ctp:88;159
 msgid "Not selected"
-msgstr "未選択"
+msgstr ""
 
-# 詳細画面で使用
 #: Tasks/View/TaskContents/view.ctp:93
 msgid "Created_user"
-msgstr "作成者："
+msgstr ""
 
-# 詳細画面で使用
 #: Tasks/View/TaskContents/view.ctp:106
 msgid "Modified user"
-msgstr "更新者："
+msgstr ""
 
-# 詳細画面で使用
 #: Tasks/View/TaskContents/view.ctp:119
 msgid "Progress rate"
-msgstr "進捗率："
+msgstr ""
 
-# 詳細画面で使用
 #: Tasks/View/TaskContents/view.ctp:156
 msgid "Person in charge"
-msgstr "担当者："
+msgstr ""
 
-# 詳細画面で使用
 #: Tasks/View/TaskContents/view.ctp:50
 msgid "Calendar registered"
-msgstr "カレンダー登録済み"
+msgstr ""
 
-# 詳細画面で使用
 #: Tasks/View/TaskContents/view.ctp:54
 msgid "Calendar not registered"
-msgstr "カレンダー未登録"
+msgstr ""
 
-# 投稿メール基本文で使用
 #: Tasks/View/TaskMailSettings/edit.ctp:22
 msgid "MailSetting.mail_fixed_phrase_body.popover"
-msgstr "{X-PLUGIN_NAME}に投稿されたのでお知らせします。<br />ルーム名:{X-ROOM}<br />ToDoタイトル:{X-SUBJECT}<br />投稿者:{X-USER}<br />投稿日時:{X-TO_DATE}<br /><br />{X-BODY}<br /><br />このToDoの内容を確認するには下記のリンクをクリックしてください。<br />{X-URL}"
+msgstr ""
 
-# リマインダーメール基本文で使用
 #: Tasks/View/TaskMailSettings/edit.ctp:28
 msgid "MailSetting.mail_fixed_phrase_body.popover_reminder"
-msgstr "{X-SUBJECT}が実施期限終了間近になったのでお知らせします。<br />ルーム名:{X-ROOM}<br />ToDoタイトル:{X-SUBJECT}<br />投稿日時:{X-TO_DATE}<br /><br />{X-BODY}<br /><br />このToDoの内容を確認するには下記のリンクをクリックしてください。<br />{X-URL}"
+msgstr ""
+

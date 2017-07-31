@@ -27,6 +27,7 @@ class TaskBlocksControllerEditTest extends BlocksControllerEditTest {
 	public $fixtures = array(
 		'plugin.categories.category',
 		'plugin.categories.category_order',
+		'plugin.categories.categories_language',
 		'plugin.tasks.task',
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
@@ -83,14 +84,15 @@ class TaskBlocksControllerEditTest extends BlocksControllerEditTest {
 			'Block' => array(
 				'id' => $blockId,
 				'key' => $blockKey,
-				'language_id' => '2',
-				'room_id' => '1',
+				'room_id' => '2',
 				'plugin_key' => $this->plugin,
 				'public_type' => '1',
 				'from' => null,
 				'to' => null,
 			),
-
+			'BlocksLanguage' => array(
+				'language_id' => '2',
+			),
 			'Task' => array(
 				'id' => $taskId,
 				'key' => $taskKey,

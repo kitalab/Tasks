@@ -20,8 +20,8 @@
 
 	<?php
 	$options = array(
-		'0' => __d('Tasks', 'No Date'),
-		'1' => __d('Tasks', 'Set Date'),
+		'0' => __d('tasks', 'No Date'),
+		'1' => __d('tasks', 'Set Date'),
 	);
 	echo $this->NetCommonsForm->radio(
 		'TaskContent.is_date_set', $options, array(
@@ -83,5 +83,25 @@
 			}
 			?>
 		</div>
+
+        <?php
+		//ADD
+        //カレンダー連携登録チェックボックス
+        echo $this->NetCommonsForm->checkbox('TaskContent.use_calendar', array(
+          'class' => 'text-left pull-left',
+        ));
+        ?>
+        <?php
+        //カレンダー連携登録チェックボックス
+        echo $this->NetCommonsForm->label(
+          'TaskContent.use_calendar',
+          __d('tasks', 'Use calendar')
+        );
+        ?>
+        <?php
+        //カレンダー連携登録チェックボックス
+        echo $this->NetCommonsForm->error('TaskContent.use_calendar');
+		//ADD
+        ?>
 	</div>
 </div>

@@ -99,10 +99,10 @@ echo $this->NetCommonsHtml->css('/tasks/css/tasks.css');
 
 				<div class="clearfix task-content">
 					<div class="pull-left task-category-name-margin task-word-break">
-						<?php echo h($taskContent['Category']['name']); ?>
+						<?php echo h($taskContent['CategoriesLanguage']['name']); ?>
 					</div>
 
-					<?php if ($taskContent['Category']['name'] !== __d('tasks', 'No category')): ?>
+					<?php if ($taskContent['CategoriesLanguage']['name'] !== __d('tasks', 'No category')): ?>
 						<div class="pull-right">
 							<div class="clearfix">
 								<div class="pull-left progress-min-scale-xs">
