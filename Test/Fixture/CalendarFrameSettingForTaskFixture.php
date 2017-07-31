@@ -9,11 +9,33 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('CalendarFrameSettingFixture', 'Calendars.Test/Fixture');
+
 /**
  * Summary for CalendarFrameSettingFixture
  */
-class CalendarFrameSettingFixture extends CakeTestFixture {
+class CalendarFrameSettingForTaskFixture extends CalendarFrameSettingFixture {
+	/**
+	 * Plugin key
+	 *
+	 * @var string
+	 */
+	public $pluginKey = 'calendars';
 
+	/**
+	 * Model name
+	 *
+	 * @var string
+	 */
+	public $name = 'CalendarFrameSettings';
+
+	/**
+	 * Full Table Name
+	 *
+	 * @var string
+	 */
+	public $table = 'calendar_frame_settings';
+	
 /**
  * Records
  *

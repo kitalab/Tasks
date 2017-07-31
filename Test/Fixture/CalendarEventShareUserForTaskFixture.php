@@ -9,11 +9,34 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('CalendarEventShareUserFixture', 'Calendars.Test/Fixture');
+
 /**
  * Summary for CalendarEventShareUserFixture
  */
-class CalendarEventShareUserFixture extends CakeTestFixture {
+class CalendarEventShareUserForTaskFixture extends CalendarEventShareUserFixture {
 
+	/**
+	 * Plugin key
+	 *
+	 * @var string
+	 */
+	public $pluginKey = 'calendars';
+
+	/**
+	 * Model name
+	 *
+	 * @var string
+	 */
+	public $name = 'CalendarEventShareUsers';
+
+	/**
+	 * Full Table Name
+	 *
+	 * @var string
+	 */
+	public $table = 'calendar_event_share_users';
+	
 /**
  * Records
  *
@@ -39,16 +62,4 @@ class CalendarEventShareUserFixture extends CakeTestFixture {
 			'modified' => '2016-03-24 07:09:58'
 		),
 	);
-
-/**
- * Initialize the fixture.
- *
- * @return void
- */
-	public function init() {
-		require_once App::pluginPath('Calendars') . 'Config' . DS . 'Schema' . DS . 'schema.php';
-		$this->fields = (new CalendarsSchema())->tables[Inflector::tableize($this->name)];
-		parent::init();
-	}
-
 }

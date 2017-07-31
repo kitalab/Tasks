@@ -25,13 +25,13 @@ class TaskContentEditControllerEditTest extends WorkflowControllerEditTest {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.calendars.calendar',
-		'plugin.calendars.calendar_event',
-		'plugin.calendars.calendar_frame_setting',
-		'plugin.calendars.calendar_frame_setting_select_room',
-		'plugin.calendars.calendar_rrule',
-		'plugin.calendars.calendar_event_share_user',
-		'plugin.calendars.calendar_event_content',
+		'plugin.tasks.calendar_for_task',
+		'plugin.tasks.calendar_event_for_task',
+		'plugin.tasks.calendar_frame_setting_for_task',
+		'plugin.tasks.calendar_frame_setting_select_room_for_task',
+		'plugin.tasks.calendar_rrule_for_task',
+		'plugin.tasks.calendar_event_share_user_for_task',
+		'plugin.tasks.calendar_event_content_for_task',
 		'plugin.rooms.room_role',
 		'plugin.categories.category',
 		'plugin.categories.category_order',

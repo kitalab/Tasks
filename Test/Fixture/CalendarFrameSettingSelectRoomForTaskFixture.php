@@ -9,11 +9,34 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('CalendarFrameSettingSelectRoomFixture', 'Calendars.Test/Fixture');
+
 /**
  * Summary for CalendarFrameSettingSelectRoomFixture
  */
-class CalendarFrameSettingSelectRoomFixture extends CakeTestFixture {
+class CalendarFrameSettingSelectRoomForTaskFixture extends CalendarFrameSettingSelectRoomFixture {
 
+	/**
+	 * Plugin key
+	 *
+	 * @var string
+	 */
+	public $pluginKey = 'calendars';
+
+	/**
+	 * Model name
+	 *
+	 * @var string
+	 */
+	public $name = 'CalendarFrameSettingSelectRooms';
+
+	/**
+	 * Full Table Name
+	 *
+	 * @var string
+	 */
+	public $table = 'calendar_frame_setting_select_rooms';
+	
 /**
  * Records
  *

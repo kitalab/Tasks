@@ -9,11 +9,33 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('CalendarEventContentFixture', 'Calendars.Test/Fixture');
+
 /**
  * Summary for CalendarEventContentFixture
  */
-class CalendarEventContentFixture extends CakeTestFixture {
+class CalendarEventContentForTaskFixture extends CalendarEventContentFixture {
+	/**
+	 * Plugin key
+	 *
+	 * @var string
+	 */
+	public $pluginKey = 'calendars';
 
+	/**
+	 * Model name
+	 *
+	 * @var string
+	 */
+	public $name = 'CalendarEventContents';
+
+	/**
+	 * Full Table Name
+	 *
+	 * @var string
+	 */
+	public $table = 'calendar_event_contents';
+	
 /**
  * Records
  *
@@ -31,16 +53,5 @@ class CalendarEventContentFixture extends CakeTestFixture {
 			'modified' => '2016-03-24 07:09:51'
 		),
 	);
-
-/**
- * Initialize the fixture.
- *
- * @return void
- */
-	public function init() {
-		require_once App::pluginPath('Calendars') . 'Config' . DS . 'Schema' . DS . 'schema.php';
-		$this->fields = (new CalendarsSchema())->tables[Inflector::tableize($this->name)];
-		parent::init();
-	}
 
 }

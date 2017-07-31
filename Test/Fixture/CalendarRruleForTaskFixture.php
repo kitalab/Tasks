@@ -9,11 +9,34 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('CalendarRruleFixture', 'Calendars.Test/Fixture');
+
 /**
  * Summary for CalendarRruleFixture
  */
-class CalendarRruleFixture extends CakeTestFixture {
+class CalendarRruleForTaskFixture extends CalendarRruleFixture {
 
+	/**
+	 * Plugin key
+	 *
+	 * @var string
+	 */
+	public $pluginKey = 'calendars';
+
+	/**
+	 * Model name
+	 *
+	 * @var string
+	 */
+	public $name = 'CalendarRrules';
+
+	/**
+	 * Full Table Name
+	 *
+	 * @var string
+	 */
+	public $table = 'calendar_rrules';
+	
 /**
  * Records
  *
