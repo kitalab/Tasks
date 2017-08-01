@@ -42,7 +42,6 @@ class TaskContentSetReminderMailTest extends NetCommonsModelTestCase {
 		'plugin.tasks.calendar_event_share_user_for_task',
 		'plugin.tasks.calendar_event_content_for_task',
 		'plugin.rooms.room_role',
-//		'plugin.tasks.event_content',
 		'plugin.categories.category',
 		'plugin.categories.category_order',
 		'plugin.categories.categories_language',

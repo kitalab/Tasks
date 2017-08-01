@@ -96,7 +96,7 @@ class TaskContentSaveContentTest extends WorkflowSaveTest {
 		$data['TaskContent'] = (new TaskContentFixture())->records[1];
 		$data['TaskCharge'][] = (new TaskChargeFixture())->records[0];
 		$data['TaskContent']['status'] = '1';
-		
+
 		$data['TaskContent']['use_calendar'] = false;
 		$data['TaskContent']['calendar_key'] = '';
 
