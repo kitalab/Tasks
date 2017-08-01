@@ -1,9 +1,9 @@
 <?php
 /**
- * CalendarRruleFixture
+ * CalendarRruleForTaskFixture
  */
 
-App::uses('CalendarRruleForTaskFixture', 'Calendars.Test/Fixture');
+App::uses('CalendarRruleFixture', 'Calendars.Test/Fixture');
 
 /**
  * Summary for CalendarRruleFixture
