@@ -36,6 +36,8 @@ class TaskContentDeleteContentByKeyTest extends NetCommonsModelTestCase {
 		'plugin.tasks.calendar_event_share_user_for_task',
 		'plugin.tasks.calendar_event_content_for_task',
 		'plugin.rooms.room_role',
+		'plugin.rooms.room4test',
+		'plugin.rooms.rooms_language4test',
 		'plugin.categories.category',
 		'plugin.categories.category_order',
 		'plugin.categories.categories_language',
@@ -43,7 +45,6 @@ class TaskContentDeleteContentByKeyTest extends NetCommonsModelTestCase {
 		'plugin.tasks.task_charge',
 		'plugin.tasks.task_content',
 		'plugin.tasks.block_setting_for_task',
-		'plugin.tasks.rooms_language_for_task',
 		'plugin.workflow.workflow_comment',
 		'plugin.content_comments.content_comment',
 	);

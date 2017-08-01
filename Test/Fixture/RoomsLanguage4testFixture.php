@@ -1,50 +1,34 @@
 <?php
 /**
  * RoomsLanguage4testFixture
- *
- * @author Noriko Arai <arai@nii.ac.jp>
- * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @link http://www.netcommons.org NetCommons Project
- * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2014, NetCommons Project
  */
 
 App::uses('RoomsLanguageFixture', 'Rooms.Test/Fixture');
 
 /**
  * RoomsLanguage4testFixture
- *
- * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package NetCommons\Rooms\Test\Fixture
  */
-class RoomsLanguageForTaskFixture extends RoomsLanguageFixture {
+class RoomsLanguage4testFixture extends RoomsLanguageFixture {
 
-/**
- * Plugin key
- *
- * @var string
- */
-	public $pluginKey = 'tasks';
-
-/**
- * Model name
- *
- * @var string
- */
+	/**
+	 * Model name
+	 *
+	 * @var string
+	 */
 	public $name = 'RoomsLanguage';
 
-/**
- * Full Table Name
- *
- * @var string
- */
+	/**
+	 * Full Table Name
+	 *
+	 * @var string
+	 */
 	public $table = 'rooms_languages';
 
-/**
- * Records
- *
- * @var array
- */
+	/**
+	 * Records
+	 *
+	 * @var array
+	 */
 	public $records = array(
 		//パブリックスペース
 		//--日本語

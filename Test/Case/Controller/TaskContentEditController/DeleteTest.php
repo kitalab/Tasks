@@ -25,6 +25,16 @@ class TaskContentEditControllerDeleteTest extends WorkflowControllerDeleteTest {
  * @var array
  */
 	public $fixtures = array(
+		'plugin.tasks.calendar_for_task',
+		'plugin.tasks.calendar_event_for_task',
+		'plugin.tasks.calendar_frame_setting_for_task',
+		'plugin.tasks.calendar_frame_setting_select_room_for_task',
+		'plugin.tasks.calendar_rrule_for_task',
+		'plugin.tasks.calendar_event_share_user_for_task',
+		'plugin.tasks.calendar_event_content_for_task',
+		'plugin.rooms.room_role',
+		'plugin.rooms.room4test',
+		'plugin.rooms.rooms_language4test',
 		'plugin.categories.category',
 		'plugin.categories.category_order',
 		'plugin.categories.categories_language',
