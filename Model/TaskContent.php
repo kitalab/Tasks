@@ -368,6 +368,7 @@ class TaskContent extends TasksAppModel {
  * @return array
  */
 	public function getTaskContentList($params = array(), $order = array()) {
+		$results = array();
 		$conditions = $this->getConditions(Current::read('Block.id'), $params);
 		$taskContents = $this->find('all',
 				array('recursive' => 0, 'conditions' => $conditions, 'order' => $order));
@@ -403,6 +404,8 @@ class TaskContent extends TasksAppModel {
 			$isDeadLine = $this->isDeadLine($taskContent['TaskContent']['date_color']);
 			$addedTaskContents[] = array_merge($taskContent, array('isDeadLine' => $isDeadLine));
 		}
+		// 期限間近・期限切れの一覧を取得
+		$deadLineTasks = Hash::extract($addedTaskContents, '{n}[isDeadLine=' . true . ']');
 
 		// カテゴリIDがキーのコンテンツ連想配列を生成
 		$sortedTaskContents = Hash::combine(
@@ -434,7 +437,7 @@ class TaskContent extends TasksAppModel {
 		));
 		$categoryRates = Hash::combine($categoryData, '{n}.TaskContent.category_id', '{n}.TaskContent');
 
-		$results = array();
+		$resultArr = array();
 		foreach ($categories as $category) {
 			$result = array();
 			if (isset($sortedTaskContents[$category['id']])) {
@@ -451,9 +454,11 @@ class TaskContent extends TasksAppModel {
 					$categoryLangArr, $category['id'], array('name' => __d('tasks', 'No category'))
 				);
 				$result['Category']['category_priority'] = $categoryPriority;
-				$results[] = $result;
+				$resultArr[] = $result;
 			}
 		}
+		$results['deadLineTasks'] = $deadLineTasks;
+		$results['tasks'] = $resultArr;
 		return $results;
 	}
 
