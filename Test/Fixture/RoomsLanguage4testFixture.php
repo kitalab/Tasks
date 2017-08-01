@@ -10,25 +10,25 @@ App::uses('RoomsLanguageFixture', 'Rooms.Test/Fixture');
  */
 class RoomsLanguage4testFixture extends RoomsLanguageFixture {
 
-	/**
-	 * Model name
-	 *
-	 * @var string
-	 */
+/**
+ * Model name
+ *
+ * @var string
+ */
 	public $name = 'RoomsLanguage';
 
-	/**
-	 * Full Table Name
-	 *
-	 * @var string
-	 */
+/**
+ * Full Table Name
+ *
+ * @var string
+ */
 	public $table = 'rooms_languages';
 
-	/**
-	 * Records
-	 *
-	 * @var array
-	 */
+/**
+ * Records
+ *
+ * @var array
+ */
 	public $records = array(
 		//パブリックスペース
 		//--日本語
