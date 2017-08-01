@@ -1,9 +1,9 @@
 <?php
 /**
- * CalendarFrameSettingSelectRoomFixture
+ * CalendarFrameSettingSelectRoomForTaskFixture
  */
 
-App::uses('CalendarFrameSettingSelectRoomForTaskFixture', 'Calendars.Test/Fixture');
+App::uses('CalendarFrameSettingSelectRoomFixture', 'Calendars.Test/Fixture');
 
 /**
  * Summary for CalendarFrameSettingSelectRoomFixture

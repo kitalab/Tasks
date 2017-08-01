@@ -1,9 +1,9 @@
 <?php
 /**
- * CalendarEventShareUserFixture
+ * CalendarEventShareUserForTaskFixture
  */
 
-App::uses('CalendarEventShareUserForTaskFixture', 'Calendars.Test/Fixture');
+App::uses('CalendarEventShareUserFixture', 'Calendars.Test/Fixture');
 
 /**
  * Summary for CalendarEventShareUserFixture

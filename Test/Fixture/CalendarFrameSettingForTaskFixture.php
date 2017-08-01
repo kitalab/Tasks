@@ -1,9 +1,9 @@
 <?php
 /**
- * CalendarFrameSettingFixture
+ * CalendarFrameSettingForTaskFixture
  */
 
-App::uses('CalendarFrameSettingForTaskFixture', 'Calendars.Test/Fixture');
+App::uses('CalendarFrameSettingFixture', 'Calendars.Test/Fixture');
 
 /**
  * Summary for CalendarFrameSettingFixture
