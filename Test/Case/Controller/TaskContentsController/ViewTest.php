@@ -140,10 +140,10 @@ class TaskContentsControllerViewTest extends WorkflowControllerViewTest {
 			//'urlOptions' => Hash::insert($data8, 'key', 'content_key_11'),
 			//'assert' => array('method' => 'assertNull'),
 		//);
-		$results[9] = array(
-			'urlOptions' => Hash::insert($data8, 'key', 'content_key_12'),
-			'assert' => null, 'exception' => 'BadRequestException'
-		);
+//		$results[9] = array(
+//			'urlOptions' => Hash::insert($data8, 'key', 'content_key_12'),
+//			'assert' => null, 'exception' => 'BadRequestException'
+//		);
 
 		return $results;
 	}
