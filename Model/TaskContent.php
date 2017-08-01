@@ -369,31 +369,26 @@ class TaskContent extends TasksAppModel {
  */
 	public function getTaskContentList($params = array(), $order = array()) {
 		$conditions = $this->getConditions(Current::read('Block.id'), $params);
-
 		$taskContents = $this->find('all',
 				array('recursive' => 0, 'conditions' => $conditions, 'order' => $order));
 
 		if (! $taskContents) {
 			return array();
 		}
-
 		// コンテンツID配列を生成
 		$taskContentIdArr = Hash::extract($taskContents, '{n}.TaskContent.id');
-
 		// コンテンツIDがキーの担当者連想配列を生成
 		$taskCharges = $this->TaskCharge->find('all',
 				array('recursive' => 0, 'conditions' => array('task_content_id' => $taskContentIdArr)));
 		$sortedTaskCharges = Hash::combine(
 			$taskCharges, '{n}.TaskCharge.user_id', '{n}.TaskCharge', '{n}.TaskCharge.task_content_id'
 		);
-
 		// isDeadLine及びdate_colorを取得、担当者を設定
 		$addedTaskContents = array();
 		foreach ($taskContents as $taskContent) {
 			if (isset($sortedTaskCharges[$taskContent['TaskContent']['id']])) {
 				$taskContent['TaskCharge'] = $sortedTaskCharges[$taskContent['TaskContent']['id']];
 			}
-
 			// 現在実施中
 			$taskContent['TaskContent']['date_color'] = TasksComponent::TASK_BEING_PERFORMED;
 			// ここでdate_colorをセット＆Controllerで期限間近判定用のフラグをセット
@@ -405,7 +400,6 @@ class TaskContent extends TasksAppModel {
 						$taskContent['TaskContent']['task_end_date']
 				);
 			}
-
 			$isDeadLine = $this->isDeadLine($taskContent['TaskContent']['date_color']);
 			$addedTaskContents[] = array_merge($taskContent, array('isDeadLine' => $isDeadLine));
 		}
@@ -415,7 +409,6 @@ class TaskContent extends TasksAppModel {
 			$addedTaskContents,
 			'{n}.TaskContent.id', '{n}', '{n}.TaskContent.category_id'
 		);
-
 		// カテゴリ情報を取得
 		$categories = $this->getCategory($addedTaskContents);
 		$categoryLangArr = Hash::combine(
@@ -423,7 +416,6 @@ class TaskContent extends TasksAppModel {
 			'{n}.CategoriesLanguage.category_id',
 			'{n}.CategoriesLanguage'
 		);
-
 		// カテゴリ毎の進捗率情報を取得
 		// カテゴリなしは進捗率を表示しないので条件から省く
 		$categoryRateParam = array('Not' => array('TaskContent.category_id' => 0));
@@ -462,7 +454,6 @@ class TaskContent extends TasksAppModel {
 				$results[] = $result;
 			}
 		}
-
 		return $results;
 	}
 
