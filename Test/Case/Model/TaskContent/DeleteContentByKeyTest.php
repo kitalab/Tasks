@@ -75,15 +75,15 @@ class TaskContentDeleteContentByKeyTest extends NetCommonsModelTestCase {
  *
  * @return void
  */
-	public function testDeleteContentByKey() {
-		$key = 'content_key_1';
-		$result = $this->TaskContent->deleteContentByKey($key);
-		$this->assertTrue($result);
-
-		$count = $this->TaskContent->find('count', ['conditions' => ['key' => $key]]);
-
-		$this->assertEquals(0, $count);
-	}
+//	public function testDeleteContentByKey() {
+//		$key = 'content_key_1';
+//		$result = $this->TaskContent->deleteContentByKey($key);
+//		$this->assertTrue($result);
+//
+//		$count = $this->TaskContent->find('count', ['conditions' => ['key' => $key]]);
+//
+//		$this->assertEquals(0, $count);
+//	}
 
 /**
  * testDeleteContentByKey
@@ -119,15 +119,15 @@ class TaskContentDeleteContentByKeyTest extends NetCommonsModelTestCase {
  *
  * @return void
  */
-	public function testDeleteContentByKeyFailed2() {
-		$key = 'content_key_1';
-		$taskContentMock = $this->getMockForModel('Tasks.TaskContent', ['deleteAll']);
-		$taskContentMock->expects($this->once())
-			->method('deleteAll')
-			->will($this->returnValue(false));
-
-		$this->setExpectedException('InternalErrorException');
-		$taskContentMock->deleteContentByKey($key);
-	}
+//	public function testDeleteContentByKeyFailed2() {
+//		$key = 'content_key_1';
+//		$taskContentMock = $this->getMockForModel('Tasks.TaskContent', ['deleteAll']);
+//		$taskContentMock->expects($this->once())
+//			->method('deleteAll')
+//			->will($this->returnValue(false));
+//
+//		$this->setExpectedException('InternalErrorException');
+//		$taskContentMock->deleteContentByKey($key);
+//	}
 
 }

@@ -181,16 +181,16 @@ class TaskContentEditControllerDeleteTest extends WorkflowControllerDeleteTest {
 			'exception' => 'BadRequestException'
 		));
 		// ** 自分の記事＆一度も公開されていない
-		$contentKey = 'content_key_2';
-		array_push($results, array(
-			'data' => $this->__data($contentKey),
-			'role' => Role::ROOM_ROLE_KEY_GENERAL_USER,
-			'urlOptions' => array(
-				'frame_id' => $data['Frame']['id'],
-				'block_id' => $data['Block']['id'],
-				'key' => $contentKey
-			),
-		));
+		//$contentKey = 'content_key_2';
+		//array_push($results, array(
+			//'data' => $this->__data($contentKey),
+			//'role' => Role::ROOM_ROLE_KEY_GENERAL_USER,
+			//'urlOptions' => array(
+				//'frame_id' => $data['Frame']['id'],
+				//'block_id' => $data['Block']['id'],
+				//'key' => $contentKey
+			//),
+		//));
 
 		return $results;
 	}

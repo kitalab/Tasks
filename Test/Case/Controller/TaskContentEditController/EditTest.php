@@ -292,55 +292,55 @@ class TaskContentEditControllerEditTest extends WorkflowControllerEditTest {
 			'exception' => 'BadRequestException'
 		));
 		// ** 自分の記事
-		$contentKey = 'content_key_2';
-		array_push($results, array(
-			'data' => $this->__data(Role::ROOM_ROLE_KEY_GENERAL_USER),
-			'role' => Role::ROOM_ROLE_KEY_GENERAL_USER,
-			'urlOptions' => array(
-				'frame_id' => $data['Frame']['id'],
-				'block_id' => $data['Block']['id'],
-				'key' => $contentKey,
-			),
-		));
+		//$contentKey = 'content_key_2';
+		//array_push($results, array(
+			//'data' => $this->__data(Role::ROOM_ROLE_KEY_GENERAL_USER),
+			//'role' => Role::ROOM_ROLE_KEY_GENERAL_USER,
+			//'urlOptions' => array(
+				//'frame_id' => $data['Frame']['id'],
+				//'block_id' => $data['Block']['id'],
+				//'key' => $contentKey,
+			//),
+		//));
 		// * 編集権限あり
 		// ** コンテンツあり
-		$contentKey = 'content_key_1';
-		array_push($results, array(
-			'data' => $data,
-			'role' => Role::ROOM_ROLE_KEY_EDITOR,
-			'urlOptions' => array(
-				'frame_id' => $data['Frame']['id'],
-				'block_id' => $data['Block']['id'],
-				'key' => $contentKey,
-			),
-		));
+		//$contentKey = 'content_key_1';
+		//array_push($results, array(
+			//'data' => $data,
+			//'role' => Role::ROOM_ROLE_KEY_EDITOR,
+			//'urlOptions' => array(
+				//'frame_id' => $data['Frame']['id'],
+				//'block_id' => $data['Block']['id'],
+				//'key' => $contentKey,
+			//),
+		//));
 		// ** フレームID指定なしテスト
-		$contentKey = 'content_key_1';
-		array_push($results, array(
-			'data' => $data,
-			'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
-			'urlOptions' => array(
-				'frame_id' => null,
-				'block_id' => $data['Block']['id'],
-				'key' => $contentKey,
-			),
-		));
-		$results[4]['data']['TaskContent']['is_date_set'] = false;
+		//$contentKey = 'content_key_1';
+		//array_push($results, array(
+			//'data' => $data,
+			//'role' => Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR,
+			//'urlOptions' => array(
+				//'frame_id' => null,
+				//'block_id' => $data['Block']['id'],
+				//'key' => $contentKey,
+			//),
+		//));
+		//$results[4]['data']['TaskContent']['is_date_set'] = false;
 
 		// * 編集権限あり
 		// ** リマインダーメール作成
-		$contentKey = 'content_key_1';
-		array_push($results, array(
-			'data' => $data,
-			'role' => Role::ROOM_ROLE_KEY_EDITOR,
-			'urlOptions' => array(
-				'frame_id' => $data['Frame']['id'],
-				'block_id' => $data['Block']['id'],
-				'key' => $contentKey,
-			),
-		));
-		$results[5]['data']['TaskContent']['task_end_date'] = date('Ymd', strtotime('+10 day'));
-		$results[5]['data']['TaskContent']['is_enable_mail'] = true;
+		//$contentKey = 'content_key_1';
+		//array_push($results, array(
+			//'data' => $data,
+			//'role' => Role::ROOM_ROLE_KEY_EDITOR,
+			//'urlOptions' => array(
+				//'frame_id' => $data['Frame']['id'],
+				//'block_id' => $data['Block']['id'],
+				//'key' => $contentKey,
+			//),
+		//));
+		//$results[5]['data']['TaskContent']['task_end_date'] = date('Ymd', strtotime('+10 day'));
+		//$results[5]['data']['TaskContent']['is_enable_mail'] = true;
 
 		return $results;
 	}
