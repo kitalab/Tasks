@@ -1,12 +1,6 @@
 <?php
 /**
- * CalendarEventFixture
- *
- * @author Noriko Arai <arai@nii.ac.jp>
- * @author AllCreator <info@allcreator.net>
- * @link http://www.netcommons.org NetCommons Project
- * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2014, NetCommons Project
+ * CalendarEventForTaskFixture
  */
 
 App::uses('CalendarEventFixture', 'Calendars.Test/Fixture');
@@ -16,27 +10,27 @@ App::uses('CalendarEventFixture', 'Calendars.Test/Fixture');
  */
 class CalendarEventForTaskFixture extends CalendarEventFixture {
 
-	/**
-	 * Plugin key
-	 *
-	 * @var string
-	 */
+/**
+ * Plugin key
+ *
+ * @var string
+ */
 	public $pluginKey = 'calendars';
 
-	/**
-	 * Model name
-	 *
-	 * @var string
-	 */
+/**
+ * Model name
+ *
+ * @var string
+ */
 	public $name = 'CalendarEvents';
 
-	/**
-	 * Full Table Name
-	 *
-	 * @var string
-	 */
+/**
+ * Full Table Name
+ *
+ * @var string
+ */
 	public $table = 'calendar_events';
-	
+
 /**
  * Records
  *
@@ -944,4 +938,14 @@ class CalendarEventForTaskFixture extends CalendarEventFixture {
 		),
 	);
 
+/**
+ * Initialize the fixture.
+ *
+ * @return void
+ */
+	public function init() {
+		require_once App::pluginPath('Calendars') . 'Config' . DS . 'Schema' . DS . 'schema.php';
+		$this->fields = (new CalendarsSchema())->tables[Inflector::tableize($this->name)];
+		parent::init();
+	}
 }

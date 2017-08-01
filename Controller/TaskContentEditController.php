@@ -152,7 +152,8 @@ class TaskContentEditController extends TasksAppController {
 			return $this->throwBadRequest();
 		}
 
-		$calendarKey = $taskContent['TaskContent']['calendar_key'];	//ADD カレンダ連携キーの取り出し
+		//ADD カレンダ連携キーの取り出し
+		$calendarKey = $taskContent['TaskContent']['calendar_key'];
 		$taskContent['TaskContent']['use_calendar'] = ($calendarKey == "") ? 0 : 1;
 		if (! $this->request->data) {
 			$this->request->data = $taskContent;
@@ -173,7 +174,8 @@ class TaskContentEditController extends TasksAppController {
 				$this->_taskSetting['TaskSetting']['task_key'];
 			$this->request->data['TaskContent']['key'] = $key;
 
-			$this->request->data['TaskContent']['calendar_key'] = $calendarKey; //ADD カレンダー連携キー転写
+			//ADD カレンダー連携キー転写
+			$this->request->data['TaskContent']['calendar_key'] = $calendarKey;
 
 			// set status
 			$status = $this->Workflow->parseStatus();

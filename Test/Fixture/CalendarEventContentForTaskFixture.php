@@ -1,12 +1,6 @@
 <?php
 /**
- * CalendarEventContentFixture
- *
- * @author Noriko Arai <arai@nii.ac.jp>
- * @author AllCreator <info@allcreator.net>
- * @link http://www.netcommons.org NetCommons Project
- * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2014, NetCommons Project
+ * CalendarEventContentForTaskFixture
  */
 
 App::uses('CalendarEventContentFixture', 'Calendars.Test/Fixture');
@@ -15,27 +9,28 @@ App::uses('CalendarEventContentFixture', 'Calendars.Test/Fixture');
  * Summary for CalendarEventContentFixture
  */
 class CalendarEventContentForTaskFixture extends CalendarEventContentFixture {
-	/**
-	 * Plugin key
-	 *
-	 * @var string
-	 */
+
+/**
+ * Plugin key
+ *
+ * @var string
+ */
 	public $pluginKey = 'calendars';
 
-	/**
-	 * Model name
-	 *
-	 * @var string
-	 */
+/**
+ * Model name
+ *
+ * @var string
+ */
 	public $name = 'CalendarEventContents';
 
-	/**
-	 * Full Table Name
-	 *
-	 * @var string
-	 */
+/**
+ * Full Table Name
+ *
+ * @var string
+ */
 	public $table = 'calendar_event_contents';
-	
+
 /**
  * Records
  *
@@ -54,4 +49,14 @@ class CalendarEventContentForTaskFixture extends CalendarEventContentFixture {
 		),
 	);
 
+/**
+ * Initialize the fixture.
+ *
+ * @return void
+ */
+	public function init() {
+		require_once App::pluginPath('Calendars') . 'Config' . DS . 'Schema' . DS . 'schema.php';
+		$this->fields = (new CalendarsSchema())->tables[Inflector::tableize($this->name)];
+		parent::init();
+	}
 }
