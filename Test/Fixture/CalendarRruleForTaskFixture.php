@@ -1,42 +1,36 @@
 <?php
 /**
  * CalendarRruleFixture
- *
- * @author Noriko Arai <arai@nii.ac.jp>
- * @author AllCreator <info@allcreator.net>
- * @link http://www.netcommons.org NetCommons Project
- * @license http://www.netcommons.org/license.txt NetCommons License
- * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('CalendarRruleFixture', 'Calendars.Test/Fixture');
+App::uses('CalendarRruleForTaskFixture', 'Calendars.Test/Fixture');
 
 /**
  * Summary for CalendarRruleFixture
  */
 class CalendarRruleForTaskFixture extends CalendarRruleFixture {
 
-	/**
-	 * Plugin key
-	 *
-	 * @var string
-	 */
+/**
+ * Plugin key
+ *
+ * @var string
+ */
 	public $pluginKey = 'calendars';
 
-	/**
-	 * Model name
-	 *
-	 * @var string
-	 */
+/**
+ * Model name
+ *
+ * @var string
+ */
 	public $name = 'CalendarRrules';
 
-	/**
-	 * Full Table Name
-	 *
-	 * @var string
-	 */
+/**
+ * Full Table Name
+ *
+ * @var string
+ */
 	public $table = 'calendar_rrules';
-	
+
 /**
  * Records
  *
