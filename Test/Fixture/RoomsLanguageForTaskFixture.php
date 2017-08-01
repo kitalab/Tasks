@@ -19,13 +19,13 @@ App::uses('RoomsLanguageFixture', 'Rooms.Test/Fixture');
  */
 class RoomsLanguageForTaskFixture extends RoomsLanguageFixture {
 
-	/**
-	 * Plugin key
-	 *
-	 * @var string
-	 */
+/**
+ * Plugin key
+ *
+ * @var string
+ */
 	public $pluginKey = 'tasks';
-	
+
 /**
  * Model name
  *
